@@ -562,6 +562,8 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .intro .launch .rv.in{opacity:1;filter:blur(0);transform:none}
 @media (prefers-reduced-motion:reduce){.intro .launch .rv{transition:none;filter:none;transform:none}}
 .intro .launch #lPhr,.intro .launch #lTag{margin-inline:auto;text-wrap:pretty;text-align:justify!important;text-align-last:center!important;-webkit-hyphens:none;hyphens:none;word-spacing:0;max-width:calc(100vw - 32px)}
+/* phone: both texts on the first screen are centered across the screen width (justified narrow lines left big gaps) */
+@media (max-width:860px){.intro .launch #lPhr,.intro .launch #lTag{text-align:center!important;text-align-last:center!important}}
 .intro .rsv-cta{cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.25em}
 .intro .rsv-cta:hover{text-decoration-thickness:2px}
 .intro .rsv{gap:12px;margin-top:2px}
@@ -619,6 +621,8 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .outro .under{background:#0a0a0a;padding:0;display:block}
 .oscene{position:absolute;inset:0;overflow:hidden;will-change:opacity;contain:strict}
 .oscene img{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;max-width:none;user-select:none;pointer-events:none}
+/* a very short phone screen: the smaller painting photo fades into the black, so its edges never show */
+#sceneImg.fade{-webkit-mask-image:radial-gradient(ellipse 34% 40% at 50% 52%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 34% 40% at 50% 52%,#000 60%,transparent 100%)}
 .owin{position:absolute;left:50%;top:50%;width:220px;height:42px;transform:translate(-50%,-50%)}
 .owin svg{width:100%;height:100%;display:block;overflow:visible}
 .ophrase{position:absolute;left:0;right:0;top:40%;text-align:center;transform:translateY(-100%);font-family:var(--f-display);font-weight:300;font-size:clamp(38px,6.5vw,104px);letter-spacing:-.02em;line-height:1;color:#fff;margin:0;opacity:0}
@@ -958,7 +962,7 @@ em,i.em{font-style:normal!important}
     <div class="cw-full u-grid uses-l">
       <article class="u">
         <h3>Pass it down as a <em>family relic</em></h3>
-        <p><b>What will you leave to your family tree for hundreds of years ahead? It will never be like it used to be. Now your relatives will know about you even thousands of years from now.</b> Even 300 years from now, your heirs will get a hello from an unusual ancestor. Time Keeper is made to be handed down, as <u>something that will remain for hundreds of years after you</u></p>
+        <p><b>What will you leave to your family tree for hundreds of years ahead? It will never be like it used to be. Now your relatives will know about you even thousands of years from now.</b> Even 300 years from now, your heirs will get a hello from an unusual ancestor. Time Keeper is made to be handed down, as <u>something that will remain for hundreds of years after you</u>. The infinite family album feature will let them see all the ancestors thanks to whom they were born, even hundreds of years later, and learn more about them</p>
       </article>
       <article class="u">
         <h3>Use it as a <em>deep philosophical gift</em></h3>
@@ -1346,7 +1350,7 @@ em,i.em{font-style:normal!important}
   // both texts on the first screen, computer only: exactly two lines each, a little inside the painting's edges
   function fitPhr(){ const pw=Math.floor(Math.min(fitTag.pw||innerWidth, innerWidth-32)); if(!REF) document.documentElement.style.setProperty('--pw',pw+'px'); const f=$('rsvForm'); if(f){ f.style.width=pw+'px'; f.style.maxWidth=pw+'px' }
     const els=['lTag','lPhr'].map($).filter(Boolean);
-    if(innerWidth<=860){ els.forEach(el=>{ el.style.width=pw+'px'; el.style.maxWidth=pw+'px'; el.style.removeProperty('font-size'); el.style.removeProperty('line-height') }); return }
+    if(innerWidth<=860){ const tw=Math.floor(innerWidth-40); els.forEach(el=>{ el.style.width=tw+'px'; el.style.maxWidth=tw+'px'; el.style.removeProperty('font-size'); el.style.removeProperty('line-height') }); return }
     const W=Math.floor(pw*0.95);
     els.forEach(el=>{ el.style.width=W+'px'; el.style.maxWidth=W+'px'; el.style.setProperty('line-height','1.35','important') });
     const tg=$('lTag'); if(tg) tg.classList.add('fit2'); const fits=fs=>els.every(el=>{ el.style.setProperty('font-size',fs+'px','important'); return el.scrollHeight<=fs*1.35*2+2 });
@@ -1386,6 +1390,14 @@ em,i.em{font-style:normal!important}
     // the text above moves up only as much as the counting modes need to fit above the painting
     if(S.mode==='fit'){ const lt=$('lTop'); lt.style.translate=''; const lr=lt.getBoundingClientRect(), nb=lr.bottom-sr.top, ntop=lr.top-sr.top, pt=top+S.obj[1]*sc;
       const sh=Math.min(Math.max(0,nb+14-pt),Math.max(0,ntop-16)); lt.style.translate=sh?'0 '+(-Math.round(sh))+'px':'' }
+    // phone with a short screen: if the counting modes still do not fit above the painting, the text above gets a little smaller first (down to 13px),
+    // then the painting gets smaller from the top (its bottom stays), so nothing ever overlaps
+    let small=false;
+    if(S.mode==='fit' && innerWidth<=860){ const lt=$('lTop'), tg=$('lTag'), pt=top+S.obj[1]*sc; let fs=parseFloat(getComputedStyle(tg).fontSize);
+      const shift=()=>{ lt.style.translate=''; const lr=lt.getBoundingClientRect(), nb=lr.bottom-sr.top, ntop=lr.top-sr.top, sh=Math.min(Math.max(0,nb+14-pt),Math.max(0,ntop-16)); lt.style.translate=sh?'0 '+(-Math.round(sh))+'px':''; return lt.getBoundingClientRect().bottom-sr.top+14 };
+      let need=shift(); while(need>pt && fs>13){ fs-=0.5; tg.style.setProperty('font-size',fs+'px','important'); need=shift() }
+      if(need>pt){ const pb=top+(S.obj[1]+S.obj[3])*sc; sc=Math.max(40,pb-need)/S.obj[3]; top=pb-(S.obj[1]+S.obj[3])*sc; left=W/2-(S.obj[0]+S.obj[2]/2)*sc; small=sc<Math.max(W/S.W,H/S.H) } }
+    $('sceneImg').classList.toggle('fade',small);
     const im=$('sceneImg'); im.style.width=S.W+'px'; im.style.height=S.H+'px'; im.style.transform='translate('+left+'px,'+top+'px) scale('+sc+')';
     const w=$('sceneWin'); w.style.width=(S.w*sc)+'px'; w.style.height=(S.h*sc)+'px'; w.style.left=(left+S.cx*sc)+'px'; w.style.top=(top+S.cy*sc)+'px'; w.style.transform='translate(-50%,-50%) rotate('+S.ang+'deg)'; w.style.background=S.bg||'transparent'; if(scKey==='painting'){ const tp=$('tyt').firstElementChild; tp.style.top=(top+S.cy*sc-S.h*sc/2-Math.max(28,S.h*sc*0.9))+'px'; centerPhr(sr.top+top+(S.obj[1]+S.obj[3])*sc) } w.style.borderRadius=S.rad?(S.rad*sc)+'px':'3px';
   }

@@ -579,6 +579,11 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 /* phone: first screen texts centered, lines balanced to about the same length (no stretched gaps, no lonely words) */
 @media (max-width:860px){html body .intro .launch:not(.ref) #lTag,html body .intro .launch:not(.ref) #lPhr,html body .intro .launch:not(.ref) #lPhr .pl0,html body .intro .launch:not(.ref) #lPhr .pl2{text-align:justify!important;text-align-last:center!important;text-wrap:wrap!important;-webkit-hyphens:auto!important;hyphens:auto!important}html body .intro .launch:not(.ref) #lTag .ltag3{text-align:center!important;text-align-last:center!important}}
 #lTag,#lPhr{-webkit-hyphens:none;hyphens:none}
+@media (min-width:861px){.intro .launch #lTag,.intro .launch #lTag *,.intro .launch #lPhr,.intro .launch #lPhr *{font-weight:400!important}}
+/* first screen: the lines the owner set — every block starts on its own line, on every screen */
+.intro .launch:not(.ref) #lTag .tl1,.intro .launch:not(.ref) #lTag .tl2,.intro .launch:not(.ref) #lPhr .pl0,.intro .launch:not(.ref) #lPhr .pl1,.intro .launch:not(.ref) #lPhr .pl2{display:block}
+/* phone: each line block is split into even lines (never one lonely word on the last line) */
+@media (max-width:860px){html body .intro .launch:not(.ref) #lTag .tl1,html body .intro .launch:not(.ref) #lTag .tl2,html body .intro .launch:not(.ref) #lTag .ltag3,html body .intro .launch:not(.ref) #lPhr .pl0,html body .intro .launch:not(.ref) #lPhr .pl1,html body .intro .launch:not(.ref) #lPhr .pl2{text-wrap:pretty!important;-webkit-hyphens:none!important;hyphens:none!important}}
 #lTag .ltag3{display:block;text-align:center;text-align-last:center}#lTag .lt-ref{display:none}.intro .launch.ref #lTag .lt-ref,#lTag.fit2 .lt-ref{display:inline}.intro .launch.ref #lTag .lt-new,#lTag.fit2 .lt-new{display:none}
 .intro .launch .ltag .rl{display:block}
 .intro .launch .rv{opacity:0;filter:blur(8px);transform:translateY(14px);transition:opacity .8s ease,filter .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);will-change:opacity,filter,transform}
@@ -946,14 +951,14 @@ em,i.em{font-style:normal!important}
       <div class="tyt" id="tyt"><p>Take your <em>time</em></p></div>
       <div class="scene" id="scene" aria-hidden="true"><img id="sceneImg" src="img/w/scene.webp" alt=""><div class="scene-shade"></div></div><div class="scene-win" id="sceneWin"><svg id="sceneDigits" preserveAspectRatio="xMidYMid meet"></svg><span class="yours" id="yours">Your time since start</span></div>
       <div class="launch">
-        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new">Your personal philosophical art object that will outlive you <span class="ul">by hundreds of years</span> and keep your memory alive for the next generations of your family tree<span class="ltag3">And other philosophical meanings you will discover below</span></span><span class="lt-ref" aria-hidden="true">Your personal art object that will outlive you <span class="ul">by hundreds of years</span> and keep your memory alive for the next generations of your family tree. And other philosophical meanings you will discover below</span></p></div>
+        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new"><span class="tl1">Your personal philosophical art object that will outlive you <span class="ul">by hundreds of years</span></span> <span class="tl2">and keep your memory alive for the next generations of your family tree</span><span class="ltag3">And other philosophical meanings you will discover below</span></span><span class="lt-ref" aria-hidden="true">Your personal art object that will outlive you <span class="ul">by hundreds of years</span> and keep your memory alive for the next generations of your family tree. And other philosophical meanings you will discover below</span></p></div>
         <div class="bottom">
         <div class="sub">
           <div><span class="mono">Moment started</span><b class="num" id="startedAt">—</b></div>
           <div><span class="mono">Since start</span><b class="num" id="sinceStart">0 s</b></div>
           <div><span class="mono">Countdown (80 years)</span><b class="num" id="cd">2,524,608,000</b></div>
         </div>
-        <p class="phrase" id="lPhr"><span class="pl0">Your time has started.</span> From now on, it is counted. <u class="to-rsv" role="link" tabindex="0">Reserve your time</u>, and it will be counted forever<span class="pdot">.</span><br class="pbr"><span class="pl2"> First objects will have the most seconds of all</span></p>
+        <p class="phrase" id="lPhr"><span class="pl0">Your time has started. <span>From now on, it is counted</span></span> <span class="pl1"><u class="to-rsv" role="link" tabindex="0">Reserve your time</u><span>, and it will be counted forever</span></span> <span class="pl2">First objects will have the most seconds of all</span></p>
         <form class="rsv" id="rsvForm" novalidate>
           <div class="rsv-row"><span class="rsv-in" id="rsvIn"><input type="email" id="rsvEmail" placeholder="" autocomplete="email" aria-label="Reserve your start now: your email"><label class="rsv-cta" for="rsvEmail">Reserve your start now</label></span><button class="btn" type="submit" id="rsvBtn">Reserve</button></div>
           <p class="rsv-msg mono" id="rsvMsg"></p>
@@ -1427,13 +1432,13 @@ em,i.em{font-style:normal!important}
   // phone: the two texts of the first screen are set flush with the painting's edges; long words get soft hyphen points
   // (dictionary hyphenation), so the justified lines never open big gaps between words. On a computer they are never hyphenated.
   const HYW=["dis\u00adcover", "fam\u00adily", "for\u00adever", "gen\u00ader\u00ada\u00adtions", "hun\u00addreds", "mean\u00adings", "mem\u00adory", "out\u00adlive", "per\u00adsonal", "philo\u00adsoph\u00adi\u00adcal", "sec\u00adonds", "\u0417\u0430\u0431\u0440\u043e\u00ad\u043d\u0438\u00ad\u0440\u0443\u0439", "\u0434\u0440\u0443\u00ad\u0433\u0438\u0435", "\u043a\u043e\u0442\u043e\u00ad\u0440\u044b\u0439", "\u043b\u0438\u0447\u00ad\u043d\u044b\u0439", "\u043e\u0431\u044a\u00ad\u0435\u043a\u00ad\u0442\u043e\u0432", "\u043e\u0431\u044a\u00ad\u0435\u043a\u0442", "\u043e\u0442\u043a\u0440\u043e\u00ad\u0435\u0448\u044c", "\u043f\u0435\u0440\u00ad\u0432\u044b\u0445", "\u043f\u0435\u0440\u0435\u00ad\u0436\u0438\u0432\u0451\u0442", "\u043f\u043e\u043a\u043e\u00ad\u043b\u0435\u00ad\u043d\u0438\u0439", "\u0441\u043b\u0435\u00ad\u0434\u0443\u00ad\u044e\u00ad\u0449\u0438\u0445", "\u0441\u043e\u0445\u0440\u0430\u00ad\u043d\u0438\u0442", "\u0441\u0447\u0438\u00ad\u0442\u0430\u00ad\u0435\u0442\u0441\u044f", "\u0441\u0447\u0438\u00ad\u0442\u0430\u0442\u044c\u0441\u044f", "\u0442\u0432\u043e\u00ad\u0435\u0433\u043e", "\u0444\u0438\u043b\u043e\u00ad\u0441\u043e\u0444\u00ad\u0441\u043a\u0438\u0435", "\u0444\u0438\u043b\u043e\u00ad\u0441\u043e\u0444\u00ad\u0441\u043a\u0438\u0439"]; const HYM={}; HYW.forEach(h=>HYM[h.replace(/\u00ad/g,'')]=h);
-  function applyHy(){ ['lTag','lPhr'].forEach(id=>{ const el=$(id); if(!el) return; const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT); let n; while(n=w.nextNode()){ if(n.parentNode.closest('.ltag3,.pl0')) continue; const t=n.data.replace(/[A-Za-z\u0400-\u04FF]{6,}/g,m=>HYM[m]||m); if(t!==n.data) n.data=t } }) }
+  function applyHy(){ ['lTag','lPhr'].forEach(id=>{ const el=$(id); if(!el) return; const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT); let n; while(n=w.nextNode()){ if(n.parentNode.closest('.ltag3,.tl1,.tl2,.pl0,.pl1,.pl2')) continue; const t=n.data.replace(/[A-Za-z\u0400-\u04FF]{6,}/g,m=>HYM[m]||m); if(t!==n.data) n.data=t } }) }
   // words of the two texts as separate pieces, so on a phone a line that would open wide gaps gets a hair of letter spacing instead
   function wrapWords(){ ['lTag','lPhr'].forEach(id=>{ const el=$(id); if(!el) return; const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT), ns=[]; let n; while(n=w.nextNode()) if(!n.parentNode.closest('.lt-ref')&&!n.parentNode.classList.contains('jw')) ns.push(n);
     ns.forEach(n=>{ const parts=n.data.split(/(\s+)/); if(parts.length<2&&!parts[0]) return; const f=document.createDocumentFragment(); parts.forEach(t=>{ if(!t) return; if(/^\s+$/.test(t)) f.appendChild(document.createTextNode(t)); else { const s=document.createElement('span'); s.className='jw'; s.textContent=t; f.appendChild(s) } }); n.parentNode.replaceChild(f,n) }) }) }
   function justFix(){ const ts=[...document.querySelectorAll('#lTag .lt-new .jw,#lPhr .jw')]; ts.forEach(t=>t.style.letterSpacing=''); const L=document.querySelector('.intro .launch');
     if(innerWidth>860||!L||L.classList.contains('ref')) return; const G=new Map();
-    ts.forEach(t=>{ const b=t.closest('.pl0,.pl2,.ltag3')||t.closest('#lTag,#lPhr'); if(b.matches('.pl0,.ltag3')) return; const r=t.getClientRects(); if(r.length!==1) return; if(!G.has(b)) G.set(b,new Map()); const m=G.get(b), k=Math.round(r[0].top); if(!m.has(k)) m.set(k,[]); m.get(k).push({t,r:r[0]}) });
+    ts.forEach(t=>{ const b=t.closest('.pl0,.pl1,.pl2,.tl1,.tl2,.ltag3')||t.closest('#lTag,#lPhr'); if(b.matches('.ltag3')) return; const r=t.getClientRects(); if(r.length!==1) return; if(!G.has(b)) G.set(b,new Map()); const m=G.get(b), k=Math.round(r[0].top); if(!m.has(k)) m.set(k,[]); m.get(k).push({t,r:r[0]}) });
     const cv=justFix.c||(justFix.c=document.createElement('canvas').getContext('2d'));
     G.forEach((m,b)=>{ const cs=getComputedStyle(b), fs=parseFloat(cs.fontSize); cv.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily; const sp=cv.measureText(' ').width, W=b.getBoundingClientRect().width;
       const keys=[...m.keys()].sort((x,y)=>x-y); keys.pop();
@@ -1462,21 +1467,26 @@ em,i.em{font-style:normal!important}
       const P=S.obj[3]*sc, pw=Math.floor(S.obj[2]*sc); if(fm){ fm.style.width=pw+'px'; fm.style.maxWidth=pw+'px' }
       if(innerWidth>860){ const tg=$('lTag'), pr=document.createElement('span'); pr.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit';
         const f0=parseFloat(getComputedStyle(tg).fontSize)||18, fit=f=>{ [tg,ph].forEach(e=>e.style.setProperty('font-size',f+'px','important'));
-          const a=tg.querySelector('.lt-new').cloneNode(true); a.querySelectorAll('.ltag3').forEach(e=>e.remove()); pr.innerHTML=a.innerHTML; tg.appendChild(pr); const L1=pr.getBoundingClientRect().width; pr.remove();
-          const c=ph.cloneNode(true); c.querySelectorAll('.pl0,.pl2,.pbr').forEach(e=>e.remove()); pr.innerHTML=c.innerHTML; ph.appendChild(pr); const L2=pr.getBoundingClientRect().width; pr.remove();
-          const w=Math.ceil(Math.max(L1/1.94,L2+4, S.obj[2]*sc*0.95)); [tg,ph].forEach(e=>{ e.style.width=w+'px'; e.style.maxWidth=w+'px' }); return w };
+          // each line the owner set stays one line on a computer: the text is as wide as its longest line
+          let L=0; [[tg,'.tl1'],[tg,'.tl2'],[tg,'.ltag3'],[ph,'.pl0'],[ph,'.pl1'],[ph,'.pl2']].forEach(([host,q])=>{ const e=host.querySelector(q); if(!e) return; pr.innerHTML=e.innerHTML; host.appendChild(pr); L=Math.max(L,pr.getBoundingClientRect().width); pr.remove() });
+          const w=Math.ceil(Math.max(L+6, S.obj[2]*sc*0.95)); [tg,ph].forEach(e=>{ e.style.width=w+'px'; e.style.maxWidth=w+'px' }); return w };
         // a little larger than before (about 20%), as long as the lines still fit on the screen and everything fits above and below the painting
         const bd0=$('iBdate'), bh0=bd0&&bd0.hidden; if(bh0){ bd0.hidden=false; bd0.style.visibility='hidden' } const mh=md.getBoundingClientRect().height; if(bh0){ bd0.hidden=true; bd0.style.visibility='' }
         // short screens: only if everything would not fit otherwise, the text gets a little smaller (never below 15px); the painting never changes
         let f=Math.min(30,Math.round(f0*1.2*4)/4); for(;f>15;f-=0.5){ const w=fit(f); const hh=lt.getBoundingClientRect().height+ph.getBoundingClientRect().height; if(w<=W-96 && H-24-(hh+S.obj[3]*sc+mh+fm.getBoundingClientRect().height)>=(f>f0?52:36)) break }
         if(f<=15) fit(15) }
+      // one family of sizes on a computer: the mode buttons and the reserve button grow with the text, so nothing looks tiny or out of place
+      { const dk=innerWidth>860, fz=parseFloat(getComputedStyle($('lTag')).fontSize)||18;
+        md.querySelectorAll('.omodes button').forEach(b=>{ b.style.height=dk?Math.round(fz*1.45)+'px':''; b.style.fontSize=dk?(Math.round(fz*0.56*2)/2)+'px':''; b.style.padding=dk?'0 '+Math.round(fz*0.75)+'px':'' });
+        md.querySelectorAll('.obsel select').forEach(x=>{ x.style.height=dk?Math.round(fz*1.6)+'px':''; x.style.fontSize=dk?Math.round(fz*0.7)+'px':'' });
+        const rb=$('rsvBtn'); if(rb) rb.style.fontSize=dk?(Math.round(fz*0.72*2)/2)+'px':''; const lb=document.querySelector('#rsvForm .rsv-cta'); if(lb) lb.style.fontSize=dk?fz+'px':''; }
       const R=e=>{ const k=e.style.transform; if(e!==md) e.style.transform='none'; const r=e.getBoundingClientRect(); if(e!==md) e.style.transform=k; return {t:r.top-sr.top,h:r.height} }, A=R(lt), B=R(ph), F=R(fm);
       // the modes always take the room they need with the date fields shown, so switching modes never moves anything
       const bd=$('iBdate'), bh=bd&&bd.hidden; if(bh){ bd.hidden=false; bd.style.visibility='hidden' } const M=R(md); if(bh){ bd.hidden=true; bd.style.visibility='' }
       const phone=innerWidth<=860, minT=phone?36:12, minB=phone?24:12, avail=H-minT-minB, extra=avail-(A.h+P+M.h+B.h+F.h);
       // one rhythm: fixed spaces between the blocks (the modes belong to the painting, so they sit closest); whatever room is left
       // goes above and below the whole group, so the group stays together in the middle of the screen
-      let gT=phone?28:20, g1=phone?14:12, gB=phone?30:20, gF=phone?24:16; const sumG=gT+g1+gB+gF;
+      let gT=phone?28:22, g1=phone?14:12, gB=phone?30:6, gF=phone?24:18; const sumG=gT+g1+gB+gF;
       let free=extra-sumG; if(free<0){ const k=Math.max(0.5,(extra)/sumG); gT*=k; g1*=k; gB*=k; gF*=k; free=0 }
       const y0=minT+free/2, pT=y0+A.h+gT, pB=pT+P, yM=pB+g1, yB=yM+M.h+gB, yF=yB+B.h+gF;
       if(/[?&]top\b/.test(location.search)){ const z0=minT+free/2, zP=z0, zM=zP+P+g1, zA=zM+M.h+gB, zB=zA+A.h+gB*0.6, zF=zB+B.h+gF;
@@ -2230,7 +2240,7 @@ em,i.em{font-style:normal!important}
   const KO_D=0.56, KO_F=[[0.1,1.0],[0.32,1.125],[0.44,0.56],[KO_D,0.4]], KO_B=[[0.1,0.9],[0,0.15]];
   // both split screens follow the scroll, but at a limited pace: a fast flick still plays slowly and smoothly,
   // and the page is held back so the scene cannot be skipped. Nothing moves without the visitor scrolling.
-  function paced(g,now,rate){ const real=prog(g.el); if(g===GI&&real>0.835&&(g.v==null||g.v>0.82)){ g.v=real; return real } const dt=Math.min(0.05,(now-(g.lt||now))/1000); g.lt=now;
+  function paced(g,now,rate){ const real=prog(g.el); const dt=Math.min(0.05,(now-(g.lt||now))/1000); g.lt=now;
     if(window._navJump||g.st===null){ g.st='s'; g.v=real; return real }
     const mx=rate*dt; let st=(real-g.v)*(1-Math.exp(-dt*6)); if(st>mx) st=mx; if(st<-mx) st=-mx; g.v+=st; if(Math.abs(real-g.v)<0.0008) g.v=real;
     const lead=0.1; if(pinned(g)||Math.abs(real-g.v)>lead){ if(real-g.v>lead) jumpTo(secY(g,g.v+lead)); else if(g.v-real>lead) jumpTo(secY(g,g.v-lead)) }
@@ -2253,36 +2263,54 @@ em,i.em{font-style:normal!important}
       return }
     if(v==null||v<0.44){ autoIntro.bk=null; return } if(autoIntro.bk==null) autoIntro.bk=now;
     if(v>0.8||now-Math.max(lastIn,autoIntro.bk)<2000) return;
-    const y0=scrollY, y1=secY(GI,0.84); if(y1<=y0+4) return;
+    const y0=scrollY, y1=secY(GI,1); if(y1<=y0+4) return;
     window._navJump=true; autoGo={t0:now,dur:1800,y0,y1} }
   // first screen: one scroll gesture plays one whole scene, smoothly and to the end:
   // TIME opens → black with the counter → the painting → the next section. Nothing ever stops halfway.
   const IS={a:null,z:null,lastW:0,lastAbs:0,arr:0,td:false,ty0:null};
-  function iTo(y1,dur){ window._navJump=true; IS.a={t0:performance.now(),dur,y0:scrollY,y1} }
-  function iGo(dir){ if(IS.a){ if(performance.now()-IS.a.t0>350) IS.q=dir; return } IS.q=0; const v=prog(GI.el);
-    if(dir>0){ if(v<0.44) iTo(secY(GI,0.46),1200); else if(v<0.83) iTo(secY(GI,0.84),1300); else return }
-    else { if(v>0.5) iTo(secY(GI,0.46),1300); else if(v>0.005) iTo(secY(GI,0),1400) } }
+  // three stops while the first screen is pinned: TIME (0) · black with the counter (0.46) · the painting with its text (1 = the very end
+  // of the pinned part, so right after the painting the page scrolls on to the next block at once, with no dead zone)
+  // stops a finger fling at once (phones keep scrolling by inertia otherwise)
+  function killFling(){ const h=document.documentElement; h.style.overflow='hidden'; requestAnimationFrame(()=>requestAnimationFrame(()=>{ h.style.overflow='' })) }
+  function iTo(y1,dur){ window._navJump=true; IS.a={t0:performance.now(),dur,y0:null,y1} }
+  // the next block arrives with its top right under the fixed header, so its title is fully visible
+  const iNext=()=>{ const nx=GI.el.nextElementSibling, nv=$('nav'); const y=nx?nx.getBoundingClientRect().top+scrollY:GI.el.offsetTop+GI.el.offsetHeight; return Math.round(y-(nv?nv.offsetHeight:0)) };
+  function iGo(dir){ if(IS.a) return; const v=prog(GI.el);
+    if(dir>0){ if(v<0.44) iTo(secY(GI,0.46),1500); else if(v<0.995) iTo(secY(GI,1),1700) }
+    else { if(v>0.5) iTo(secY(GI,0.46),1500); else if(v>0.005) iTo(secY(GI,0),1500) } }
   function stepIntro(now){
-    if(IS.a){ const k=Math.min(1,(now-IS.a.t0)/IS.a.dur); jumpTo(IS.a.y0+(IS.a.y1-IS.a.y0)*sm(k)); if(k>=1){ IS.a=null; IS.arr=now; if(IS.q){ const d=IS.q; IS.q=0; iGo(d) } else setTimeout(()=>{ if(!IS.a) window._navJump=false },60) } }
-    // coming back up from below: the painting scene stops the page (a fast flick never flies past it to the top);
-    // only a new gesture after that plays the scenes back, one by one, smoothly
-    { const y84=secY(GI,0.84);
-      if(!IS.a&&!window._navJump){ if(scrollY>y84+200) IS.hd=0;
-        if(IS.py!=null&&IS.py>=y84-1&&scrollY<y84-1){ if(IS.hd&&now-IS.hd>500&&IS.lg>IS.hd){ jumpTo(y84); iGo(-1) } else { IS.hd=now; jumpTo(y84) } }
-        else if(IS.hd&&now-IS.hd<500&&scrollY<y84-1) jumpTo(y84) }
+    if(IS.a){ if(IS.a.y0==null) IS.a.y0=scrollY; const k=Math.min(1,(now-IS.a.t0)/IS.a.dur); jumpTo(IS.a.y0+(IS.a.y1-IS.a.y0)*sm(k)); if(k>=1){ IS.a=null; IS.arr=now; IS.ga=true; setTimeout(()=>{ if(!IS.a) window._navJump=false },60) } }
+    // coming back up from the page below: however fast the flick, the page stops exactly on the painting (it never flies on to black or TIME)
+    // and before that it stops on the white block right under the painting, fully white (never half painting, half text)
+    { const yN=iNext(); if(!IS.a&&!window._navJump&&IS.py!=null&&IS.py>=yN-1&&scrollY<yN-1&&scrollY>secY(GI,1)+2){ killFling(); jumpTo(yN); IS.ga=true; IS.td=true; IS.arr=now; IS.py=yN; if(lenis) lenis.stop() } }
+    { const P1=secY(GI,1); if(!IS.a&&!window._navJump&&IS.py!=null&&IS.py>=P1-1&&scrollY<P1-1){ killFling(); jumpTo(P1); IS.ga=true; IS.td=true; IS.arr=now }
+      // between the painting and the next block the page never rests half and half: once it gets there it glides on to the whole scene
+      else if(!IS.a&&!window._navJump&&IS.py!=null&&scrollY>P1+3&&scrollY<iNext()-3&&Math.abs(scrollY-IS.py)>0.5){ killFling(); IS.z=true; lockOn(); IS.td=true; iTo(scrollY<IS.py?P1:iNext(),1300) }
       IS.py=scrollY }
-    const z=!!IS.a||(!window._navJump&&scrollY<secY(GI,0.84)-1);
+    // after a scene the rest of the same swipe (trackpad / wheel inertia) is ignored; a new movement works at once
+    if(IS.ga&&now-IS.lastW>180) IS.ga=false;
+    const z=!!IS.a||IS.ga||(!window._navJump&&scrollY<secY(GI,1)-1);
     if(z!==IS.z){ IS.z=z; if(z) lockOn(); else lockOff() } else if(z&&lenis&&!lenis.isStopped) lenis.stop();
-    if(IS.a||!z) return; const v=prog(GI.el), idle=now-Math.max(lastIn,IS.arr);
-    // black screen with the counter: after 2 s without input the painting comes in by itself
-    if(v>0.44&&v<0.5&&idle>2000){ iGo(1); return }
-    // never left between two scenes (e.g. after a reload): settle on the nearest one
-    if(idle>300&&v<0.835&&Math.abs(v)>0.004&&Math.abs(v-0.46)>0.004&&Math.abs(v-0.84)>0.004){ const t=v<0.23?0:(v<0.65?0.46:0.84); iTo(secY(GI,t),900) } }
-  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); if(n-(IS.lw2||0)>140) IS.lg=n; IS.lw2=n; if(!IS.z||e.ctrlKey) return; const fresh=n-IS.lastW>140||a>IS.lastAbs*1.2+2||(IS.lastAbs<4&&a>=12); IS.lastW=n; IS.lastAbs=a; if(fresh&&a>1) iGo(e.deltaY>0?1:-1) },{passive:true});
-  addEventListener('touchstart',e=>{ IS.ty0=e.touches[0]?e.touches[0].clientY:null; IS.td=false; IS.lg=performance.now() },{passive:true});
-  addEventListener('touchmove',e=>{ if(!IS.z||IS.td||IS.ty0==null||!e.touches[0]) return; const d=IS.ty0-e.touches[0].clientY; if(Math.abs(d)>14){ IS.td=true; iGo(d>0?1:-1) } },{passive:true});
+    if(IS.a||!z||IS.ga) return; const v=prog(GI.el), idle=now-Math.max(lastIn,IS.arr);
+    // never left between two scenes (e.g. after a reload or a finger drag): settle on the nearest one
+    if(idle>300&&v<0.995&&Math.abs(v)>0.004&&Math.abs(v-0.46)>0.004){ const t=v<0.23?0:(v<0.73?0.46:1); iTo(secY(GI,t),900) } }
+  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const fresh=n-IS.lastW>180||(a>=10&&a>IS.lastAbs*1.5+5); IS.lastW=n; IS.lastAbs=a;
+    if(e.ctrlKey) return; const atP=Math.abs(scrollY-secY(GI,1))<=3;
+    // standing on the painting: up = the painting goes back (a scene), down = the page simply scrolls on
+    if(fresh&&!IS.a&&atP&&e.deltaY<0){ IS.ga=false; IS.z=true; lockOn(); iGo(-1); return }
+    // scene 4: from the painting one movement down glides to the next block ("What it is"); from the top of that block one movement up glides back
+    { const P1=secY(GI,1), yN=iNext(), inR=scrollY>=P1-3&&scrollY<=yN+3;
+      if(fresh&&!IS.a&&inR&&e.deltaY>0&&scrollY<yN-3){ IS.ga=false; IS.z=true; lockOn(); iTo(yN,1500); return }
+      if(fresh&&!IS.a&&inR&&e.deltaY<0&&scrollY>P1+3){ IS.ga=false; IS.z=true; lockOn(); iTo(P1,1500); return } }
+    if(fresh&&IS.ga&&!IS.a){ IS.ga=false; if(!(scrollY<secY(GI,1)-1)){ IS.z=false; lockOff(); if(lenis&&e.deltaY>0) lenis.scrollTo(scrollY+e.deltaY); return } }
+    if(!IS.z) return; if(fresh&&a>1&&!IS.a) iGo(e.deltaY>0?1:-1) },{passive:true});
+  addEventListener('touchstart',e=>{ IS.ty0=e.touches[0]?e.touches[0].clientY:null; IS.td=false },{passive:true});
+  addEventListener('touchmove',e=>{ if(IS.td||IS.ty0==null||!e.touches[0]) return; const d=IS.ty0-e.touches[0].clientY; if(!IS.z){ if(IS.a||Math.abs(d)<=14) return; const P1=secY(GI,1), yN=iNext(), atP=Math.abs(scrollY-P1)<=3, inR=scrollY>=P1-3&&scrollY<=yN+3;
+      if(atP&&d<0){ IS.td=true; IS.z=true; lockOn(); iGo(-1) } else if(inR&&d>0&&scrollY<yN-3){ IS.td=true; IS.z=true; lockOn(); iTo(yN,1500) } else if(inR&&d<0&&scrollY>P1+3){ IS.td=true; IS.z=true; lockOn(); iTo(P1,1500) } return } if(Math.abs(d)>14){ IS.td=true; if(!IS.a) iGo(d>0?1:-1) } },{passive:true});
+  // while a scene plays (or the first screen is held) the finger does not drag the page: it only starts the next scene
+  addEventListener('touchmove',e=>{ if((IS.a||IS.z||OS.a||OS.z)&&e.cancelable&&!isField(e.target)) e.preventDefault() },{passive:false});
   addEventListener('keydown',e=>{ if(!IS.z||IS.a||isField(e.target)) return; if(['ArrowDown','PageDown',' '].includes(e.key)) iGo(1); else if(['ArrowUp','PageUp'].includes(e.key)) iGo(-1) });
-  function gateIntro(now){ if(!reduce) stepIntro(now); return paced(GI,now,0.2) }
+  function gateIntro(now){ if(!reduce) stepIntro(now); const v=paced(GI,now,0.2); return v<=0.46?v:0.46+(v-0.46)*(0.38/0.54) }
   // last screen: the painting waits for the visitor. Arriving scroll (and its inertia) stops on the painting;
   // the dark scene starts only with a new scroll gesture
   const OH=0.03; const oHold={on:false,armed:true,t:0}; let oLastEvt=0;
@@ -2292,17 +2320,18 @@ em,i.em{font-style:normal!important}
   // one whole scene to the end: painting → dark "Value your time" → TIME closes; the same gesture up plays it back
   const OS={a:null,z:null,lastW:0,lastAbs:0,ty0:null,td:false};
   function oTo(y1,dur){ window._navJump=true; OS.a={t0:performance.now(),dur,y0:scrollY,y1} }
-  function oStep(dir){ if(OS.a){ if(performance.now()-OS.a.t0>350) OS.q=dir; return } OS.q=0; const q=prog(GO.el);
+  function oStep(dir){ if(OS.a){ if(performance.now()-OS.a.t0>350) OS.q=dir; return } OS.q=0; const q=prog(GO.el); if(q<OH-0.006) return;
     if(dir>0){ if(q<0.3) oTo(secY(GO,0.6),2200); else if(q<0.985) oTo(secY(GO,1),2000) }
-    else { if(q>0.8) oTo(secY(GO,0.6),2000); else if(q>0.3) oTo(secY(GO,OH),2200); else oTo(Math.max(0,GO.el.offsetTop-innerHeight*0.7),1600) } }
+    else { if(q>0.8) oTo(secY(GO,0.6),2000); else if(q>0.3) oTo(secY(GO,OH),2200); else { OS.out=true; oTo(Math.max(0,GO.el.offsetTop-innerHeight*0.7),1600) } } }
   function oZone(){ if(OS.rel&&performance.now()-OS.rel<900) return false; const q=prog(GO.el); return q>=OH-0.004 && scrollY<=secY(GO,1)+2 }
-  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const fresh=n-OS.lastW>160||a>OS.lastAbs*1.4+4; OS.lastW=n; OS.lastAbs=a; if(!OS.z||e.ctrlKey) return; if(fresh&&a>1) oStep(e.deltaY>0?1:-1) },{passive:true});
+  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const fresh=n-OS.lastW>200||(a>=12&&a>OS.lastAbs*1.6+6); OS.lastW=n; OS.lastAbs=a; if(fresh) OS.ga=false; if(!OS.z||e.ctrlKey) return; if(fresh&&a>1) oStep(e.deltaY>0?1:-1) },{passive:true});
   addEventListener('touchstart',e=>{ OS.ty0=e.touches[0]?e.touches[0].clientY:null; OS.td=false },{passive:true});
   addEventListener('touchmove',e=>{ if(!OS.z||OS.td||OS.ty0==null||!e.touches[0]) return; const d=OS.ty0-e.touches[0].clientY; if(Math.abs(d)>14){ OS.td=true; oStep(d>0?1:-1) } },{passive:true});
   addEventListener('keydown',e=>{ if(!OS.z||OS.a||isField(e.target)) return; if(['ArrowDown','PageDown',' '].includes(e.key)) oStep(1); else if(['ArrowUp','PageUp'].includes(e.key)) oStep(-1) });
   function outroHold(now){
-    if(OS.a){ const k=Math.min(1,(now-OS.a.t0)/OS.a.dur); jumpTo(OS.a.y0+(OS.a.y1-OS.a.y0)*sm(k)); if(k>=1){ OS.a=null; if(OS.q){ const d=OS.q; OS.q=0; oStep(d) } else setTimeout(()=>{ if(!OS.a) window._navJump=false },60) } }
-    const z=!!OS.a||(!window._navJump&&oZone());
+    if(OS.a){ const k=Math.min(1,(now-OS.a.t0)/OS.a.dur); jumpTo(OS.a.y0+(OS.a.y1-OS.a.y0)*sm(k)); if(k>=1){ OS.a=null; if(OS.out){ OS.out=false; OS.q=0 } else OS.ga=true; if(OS.q){ const d=OS.q; OS.q=0; oStep(d) } else setTimeout(()=>{ if(!OS.a) window._navJump=false },60) } }
+    if(OS.ga&&now-(OS.lastW||0)>200) OS.ga=false;
+    const z=!!OS.a||OS.ga||(!window._navJump&&oZone());
     if(z!==OS.z){ OS.z=z; if(z) lockOn(); else if(!IS.z) lockOff() } else if(z&&lenis&&!lenis.isStopped) lenis.stop();
     if(OS.a||window._navJump) return; const real=prog(GO.el);
     // arriving from above: the scroll (and its inertia) stops exactly on the painting
@@ -2327,6 +2356,8 @@ em,i.em{font-style:normal!important}
 
     const p=reduce?prog(intro):gateIntro(now);
     const o=ease(clamp(p/0.45));
+    // phone: when the browser bar hides, the strip under the scene shows the scene's own colour (white while TIME is closed, dark after), never a white band
+    { const ib=o<0.5?'#fff':'#0a0a0a'; if(frame.ibg!==ib){ frame.ibg=ib; intro.style.background=ib } }
     const ty=clamp((p-0.58)/0.24); $('tyt').style.opacity=1-ty; { const m=ty>0.5; if(m!==frame.ym){ frame.ym=m; $('yours').classList.toggle('on-metal',m) } } $('tyt').style.visibility=ty>=1?'hidden':'visible';
     $('tyt').firstElementChild.style.transform='translateY(-100%) scale('+(1+0.06*ty)+')'; $('tyt').firstElementChild.style.opacity=1-clamp(ty*1.8); document.querySelector('.intro .launch').style.opacity=clamp((ty-0.4)/0.08); revealIntro(ty);
     $('iL').style.transform='translateX('+(-o*(seams[0]+4))+'px)'; { const co=String(Math.max(0,1-o*14)); if(co!==frame.ci){ frame.ci=co; document.querySelectorAll('.intro .half .cap').forEach(c=>c.style.opacity=co) } }
@@ -2588,6 +2619,53 @@ em,i.em{font-style:normal!important}
   const showTog=()=>{ tog.hidden=false };
   if(/[?&#]edit\b/.test(location.search+location.hash)) showTog();
   (async()=>{ try{ if(!window.claude||!claude.use) return; const u=await claude.use('user'); if(u&&await u.isOwner()) showTog() }catch(e){} })();
+})();
+</script>
+<style>
+.te-tog{position:fixed;left:16px;bottom:64px;z-index:200;height:40px;padding:0 16px;border-radius:999px;border:1px solid #0a0a0a;background:#fff;color:#0a0a0a;font:500 11px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.18)}
+.te-tog[hidden],.te-bar[hidden]{display:none}
+.te-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:201;display:flex;gap:8px;align-items:center;padding:8px;border-radius:999px;background:#0a0a0a;color:#fff;box-shadow:0 6px 24px rgba(0,0,0,.3);font:500 11px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;max-width:calc(100vw - 24px)}
+.te-bar button{height:34px;padding:0 14px;border-radius:999px;border:1px solid #fff;background:#fff;color:#0a0a0a;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
+.te-bar button.o{background:transparent;color:#fff}
+.te-bar span{padding:0 6px;white-space:nowrap}
+.te-on [data-te]{outline:1px dashed rgba(127,127,127,.6);outline-offset:3px;cursor:text!important;pointer-events:auto!important;-webkit-user-select:text!important;user-select:text!important}
+.te-on [data-te] *{pointer-events:auto!important;-webkit-user-select:text!important;user-select:text!important}
+.te-on [data-te]:focus{outline:2px solid #e22;outline-offset:3px}
+.te-on [data-te].te-ch{outline:1px solid #e22}
+</style>
+<script>
+// simple text editor (owner only): click "Edit text", click any text and type; "Save" keeps the changes for Claude
+(function(){
+  const SEL='h1,h2,h3,h4,p,li,blockquote,figcaption,summary,dt,dd,.ltag3,.pl0,.pl2,.oph,#oPhrase,.name,.cap,.devb';
+  const tog=document.createElement('button'); tog.type='button'; tog.className='te-tog'; tog.hidden=true; tog.textContent='Edit text';
+  const bar=document.createElement('div'); bar.className='te-bar'; bar.hidden=true; bar.innerHTML='<span>Click a text and type</span><button type="button" class="s">Save</button><button type="button" class="o c">Cancel</button>';
+  document.body.appendChild(tog); document.body.appendChild(bar);
+  const clean=el=>{ const c=el.cloneNode(true); c.querySelectorAll('.jw').forEach(s=>s.replaceWith(document.createTextNode(s.textContent))); c.querySelectorAll('[data-te]').forEach(x=>{ x.removeAttribute('data-te'); x.removeAttribute('contenteditable'); x.classList.remove('te-ch') }); c.querySelectorAll('[style]').forEach(x=>{ if(x.matches&&x.matches('span')) x.removeAttribute('style') }); return c.innerHTML.replace(/­/g,'').replace(/&shy;/g,'') };
+  const txt=el=>el.textContent.replace(/­/g,'').replace(/\s+/g,' ').trim();
+  let els=[], orig=new Map(), on=false, saved={};
+  function collect(){ // outermost text blocks only, in page order; the key is the block's order plus its original wording
+    const all=[...document.querySelectorAll(SEL)].filter(e=>!e.closest('.le-ui,.te-bar,.te-tog,script,style,[aria-hidden="true"]:not(.half *)')&&txt(e));
+    els=all.filter(e=>!all.some(p=>p!==e&&p.contains(e))); }
+  const keyOf=(e,i)=>i+'|'+(orig.get(e)||{}).t.slice(0,40);
+  function start(){ collect(); on=true; document.documentElement.classList.add('te-on'); try{ window.lenis&&lenis.stop&&0 }catch(e){}
+    els.forEach(e=>{ if(!orig.has(e)) orig.set(e,{h:clean(e),t:txt(e)}); e.setAttribute('data-te',''); e.contentEditable='true'; e.spellcheck=false; e.addEventListener('input',mark) });
+    tog.hidden=true; bar.hidden=false; bar.querySelector('span').textContent='Click a text and type'; }
+  function mark(ev){ const e=ev.currentTarget; e.classList.toggle('te-ch', clean(e)!==orig.get(e).h) }
+  function stop(){ on=false; document.documentElement.classList.remove('te-on'); els.forEach(e=>{ e.removeAttribute('contenteditable'); e.removeAttribute('data-te'); e.classList.remove('te-ch'); e.removeEventListener('input',mark) }); bar.hidden=true; tog.hidden=false; try{ window.dispatchEvent(new Event('resize')) }catch(e){} }
+  async function save(){ const out=Object.assign({},saved); let n=0;
+    els.forEach((e,i)=>{ const o=orig.get(e), h=clean(e); if(h!==o.h){ out[keyOf(e,i)]={was:o.t,html:h,text:txt(e)}; n++ } });
+    const sp=bar.querySelector('span'); sp.textContent='Saving…';
+    try{ const db=await claude.use('db'); if(!db) throw 0; await db.doc('textedit/main').set({edits:out,at:Date.now(),w:innerWidth}); saved=out; sp.textContent='Saved '+Object.keys(out).length+' text(s). Tell Claude in the chat';
+      setTimeout(stop,1600) }catch(e){ sp.textContent='Could not save, try again' } }
+  tog.addEventListener('click',start); bar.querySelector('.s').addEventListener('click',save); bar.querySelector('.c').addEventListener('click',()=>{ els.forEach(e=>{ const o=orig.get(e); if(o&&clean(e)!==o.h) e.innerHTML=o.h }); stop() });
+  // while typing, keys must not scroll the page or trigger the scenes
+  ['keydown','wheel'].forEach(t=>addEventListener(t,ev=>{ if(on&&ev.type==='keydown'&&ev.target&&ev.target.isContentEditable) ev.stopImmediatePropagation() },true));
+  // the owner sees his saved texts on the page
+  (async()=>{ try{ if(!window.claude||!claude.use) return; const u=await claude.use('user'); if(!(u&&await u.isOwner())) return; tog.hidden=false;
+    const db=await claude.use('db'); if(!db) return; const d=await db.doc('textedit/main').get(); const v=d&&(d.data?d.data():d); const ed=v&&v.edits; if(!ed) return; saved=ed;
+    collect(); els.forEach((e,i)=>{ const t=txt(e); orig.set(e,{h:clean(e),t}); const k=i+'|'+t.slice(0,40); if(ed[k]) e.innerHTML=ed[k].html });
+    try{ window.dispatchEvent(new Event('resize')) }catch(e){} }catch(e){} })();
+  if(/[?&#]edit\b/.test(location.search+location.hash)) tog.hidden=false;
 })();
 </script>
 <style>.tk-cons{margin:0;font:400 11px/1.4 'Hanken Grotesk',sans-serif;color:#8b8b8b;text-align:center}.tk-cons a{color:inherit;text-decoration:underline}.tk-cons-float{position:absolute;left:0;right:0;top:calc(100% + 6px);opacity:0;pointer-events:none;transition:opacity .2s}.tk-cons-float.on{opacity:1;pointer-events:auto}.intro .tk-cons-float{color:rgba(255,255,255,.6)}</style><script>(function(){var T="By submitting, you agree to our <a href=\"privacy.html\" target=\"_blank\">privacy policy</a>";['rsvForm','pForm','tlForm','llReg'].forEach(function(id){var f=document.getElementById(id);if(!f)return;if(getComputedStyle(f).position==='static')f.style.position='relative';var p=document.createElement('p');p.className='tk-cons tk-cons-float';p.innerHTML=T;f.appendChild(p);f.addEventListener('focusin',function(){p.classList.add('on')})})})();</script></body></html>

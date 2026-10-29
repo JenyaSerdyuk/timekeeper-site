@@ -792,7 +792,7 @@ em,i.em{font-style:normal!important}
 /* A legacy that grows, computer: points left under the title, text right; equal columns so both sides end on one line */
 
 /* Your life line, computer: title top left, text under it on the left, the 3 steps on the right */
-@media (min-width:861px){.cw-ll.cw-split{grid-template-columns:1.18fr .82fr;grid-template-areas:"h ." "t ol" "full full"}}
+@media (min-width:861px){.cw-ll.cw-split{grid-template-columns:1.18fr .82fr;grid-template-areas:"h h" "t ol" "full full"}.cw-ll.cw-split .ll-left h2{justify-self:center;text-align:center}}
 
 /* Buy and Add to cart: one fixed size for every product, so switching products never changes them */
 @media (min-width:481px){.cw-dev .dbuy .p-acts{margin-top:8px}.p-acts{flex-wrap:nowrap;width:100%;max-width:520px;margin-inline:auto}.p-acts .p-buy,.p-acts .p-add{width:calc(50% - 5px);min-width:0;padding:0 12px;flex:none;justify-content:center;white-space:nowrap}}
@@ -921,10 +921,7 @@ em,i.em{font-style:normal!important}
 .motto{max-width:1176px;margin:0 auto;padding-block:clamp(28px,3.4vw,48px);text-align:center;font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-weight:400;font-size:clamp(20px,2.2vw,30px);line-height:1.3;letter-spacing:-.015em;color:#0a0a0a}.motto p{margin:0;color:#8b8b8b}.motto p+p{color:#0a0a0a}.motto+.cw{border-top:1px solid rgba(10,10,10,.08)}
 /* the motto sits exactly in the middle between the line above (end of the uses grid) and the line below */
 .motto{padding-top:0}
-/* A legacy that grows in value: the title centered on top, the text below laid out horizontally in three even columns */
-#heirloom{grid-template-columns:1fr}
-#heirloom>h2{justify-self:center;text-align:center;max-width:none}
-@media (min-width:861px){#heirloom>.cw-t{column-count:3;column-gap:42px;column-fill:balance}#heirloom>.cw-t p{break-inside:auto}}</style>
+</style>
 <section class="cw" id="explain">
   <h2>What it is</h2>
   <div class="cw-t"><p>Time Keeper is an object at the intersection of philosophy, hardware and art. From the moment you start it, it fixes that moment on the blockchain and counts every second after it<button type="button" class="q" data-q="The start moment is written to a public blockchain. Nobody can change or delete it, including us." aria-label="More about this" aria-expanded="false">?</button>. The moment can never be changed, by anyone. It is bound to you and your family line forever.</p></div>

@@ -302,7 +302,7 @@ em{font-style:italic;font-weight:300}
 
 /* LIFE LINE */
 .ll{margin-top:8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding-block:26px 30px;position:relative}
-.ll-bar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.ll-bar{display:flex;justify-content:flex-end;align-items:center;gap:16px;flex-wrap:wrap}.ll-bar .ll-scale{display:none}
 .ll-scale{display:flex;gap:18px;align-items:center}
 .ll-ex{color:var(--pink)}
 .ll-ctrl{display:flex;gap:8px;align-items:center}
@@ -465,7 +465,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .ll-store{margin-left:auto;color:#8b8b8b;font-size:10px;letter-spacing:.16em}
 .ll-reg{display:grid;gap:10px;max-width:560px;margin:4px 0 18px}
 .ll-reg label{color:#0a0a0a;font-size:10px;letter-spacing:.16em}
-.ll-reg-msg{color:#8b8b8b;font-size:10px;letter-spacing:.14em;line-height:1.6}
+.ll-reg-msg{color:#8b8b8b;font-size:10px;letter-spacing:.14em;line-height:1.6}.ll-reg-msg:empty{display:none}
 .ll-card.empty .ll-grid img,.ll-card.empty .ll-vid{background:#f2f2f2}
 .ll-card .add{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#0a0a0a}
 .ll-card{position:relative}
@@ -785,7 +785,7 @@ em,i.em{font-style:normal!important}
 .cw-dev .dbuy .p-price{margin:0;color:#6b6b6b!important;font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-size:clamp(20px,1.8vw,24px);color:#0a0a0a;letter-spacing:-.01em;text-align:center}
 
 /* Start your life line, computer: the field and the button span exactly the line of text under them */
-@media (min-width:861px){.ll-mine .ll-reg{width:max-content;max-width:100%}.ll-mine .ll-reg-msg{white-space:nowrap}}
+@media (min-width:861px){.ll-mine .ll-reg{width:768px;max-width:100%}.ll-mine .ll-reg-msg{white-space:nowrap}}
 
 
 
@@ -1142,7 +1142,6 @@ em,i.em{font-style:normal!important}
   <div class="cw-t"><p>Once a month, you upload 3 photos, 1 video and a short note, like a small letter to yourself. <u>An eternal diary</u>, every month, to build <u>the album of your life</u> that your relatives can look through hundreds of years from now.</p>
     <p>Today we cannot see photos even of our closest relatives, let alone of those who lived hundreds of years before us, and yet it is because of them that we exist. In the future this problem will not exist.</p>
     <p>You, the way you lived, what you went through, <u>will stay forever</u>. People who do not exist yet and will only be born hundreds of years from now will be able to learn a lot about you and take care of this <u>family line</u>.</p>
-    <p>Your life line is made to outlast phones, cloud accounts and apps. It stays bound to a moment written on the blockchain, so it can be kept for hundreds of years<button type="button" class="q" data-q="Photos and videos are stored on our servers and bound to your moment on the blockchain. Hidden months are visible only to you." aria-label="More about this" aria-expanded="false">?</button>. Your great-grandchildren will be able to open it and see how you lived, month by month: your face, your voice, your city, your words. Not a story told about you, but you, as you were.</p>
     <ol class="nl">
       <li><span class="n">01</span><p><b>Register</b> Leave your email and your life line starts from your moment</p></li>
       <li><span class="n">02</span><p><b>Add a month</b> Three photos, one video and a short note for every month you live</p></li>
@@ -1176,7 +1175,7 @@ em,i.em{font-style:normal!important}
       <div class="ll-mine-head"><h3>Start your life line</h3><span class="mono ll-store" id="llStore"></span></div>
       <form class="ll-reg" id="llReg" novalidate>
         <div class="rsv-row"><input type="email" id="llRegEmail" placeholder="your@email.com" autocomplete="email" aria-label="Email"><button class="btn" type="submit">Start</button></div>
-        <p class="mono ll-reg-msg" id="llRegMsg">Your line starts from your moment. Then add three photos, one video and a short letter for each month</p>
+        <p class="mono ll-reg-msg" id="llRegMsg"></p>
       </form>
       <div class="ll-tiles" id="llTiles" hidden></div>
     </div>
@@ -1574,7 +1573,12 @@ em,i.em{font-style:normal!important}
   document.querySelectorAll('.cw-ll').forEach(sec=>{ sec.classList.add('cw-split'); const h=sec.querySelector(':scope>h2')||sec.querySelector('.ll-left h2'), t=sec.querySelector('.cw-t'), ol=t&&t.querySelector('.nl'); if(!h||!ol) return;
     const left=document.createElement('div'); left.className='ll-left'; const mq=matchMedia('(min-width:861px)');
     const place=()=>{ if(mq.matches){ if(!left.parentNode) sec.insertBefore(left,t); left.appendChild(h); left.appendChild(ol) } else if(left.parentNode){ sec.insertBefore(h,left); t.appendChild(ol); left.remove() } };
-    place(); (mq.addEventListener?mq.addEventListener('change',place):mq.addListener(place)) });
+    place(); (mq.addEventListener?mq.addEventListener('change',place):mq.addListener(place)) ;
+    // computer: narrow the text column until its paragraphs are at least as tall as the 3 steps, so both columns start and end on the same lines
+    const fit=()=>{ if(!mq.matches){ sec.style.gridTemplateColumns=''; return } const ps=[...t.querySelectorAll(':scope>p')]; if(!ps.length) return; ol.style.alignSelf='start'; let pick=0.7;
+      for(let r=1.18;r>=0.7;r-=0.01){ sec.style.gridTemplateColumns=r.toFixed(2)+'fr '+(2-r).toFixed(2)+'fr'; const th=ps[ps.length-1].getBoundingClientRect().bottom-ps[0].getBoundingClientRect().top; if(ol.getBoundingClientRect().height<=th+1){ pick=r; break } }
+      sec.style.gridTemplateColumns=pick.toFixed(2)+'fr '+(2-pick).toFixed(2)+'fr'; ol.style.alignSelf='' };
+    let tm; addEventListener('resize',()=>{ clearTimeout(tm); tm=setTimeout(fit,120) }); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fit); setTimeout(fit,0); addEventListener('load',fit) });
   // A legacy that grows, computer: pick the column split where the 4 points (left) fit inside the text's height (right),
   // so both columns can start and end on the same lines
   (()=>{ const S=$('heirloom'); if(!S) return; const mq=matchMedia('(min-width:861px)');

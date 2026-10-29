@@ -608,7 +608,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .intro .launch .to-rsv{cursor:pointer}
 .intro .launch .ltag .ul{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.22em}
 /* first screen texts: underlined phrases never break onto two lines; lines are centered and balanced (no stretched gaps between words) */
-@media (min-width:861px){.intro .launch .to-rsv,.intro .launch .ltag .ul{white-space:nowrap}}
+.intro .launch .to-rsv,.intro .launch .ltag .ul{white-space:nowrap}
 /* no line on the site ends up with one lonely word */
 p,li,h2,h3,figcaption{text-wrap:pretty}
 /* every underline on the site in one style: 1px line, same distance from the text */
@@ -1426,7 +1426,7 @@ em,i.em{font-style:normal!important}
     // first screen, top to bottom: the first paragraph, the painting (always its usual size), the counting modes right under it,
     // the second paragraph, the email field (as wide as the painting). The free space is shared evenly, so there are no empty zones
     if(S.mode==='fit'&&scKey==='painting'){ const md=$('iModes'), lt=$('lTop'), ph=$('lPhr'), fm=$('rsvForm');
-      [lt,ph,fm].forEach(e=>e&&(e.style.translate='')); if(innerWidth<=860){ const tw=Math.floor(W-32)+'px'; [$('lTag'),ph].forEach(e=>{ e.style.width=tw; e.style.maxWidth=tw }) } md.style.left=(W/2)+'px'; md.style.top='0px'; md.style.transform='translateX(-50%)'; md.style.maxWidth=(innerWidth<=860?Math.floor(Math.max(S.obj[2]*sc,W-32)):Math.floor(W-32))+'px';
+      [lt,ph,fm].forEach(e=>e&&(e.style.translate='')); if(innerWidth<=860){ const tw=Math.floor(W-32)+'px'; [$('lTag'),ph].forEach(e=>{ e.style.width=tw; e.style.maxWidth=tw }) } md.style.left=(W/2)+'px'; md.style.top='0px'; md.style.transform='translateX(-50%)'; md.style.maxWidth=(innerWidth<=860?Math.floor(S.obj[2]*sc+8):Math.floor(W-32))+'px';
       const P=S.obj[3]*sc, pw=Math.floor(S.obj[2]*sc); if(fm){ fm.style.width=pw+'px'; fm.style.maxWidth=pw+'px' }
       if(innerWidth>860){ const tg=$('lTag'), pr=document.createElement('span'); pr.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit';
         const f0=parseFloat(getComputedStyle(tg).fontSize)||18, fit=f=>{ [tg,ph].forEach(e=>e.style.setProperty('font-size',f+'px','important'));
@@ -1434,12 +1434,15 @@ em,i.em{font-style:normal!important}
           const c=ph.cloneNode(true); c.querySelectorAll('.pl2,.pbr').forEach(e=>e.remove()); pr.innerHTML=c.innerHTML; ph.appendChild(pr); const L2=pr.getBoundingClientRect().width; pr.remove();
           const w=Math.ceil(Math.max(L1/1.94,L2+4, S.obj[2]*sc*0.95)); [tg,ph].forEach(e=>{ e.style.width=w+'px'; e.style.maxWidth=w+'px' }); return w };
         // a little larger than before (about 20%), as long as the lines still fit on the screen and everything fits above and below the painting
-        let f=Math.min(28,Math.round(f0*1.3*4)/4); for(;f>f0;f-=0.5){ const w=fit(f); const hh=lt.getBoundingClientRect().height+ph.getBoundingClientRect().height; if(w<=W-96 && H-56-(hh+S.obj[3]*sc+md.getBoundingClientRect().height+fm.getBoundingClientRect().height)>=44) break }
+        let f=Math.min(28,Math.round(f0*1.3*4)/4); for(;f>f0;f-=0.5){ const w=fit(f); const hh=lt.getBoundingClientRect().height+ph.getBoundingClientRect().height; if(w<=W-96 && H-40-(hh+S.obj[3]*sc+md.getBoundingClientRect().height+fm.getBoundingClientRect().height)>=78) break }
         if(f<=f0) fit(f0) }
       const R=e=>{ const r=e.getBoundingClientRect(); return {t:r.top-sr.top,h:r.height} }, A=R(lt), M=R(md), B=R(ph), F=R(fm);
-      const phone=innerWidth<=860, minT=phone?36:28, minB=phone?24:28, avail=H-minT-minB, extra=avail-(A.h+P+M.h+B.h+F.h);
-      let g1, g; if(extra>=0){ g1=Math.max(10,Math.min(phone?16:22,extra*0.12)); g=(extra-g1)/3 } else { g1=8; g=Math.max(6,(extra-g1)/3) }
-      const y0=minT, pT=y0+A.h+g, pB=pT+P, yM=pB+g1, yB=yM+M.h+g, yF=yB+B.h+g;
+      const phone=innerWidth<=860, minT=phone?36:20, minB=phone?24:20, avail=H-minT-minB, extra=avail-(A.h+P+M.h+B.h+F.h);
+      // one rhythm: fixed spaces between the blocks (the modes belong to the painting, so they sit closest); whatever room is left
+      // goes above and below the whole group, so the group stays together in the middle of the screen
+      let gT=phone?28:24, g1=phone?14:14, gB=phone?30:22, gF=phone?24:18; const sumG=gT+g1+gB+gF;
+      let free=extra-sumG; if(free<0){ const k=Math.max(0.25,(extra)/sumG); gT*=k; g1*=k; gB*=k; gF*=k; free=0 }
+      const y0=minT+free/2, pT=y0+A.h+gT, pB=pT+P, yM=pB+g1, yB=yM+M.h+gB, yF=yB+B.h+gF;
       top=pT-S.obj[1]*sc; sceneLayout.g1=g1;
       lt.style.translate='0 '+Math.round(y0-A.t)+'px'; md.style.top=Math.round(yM)+'px'; ph.style.translate='0 '+Math.round(yB-B.t)+'px'; fm.style.translate='0 '+Math.round(yF-F.t)+'px' }
     const im=$('sceneImg'); im.style.width=S.W+'px'; im.style.height=S.H+'px'; im.style.transform='translate('+left+'px,'+top+'px) scale('+sc+')';

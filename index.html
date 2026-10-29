@@ -1346,7 +1346,7 @@ em,i.em{font-style:normal!important}
       // the word moves just enough that the gap between its two middle letters sits exactly in the middle of the screen,
       // so the curtains always part in the centre and never cut a letter
       const nm=[p[0].querySelector('.name'),p[1].querySelector('.name')]; nm.forEach(n=>n&&(n.style.translate='')); const g=seam(p[2],p[0]), mid=p[0].clientWidth/2, d=Math.round((mid-g)*10)/10;
-      nm.forEach(n=>n&&(n.style.translate=Math.round(d)+'px 0')); const x=Math.round(mid); seams[i]=x;
+      const x=Math.round(g); seams[i]=x;
       p[0].style.clipPath='inset(0 '+(p[0].clientWidth-x-1)+'px 0 0)';
       p[1].style.clipPath='inset(0 0 0 '+x+'px)';
       p[0].style.transform=tl; p[1].style.transform=tr;
@@ -2229,11 +2229,11 @@ em,i.em{font-style:normal!important}
   // TIME opens → black with the counter → the painting → the next section. Nothing ever stops halfway.
   const IS={a:null,z:null,lastW:0,lastAbs:0,arr:0,td:false,ty0:null};
   function iTo(y1,dur){ window._navJump=true; IS.a={t0:performance.now(),dur,y0:scrollY,y1} }
-  function iGo(dir){ if(IS.a) return; const v=prog(GI.el);
+  function iGo(dir){ if(IS.a){ if(performance.now()-IS.a.t0>350) IS.q=dir; return } IS.q=0; const v=prog(GI.el);
     if(dir>0){ if(v<0.44) iTo(secY(GI,0.46),1200); else if(v<0.83) iTo(secY(GI,0.84),1300); else { const nx=GI.el.nextElementSibling; iTo(nx?nx.getBoundingClientRect().top+scrollY:secY(GI,1)+innerHeight,750) } }
     else { if(v>0.5) iTo(secY(GI,0.46),1300); else if(v>0.005) iTo(secY(GI,0),1400) } }
   function stepIntro(now){
-    if(IS.a){ const k=Math.min(1,(now-IS.a.t0)/IS.a.dur); jumpTo(IS.a.y0+(IS.a.y1-IS.a.y0)*sm(k)); if(k>=1){ IS.a=null; IS.arr=now; setTimeout(()=>{ if(!IS.a) window._navJump=false },60) } }
+    if(IS.a){ const k=Math.min(1,(now-IS.a.t0)/IS.a.dur); jumpTo(IS.a.y0+(IS.a.y1-IS.a.y0)*sm(k)); if(k>=1){ IS.a=null; IS.arr=now; if(IS.q){ const d=IS.q; IS.q=0; iGo(d) } else setTimeout(()=>{ if(!IS.a) window._navJump=false },60) } }
     const z=!!IS.a||(!window._navJump&&scrollY<secY(GI,1)-1);
     if(z!==IS.z){ IS.z=z; if(z) lockOn(); else lockOff() } else if(z&&lenis&&!lenis.isStopped) lenis.stop();
     if(IS.a||!z) return; const v=prog(GI.el), idle=now-Math.max(lastIn,IS.arr);
@@ -2241,9 +2241,9 @@ em,i.em{font-style:normal!important}
     if(v>0.44&&v<0.5&&idle>2000){ iGo(1); return }
     // never left between two scenes (e.g. after a reload): settle on the nearest one
     if(idle>300&&v<0.835&&Math.abs(v)>0.004&&Math.abs(v-0.46)>0.004&&Math.abs(v-0.84)>0.004){ const t=v<0.23?0:(v<0.65?0.46:0.84); iTo(secY(GI,t),900) } }
-  addEventListener('wheel',e=>{ if(!IS.z||e.ctrlKey) return; const n=performance.now(), a=Math.abs(e.deltaY); const fresh=n-IS.lastW>110||a>IS.lastAbs*1.3+3; IS.lastW=n; IS.lastAbs=a; if(fresh&&a>1&&!IS.a) iGo(e.deltaY>0?1:-1) },{passive:true});
+  addEventListener('wheel',e=>{ if(!IS.z||e.ctrlKey) return; const n=performance.now(), a=Math.abs(e.deltaY); const fresh=n-IS.lastW>140||a>IS.lastAbs*1.2+2||(IS.lastAbs<4&&a>=12); IS.lastW=n; IS.lastAbs=a; if(fresh&&a>1) iGo(e.deltaY>0?1:-1) },{passive:true});
   addEventListener('touchstart',e=>{ IS.ty0=e.touches[0]?e.touches[0].clientY:null; IS.td=false },{passive:true});
-  addEventListener('touchmove',e=>{ if(!IS.z||IS.td||IS.ty0==null||!e.touches[0]) return; const d=IS.ty0-e.touches[0].clientY; if(Math.abs(d)>14){ IS.td=true; if(!IS.a) iGo(d>0?1:-1) } },{passive:true});
+  addEventListener('touchmove',e=>{ if(!IS.z||IS.td||IS.ty0==null||!e.touches[0]) return; const d=IS.ty0-e.touches[0].clientY; if(Math.abs(d)>14){ IS.td=true; iGo(d>0?1:-1) } },{passive:true});
   addEventListener('keydown',e=>{ if(!IS.z||IS.a||isField(e.target)) return; if(['ArrowDown','PageDown',' '].includes(e.key)) iGo(1); else if(['ArrowUp','PageUp'].includes(e.key)) iGo(-1) });
   function gateIntro(now){ if(!reduce) stepIntro(now); return paced(GI,now,0.2) }
   // last screen: the painting waits for the visitor. Arriving scroll (and its inertia) stops on the painting;

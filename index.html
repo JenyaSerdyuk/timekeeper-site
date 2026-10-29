@@ -484,7 +484,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 @media (max-width:480px){.ll-slots{grid-template-columns:repeat(2,1fr)}}
 
 
-.ll-mine{margin-top:clamp(22px,2.6vw,34px);padding-top:clamp(22px,2.6vw,34px);border-top:1px solid rgba(10,10,10,.12);display:grid;gap:14px}
+.ll-mine{margin-top:clamp(22px,2.6vw,34px);padding-top:clamp(22px,2.6vw,34px);display:grid;gap:14px}.ll-mine-head:has(.ll-store:empty){display:none}.ll-mine .tl-lab{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-size:16px;letter-spacing:0;text-transform:none}
 .ll-mine-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 .ll-mine-head h3{font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-weight:400;font-size:clamp(20px,1.8vw,26px);letter-spacing:-.015em;color:#0a0a0a;margin:0}
 .ll-mine .ll-reg{margin:0}
@@ -524,7 +524,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .scene-win{position:absolute;display:flex;align-items:center;justify-content:center;overflow:visible}
 .scene-win svg{width:100%;height:100%;display:block;overflow:visible}
 .yours{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:clamp(6px,0.9vw,12px);white-space:nowrap;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:clamp(9px,0.8vw,12px);letter-spacing:.22em;text-transform:uppercase;color:#8b8b8b;pointer-events:none;transition:color .5s}
-.yours.on-metal{color:#f2f2f2;text-shadow:0 1px 2px rgba(0,0,0,.45)}
+.yours.on-metal{color:#f2f2f2;text-shadow:0 1px 2px rgba(0,0,0,.45)}.yours .yn{display:block;margin-top:5px;font-size:.78em;letter-spacing:.16em;opacity:.6}
 .seg-on{fill:#ff2b1c;filter:url(#segGlow)}
 .seg-off{fill:#2c0907}
 .intro .launch{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;align-items:center;max-width:none;padding:calc(84px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));gap:0}
@@ -553,6 +553,9 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .intro .launch.ref #iModes{display:none}
 .intro .launch.ref #lPhr .pbr{display:none}
 .intro .launch.ref #lPhr .pdot{display:inline}
+/* computer: the first line of the text under the painting is justified edge to edge, so its first word starts exactly under the first word above the painting */
+@media (min-width:861px){.intro .launch:not(.ref) #lPhr:not(.nojust){text-align-last:justify!important}.intro .launch:not(.ref) #lPhr .pl2{display:block;text-align-last:center}.intro .launch:not(.ref) #lPhr .pbr{display:none}}
+#lTag .ltag3{display:block;text-align:center;text-align-last:center}#lTag .lt-ref{display:none}.intro .launch.ref #lTag .lt-ref,#lTag.fit2 .lt-ref{display:inline}.intro .launch.ref #lTag .lt-new,#lTag.fit2 .lt-new{display:none}
 .intro .launch .ltag .rl{display:block}
 .intro .launch .rv{opacity:0;filter:blur(10px);transform:translateY(18px);transition:opacity 1.1s ease,filter 1.3s ease,transform 1.3s cubic-bezier(.2,.7,.2,1);will-change:opacity,filter,transform}
 .intro .launch .rv.in{opacity:1;filter:blur(0);transform:none}
@@ -735,6 +738,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 em,i.em{font-style:normal!important}
+#device>h2 .h2-sub{display:block;margin-top:10px;font-size:clamp(15px,1.15vw,18px);line-height:1.4;letter-spacing:0;font-weight:400;color:rgba(10,10,10,.45)}
 .u p u{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em;color:#0a0a0a}
 
 /* computer: title on top; product info left, 4 pictures right; 3D left, product photo right.
@@ -856,7 +860,7 @@ em,i.em{font-style:normal!important}
 /* first screen: the counting modes under the top text, same look as on the last screen */
 /* old price: crossed out, lighter and smaller, right after the price */
 .oldp{margin-left:.45em;font-size:max(.72em,11px);color:#9a9a9a;text-decoration:line-through;text-decoration-thickness:1px;font-weight:inherit}
-.intro .imodes{display:grid;gap:6px;justify-items:center;margin-top:-4px;pointer-events:auto;grid-template-areas:"m" "s"}
+.intro .imodes{display:grid;gap:6px;justify-items:center;margin-top:-4px;pointer-events:auto;grid-template-areas:"s" "m"}
 /* first screen: the hint and the date pickers share one row (pickers only in From 0 to now) */
 .intro .imodes>.omodes{grid-area:m}.intro #iHint,.intro #iBdate{grid-area:s;align-self:center}
 /* last screen: no small caption under the digits */
@@ -888,16 +892,16 @@ em,i.em{font-style:normal!important}
   <div class="stick">
     <div class="under">
       <div class="tyt" id="tyt"><p>Take your <em>time</em></p></div>
-      <div class="scene" id="scene" aria-hidden="true"><img id="sceneImg" src="img/w/scene.webp" alt=""><div class="scene-shade"></div></div><div class="scene-win" id="sceneWin"><svg id="sceneDigits" preserveAspectRatio="xMidYMid meet"></svg><span class="yours" id="yours">Your time</span></div>
+      <div class="scene" id="scene" aria-hidden="true"><img id="sceneImg" src="img/w/scene.webp" alt=""><div class="scene-shade"></div></div><div class="scene-win" id="sceneWin"><svg id="sceneDigits" preserveAspectRatio="xMidYMid meet"></svg><span class="yours" id="yours">Your time since start</span></div>
       <div class="launch">
-        <div class="top" id="lTop"><p class="ltag" id="lTag">Your personal art object that will outlive you <span class="ul">by hundreds of years</span> and keep your memory alive for the next generations of your family tree. And other philosophical meanings you will discover below</p><div class="imodes" id="iModes"><div class="omodes" role="group" aria-label="Counting mode"><button type="button" data-m="now" aria-pressed="true">From now</button><button type="button" data-m="life" aria-pressed="false">From 0 to now</button><button type="button" data-m="back" aria-pressed="false">Hardcore backwards mode</button></div><p class="ohint" id="iHint"></p><div class="obsel" id="iBdate" hidden><select id="ibD" aria-label="Day"><option value="">Day</option></select><select id="ibM" aria-label="Month"><option value="">Month</option></select><select id="ibY" aria-label="Year"><option value="">Year</option></select></div></div></div>
+        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new">Your personal philosophical art object that will outlive you <span class="ul">by hundreds of years</span> and keep your memory alive for the next generations of your family tree<span class="ltag3">And other philosophical meanings you will discover below</span></span><span class="lt-ref" aria-hidden="true">Your personal art object that will outlive you <span class="ul">by hundreds of years</span> and keep your memory alive for the next generations of your family tree. And other philosophical meanings you will discover below</span></p><div class="imodes" id="iModes"><div class="omodes" role="group" aria-label="Counting mode"><button type="button" data-m="now" aria-pressed="true">From now</button><button type="button" data-m="life" aria-pressed="false">From 0 to now</button><button type="button" data-m="back" aria-pressed="false">Hardcore backwards mode</button></div><p class="ohint" id="iHint"></p><div class="obsel" id="iBdate" hidden><select id="ibD" aria-label="Day"><option value="">Day</option></select><select id="ibM" aria-label="Month"><option value="">Month</option></select><select id="ibY" aria-label="Year"><option value="">Year</option></select></div></div></div>
         <div class="bottom">
         <div class="sub">
           <div><span class="mono">Moment started</span><b class="num" id="startedAt">—</b></div>
           <div><span class="mono">Since start</span><b class="num" id="sinceStart">0 s</b></div>
           <div><span class="mono">Countdown (80 years)</span><b class="num" id="cd">2,524,608,000</b></div>
         </div>
-        <p class="phrase" id="lPhr">Your time has started. <u class="to-rsv" role="link" tabindex="0">From now on, it is counted. Reserve your time</u>, and it will be counted forever<span class="pdot">.</span><br class="pbr"> First art objects will have the most seconds of all</p>
+        <p class="phrase" id="lPhr">Your time has started. From now on, it is counted. <u class="to-rsv" role="link" tabindex="0">Reserve your time</u>, and it will be counted forever<span class="pdot">.</span><br class="pbr"><span class="pl2"> First objects will have the most seconds of all</span></p>
         <form class="rsv" id="rsvForm" novalidate>
           <div class="rsv-row"><span class="rsv-in" id="rsvIn"><input type="email" id="rsvEmail" placeholder="" autocomplete="email" aria-label="Reserve your start now: your email"><label class="rsv-cta" for="rsvEmail">Reserve your start now</label></span><button class="btn" type="submit" id="rsvBtn">Reserve</button></div>
           <p class="rsv-msg mono" id="rsvMsg"></p>
@@ -945,7 +949,7 @@ em,i.em{font-style:normal!important}
     <div class="cw-full u-grid uses-l">
       <article class="u">
         <h3>Pass it down as a <em>family relic</em></h3>
-        <p><b>What will you leave to your family tree for hundreds of years ahead? It will never be like it used to be. Now your relatives will know about you even thousands of years from now.</b> Even 300 years from now, your heirs will get a hello from an <u>unusual ancestor</u>. Time Keeper is made to be <u>handed down</u>, as <u>something that will remain for hundreds of years after you</u></p>
+        <p><b>What will you leave to your family tree for hundreds of years ahead? It will never be like it used to be. Now your relatives will know about you even thousands of years from now.</b> Even 300 years from now, your heirs will get a hello from an unusual ancestor. Time Keeper is made to be handed down, as <u>something that will remain for hundreds of years after you</u></p>
       </article>
       <article class="u">
         <h3>Use it as a <em>deep philosophical gift</em></h3>
@@ -953,15 +957,15 @@ em,i.em{font-style:normal!important}
       </article>
       <article class="u">
         <h3>YOU + ART + PHILOSOPHY + TECH</h3>
-        <p><u>Your own philosophical art object</u> for self-reflection, constantly reminding you of the beautiful, wild river called <u>life</u></p>
+        <p><b>Your own philosophical art object</b> for self-reflection, constantly reminding you of the beautiful, wild river called <u>life</u></p>
       </article>
       <article class="u">
         <h3>Remember time is <em>short</em></h3>
-        <p><b>Your seconds are too important to take for granted.</b> The countdown from 2.5 billion shows <u>how much of an average life may be left</u><button type="button" class="q" data-q="The countdown starts from 2,524,608,000 seconds, which is 80 years of life." aria-label="More about this" aria-expanded="false">?</button>. Seeing it every day changes how you spend your time. A reason to stop and think, <u>an object for self-reflection and self-improvement</u></p>
+        <p><b>Your seconds are too important to take for granted.</b> The countdown from 2.5 billion shows how much of an average life may be left<button type="button" class="q" data-q="The countdown starts from 2,524,608,000 seconds, which is 80 years of life." aria-label="More about this" aria-expanded="false">?</button>. Seeing it every day changes how you spend your time. A reason to stop and think, <u>an object for self-reflection and self-improvement</u></p>
       </article>
       <article class="u">
         <h3>Mark an important <em>start</em></h3>
-        <p><b>Use it as a symbolic reminder of the most important event in your life, one that will stay with you until the end.</b> The birth of a child, your own wedding or a friends’ wedding, the start of a business or a new stage of life. These are <u>turning points</u> that can be marked with a symbolic gift</p>
+        <p><b>Use it as a symbolic reminder of the most important event in your life, one that will stay with you until the end.</b> The birth of a child, your own wedding or a friends’ wedding, the start of a business or a new stage of life. These are turning points that can be marked with a symbolic gift</p>
       </article>
       <article class="u">
         <h3>Quit a bad <em>habit</em></h3>
@@ -972,9 +976,16 @@ em,i.em{font-style:normal!important}
   </div>
 </section>
 
+<section class="cw" id="anxiety">
+  <h2>A reason for anxiety or a motivation to live?</h2>
+  <div class="cw-t">
+    <p>While we were creating it, many people told us this product might make them anxious. Technically, yes. But why doesn’t a careless attitude towards the most valuable and the only irreplaceable resource in life cause the same anxiety?</p>
+  </div>
+</section>
+
 <div class="motto"><p>Some things are hard to remember</p><p>Some things you’ll never forget</p></div>
 <section class="cw cw-dev" id="device">
-  <h2>Choose your Time Keeper</h2>
+  <h2>Choose your Time Keeper<span class="h2-sub">A product with no expiration date</span></h2>
   <div class="cw-t">
     <div class="ptiles" role="tablist" id="dtabs"></div>
     <div class="vtabs" id="vtabs" hidden></div>
@@ -1172,9 +1183,9 @@ em,i.em{font-style:normal!important}
       <p class="ll-hint mono">Drag to move · pinch or Ctrl + scroll to zoom · tap a photo to open</p>
     </div>
     <div class="ll-mine" id="llMine">
-      <div class="ll-mine-head"><h3>Start your life line</h3><span class="mono ll-store" id="llStore"></span></div>
+      <div class="ll-mine-head"><span class="mono ll-store" id="llStore"></span></div>
       <form class="ll-reg" id="llReg" novalidate>
-        <div class="rsv-row"><input type="email" id="llRegEmail" placeholder="your@email.com" autocomplete="email" aria-label="Email"><button class="btn" type="submit">Start</button></div>
+        <div class="rsv-row"><span class="rsv-in" id="llIn"><input type="email" id="llRegEmail" placeholder="" autocomplete="email" aria-label="Start your life line: your email"><label class="tl-lab" for="llRegEmail">Start your life line</label></span><button class="btn" type="submit">Start</button></div>
         <p class="mono ll-reg-msg" id="llRegMsg"></p>
       </form>
       <div class="ll-tiles" id="llTiles" hidden></div>
@@ -1210,7 +1221,7 @@ em,i.em{font-style:normal!important}
 
 <section class="splitsec outro" id="outro">
   <div class="stick">
-    <div class="under"><div class="oscene" id="oScene" aria-hidden="true"><img id="oImg" src="img/w/scene.webp" alt=""></div><div class="owin" id="oWin"><svg id="oDigits" viewBox="-12 -6.5 146 31" preserveAspectRatio="xMidYMid meet"></svg><span class="yours on-metal" id="oYours">Your time</span></div><div class="obd" id="oBd"><div class="omodes" role="group" aria-label="Counting mode"><button type="button" data-m="now" aria-pressed="true">From now</button><button type="button" data-m="life" aria-pressed="false">From 0 to now</button><button type="button" data-m="back" aria-pressed="false">Hardcore backwards mode</button></div><p class="ohint" id="oHint"></p><div class="obsel" id="oBdate" hidden><select id="obD" aria-label="Day"><option value="">Day</option></select><select id="obM" aria-label="Month"><option value="">Month</option></select><select id="obY" aria-label="Year"><option value="">Year</option></select></div></div><p class="ophrase" id="oPhrase">Value your <em>time</em></p><a class="oorder" id="oOrder" href="#device">Order now</a></div>
+    <div class="under"><div class="oscene" id="oScene" aria-hidden="true"><img id="oImg" src="img/w/scene.webp" alt=""></div><div class="owin" id="oWin"><svg id="oDigits" viewBox="-12 -6.5 146 31" preserveAspectRatio="xMidYMid meet"></svg><span class="yours on-metal" id="oYours">Your time since start</span></div><div class="obd" id="oBd"><div class="omodes" role="group" aria-label="Counting mode"><button type="button" data-m="now" aria-pressed="true">From now</button><button type="button" data-m="life" aria-pressed="false">From 0 to now</button><button type="button" data-m="back" aria-pressed="false">Hardcore backwards mode</button></div><p class="ohint" id="oHint"></p><div class="obsel" id="oBdate" hidden><select id="obD" aria-label="Day"><option value="">Day</option></select><select id="obM" aria-label="Month"><option value="">Month</option></select><select id="obY" aria-label="Year"><option value="">Year</option></select></div></div><p class="ophrase" id="oPhrase">Value your <em>time</em></p><a class="oorder" id="oOrder" href="#device">Order now</a></div>
     <style>.outro-in{display:grid;gap:clamp(18px,3vw,34px);justify-items:center}.oclock{font-family:var(--f-display);font-weight:300;font-size:clamp(52px,10vw,160px);line-height:1;letter-spacing:-.03em;white-space:nowrap}</style>
     <div class="half l" id="oL"><span class="cap mono">WHY TF NOT startup-studio</span><a class="totop mono" href="#top">Back to top</a><span class="name" id="oNameL">Time</span><span class="foot mono">© 2026 Time</span></div>
     <div class="half r" id="oR"><span class="cap mono">WHY TF NOT startup-studio</span><span class="name">Time</span><span class="foot mono">© 2026 Time</span></div>
@@ -1334,8 +1345,8 @@ em,i.em{font-style:normal!important}
     if(innerWidth<=860){ els.forEach(el=>{ el.style.width=pw+'px'; el.style.maxWidth=pw+'px'; el.style.removeProperty('font-size'); el.style.removeProperty('line-height') }); return }
     const W=Math.floor(pw*0.95);
     els.forEach(el=>{ el.style.width=W+'px'; el.style.maxWidth=W+'px'; el.style.setProperty('line-height','1.35','important') });
-    const fits=fs=>els.every(el=>{ el.style.setProperty('font-size',fs+'px','important'); return el.scrollHeight<=fs*1.35*2+2 });
-    let lo=5, hi=21; while(hi-lo>0.25){ const m=(lo+hi)/2; if(fits(m)) lo=m; else hi=m } fits(Math.floor(lo*4)/4) }
+    const tg=$('lTag'); if(tg) tg.classList.add('fit2'); const fits=fs=>els.every(el=>{ el.style.setProperty('font-size',fs+'px','important'); return el.scrollHeight<=fs*1.35*2+2 });
+    let lo=5, hi=21; while(hi-lo>0.25){ const m=(lo+hi)/2; if(fits(m)) lo=m; else hi=m } fits(Math.floor(lo*4)/4); if(tg) tg.classList.remove('fit2') }
   // the last screen's painting keeps the size it always had: measured on the first screen as it was before the counting modes were added
   let REF=false;
   function refBand(){ const L=document.querySelector('.intro .launch'), st=document.querySelector('.intro .stick');
@@ -1349,7 +1360,11 @@ em,i.em{font-style:normal!important}
     document.documentElement.style.setProperty('--pw',Math.floor(Math.min(r.pw||innerWidth,innerWidth-32))+'px');
     const ph=$('lPhr'); ph.style.cssText=r.phr; if(innerWidth<=860) return;
     const f0=parseFloat(getComputedStyle(ph).fontSize); const fp=fs=>{ ph.style.setProperty('font-size',fs+'px','important'); return ph.scrollHeight<=fs*1.35*2+2 };
-    if(fp(f0)) return; let lo=5, hi=f0; while(hi-lo>0.25){ const m=(lo+hi)/2; if(fp(m)) lo=m; else hi=m } fp(Math.floor(lo*4)/4) }
+    if(!fp(f0)){ let lo=5, hi=f0; while(hi-lo>0.25){ const m=(lo+hi)/2; if(fp(m)) lo=m; else hi=m } fp(Math.floor(lo*4)/4) }
+    // the first line under the painting is justified only when it nearly fills the width (no stretched gaps on very wide screens)
+    { ph.classList.remove('nojust'); const pr=document.createElement('span'); pr.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit';
+      const n=ph.cloneNode(true); n.querySelectorAll('.pl2,.pdot,.pbr').forEach(e=>e.remove()); pr.innerHTML=n.innerHTML; ph.appendChild(pr); const L=pr.getBoundingClientRect().width; pr.remove();
+      const W=ph.clientWidth; if(W-L>W*0.04) ph.classList.add('nojust') } }
   // the text under the painting sits exactly halfway between the painting and the email field
   function centerPhr(pb){ const el=$('lPhr'), f=$('rsvForm'); if(!el||!f) return; const op=el.offsetParent; if(!op) return; const top=op.getBoundingClientRect().top+el.offsetTop, h=el.offsetHeight, ft=op.getBoundingClientRect().top+f.offsetTop; el.style.translate='0 '+Math.round((pb+ft)/2-(top+h/2))+'px' }
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ try{ sceneLayout() }catch(e){} });
@@ -1421,29 +1436,30 @@ em,i.em{font-style:normal!important}
   document.addEventListener('load',e=>{ const t=e.target; if(t.classList&&t.classList.contains('fi')) t.classList.add('ld') },true);
   markLd(); addEventListener('DOMContentLoaded',()=>markLd()); addEventListener('load',()=>markLd());
   const P=[
-    {k:'Keychain',p:'$88',t:'',
+    {k:'Keychain',p:'$88',t:'Your personal art object, always with you',
      
      imgs:[[I('keychain-main'),'Keychain']],
      spec:[['Body','Brushed metal, round'],['Display','9-digit red segment display'],['Connection','ESP, Wi-Fi'],['Sync','While charging'],['Status','Working prototype, ships first']]},
-    {k:'Pendant',p:'$133',t:'',dev:true,
+    {k:'Pendant',p:'$133',t:'A pendant that will raise too many questions',dev:true,
      
      imgs:[[I('pendant-trio'),'Three finishes'],[I('pendant-worn'),'On neck']],
      spec:[['Size','40 × 40 × 10 mm'],['Finish','Silver, matte black'],['Display','Red segment display, glass'],['Charging','USB-C or magnetic'],['Battery','Li-Po']]},
-    {k:'Watch',p:'$345',t:'',dev:true,
+    {k:'Watch',p:'$345',t:'We were told nobody would need a watch like this. We’ll see',dev:true,
      imgs:[[I('watch-calc3'),'Calculator'],[I('watch-analog4'),'Analog'],[I('watch-clear'),'Transparent'],[I('watch-wrist'),'Calculator on wrist'],[I('watch-analog4-gold'),'Timeless · Gold, analog']],
      
      spec:[['Wear','On the wrist, steel bracelet'],['Case','Brushed steel, four screws'],['Keypad','20 keys'],['Displays','Time LCD and red 10-digit counter']],
      vars:[{n:'Calculator',key:'watch',img:0,spec:[['Wear','On the wrist, steel bracelet'],['Case','Brushed steel, four screws'],['Keypad','20 keys'],['Displays','Time LCD and red 10-digit counter']]},
            {n:'Analog',key:'watch2',img:1,spec:[['Wear','On the wrist, steel bracelet'],['Case','Cushion case, brushed steel'],['Dial','Red, hands and date'],['Display','Red 10-digit counter on the dial']]},
            {n:'Transparent',key:'watch3',img:2,spec:[['Wear','On the wrist, steel bracelet'],['Case','Clear case, electronics visible'],['Keypad','20 keys'],['Displays','Time LCD and red 10-digit counter']]}]},
-    {k:'Painting',p:'$477',t:'',
+    {k:'Painting',p:'$477',t:'A family art relic for future generations',
      imgs:[[I('painting-wall'),'On the wall',I('painting-wall-sq')],[I('painting-stone'),'Stone + metal',I('painting-stone-sq')]],
      spec:[['Place','On the wall'],['Display','Single window, red digits'],['Concepts','Metal, stone'],['Idea','It does not show the time. It shows the flow']]}
   ];
 
   let birth=null, oMode='now';
-  const OM={now:['Seconds since you opened this page','Your time'],life:['<span class="one">Every second you have lived, from 0 to now. Enter your birth date</span>','Your life in seconds'],back:['How many seconds may be left of an 80-year life: 2,524,608,000','Seconds left']};
-  function setOMode(m){ oMode=m; document.querySelectorAll('.omodes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m)); $('oHint').innerHTML=OM[m][0]; if($('iHint')){ $('iHint').innerHTML=OM[m][0]; $('iHint').style.visibility=m==='life'?'hidden':'' } $('oYours').textContent=OM[m][1]; $('oBdate').hidden=m!=='life'; if($('iBdate')) $('iBdate').hidden=m!=='life'; if($('yours')) $('yours').textContent=OM[m][1]; oLayout(); if(typeof sceneLayout==='function') try{ sceneLayout() }catch(e){} }
+  const OM={now:['&nbsp;','Your time since start'],life:['<span class="one">Every second you have lived, from 0 to now. Enter your birth date</span>','Your time since birth'],back:['&nbsp;','Seconds left']};
+  const YN='May cause anxiety';
+  function setOMode(m){ oMode=m; document.querySelectorAll('.omodes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m)); $('oHint').innerHTML=OM[m][0]; if($('iHint')){ $('iHint').innerHTML=OM[m][0]; $('iHint').style.visibility=(m==='life'||m==='back')?'hidden':'' } $('oYours').textContent=OM[m][1]; $('oBdate').hidden=!(m==='life'||m==='back'); if($('iBdate')) $('iBdate').hidden=!(m==='life'||m==='back'); if($('yours')){ $('yours').textContent=OM[m][1]; if(m==='back'){ const n=document.createElement('span'); n.className='yn'; n.textContent=YN; $('yours').appendChild(n) } } oLayout(); if(typeof sceneLayout==='function') try{ sceneLayout() }catch(e){} }
   document.querySelectorAll('.omodes button').forEach(b=>b.addEventListener('click',()=>setOMode(b.dataset.m)));
   // birth date: the same pickers on the first and the last screen, kept in sync
   (()=>{ const sets=[['obD','obM','obY'],['ibD','ibM','ibY']].map(a=>a.map(id=>$(id))).filter(a=>a.every(Boolean)), yr=new Date().getFullYear();
@@ -1558,7 +1574,7 @@ em,i.em{font-style:normal!important}
   });
 
   // Timeless reservation: the field says "Reserve Timeless series" until it is clicked
-  [['tlIn','tlEmail'],['mIn','mEmail']].forEach(([wi,ii])=>{ const w=$(wi), i=$(ii); if(!w||!i) return;
+  [['tlIn','tlEmail'],['mIn','mEmail'],['llIn','llRegEmail']].forEach(([wi,ii])=>{ const w=$(wi), i=$(ii); if(!w||!i) return;
     const upd=()=>{ const on=document.activeElement===i||i.value!==''||i.classList.contains('sent')||i.classList.contains('bad'); w.classList.toggle('on',on); if(document.activeElement===i&&!i.classList.contains('sent')) i.placeholder='your@email.com'; else if(!on) i.placeholder='' };
     ['focus','blur','input'].forEach(e=>i.addEventListener(e,upd)); new MutationObserver(upd).observe(i,{attributes:true,attributeFilter:['class']}); upd() });
   (()=>{ const i=$('tlEmail'); if(!i) return;
@@ -2158,7 +2174,7 @@ em,i.em{font-style:normal!important}
     $('iL').style.transform='translateX('+(-o*(seams[0]+4))+'px)'; { const co=String(Math.max(0,1-o*14)); if(co!==frame.ci){ frame.ci=co; document.querySelectorAll('.intro .half .cap').forEach(c=>c.style.opacity=co) } }
     $('iR').style.transform='translateX('+(o*(W-seams[0]+4))+'px)';
     if(o>0.6 && !launched){ launched={t:now,ms:nowMs}; if(!tkStart){ tkStart=nowMs+600; try{ localStorage.setItem('tk_start',String(tkStart)) }catch(e){} } }
-    const introVal=()=>{ const run=Math.max(0,(nowMs-tkStart)/1000); return oMode==='life'?(birth?Math.max(0,(nowMs-birth)/1000):0):oMode==='back'?Math.max(0,2524608000-run):run };
+    const introVal=()=>{ const run=Math.max(0,(nowMs-tkStart)/1000); return oMode==='life'?(birth?Math.max(0,(nowMs-birth)/1000):0):oMode==='back'?Math.max(0,2524608000-(birth?Math.max(0,(nowMs-birth)/1000):run)):run };
     if(tkStart) setSceneDigits(introVal());
     if(launched){
       const le=(now-launched.t)/1000;
@@ -2178,7 +2194,7 @@ em,i.em{font-style:normal!important}
     // painting: your seconds (lived since birth once a date is entered); darkness: the 60 to 0 countdown as before
     if(od>=0.5 && !window._oStart) window._oStart=now;
     if(od<0.5 && window._oStart){ window._oStart=null; window._oBack={t0:now,from:window._oShown||0} }
-    { const lived=birth?Math.max(0,(nowMs-birth)/1000):0, sb=oMode==='now'?(tkStart?Math.max(0,(nowMs-tkStart)/1000):0):oMode==='life'?lived:Math.max(0,2524608000-(tkStart?Math.max(0,(nowMs-tkStart)/1000):0));
+    { const lived=birth?Math.max(0,(nowMs-birth)/1000):0, sb=oMode==='now'?(tkStart?Math.max(0,(nowMs-tkStart)/1000):0):oMode==='life'?lived:Math.max(0,2524608000-(birth?lived:(tkStart?Math.max(0,(nowMs-tkStart)/1000):0)));
       if(window._oStart){ const e=(now-window._oStart)/1000, R=0.9, f=Math.max(60,window._oFrom||60);
         // the seconds on the painting rewind fast and stop on 60, then the 60 to 0 countdown begins
         if(e<R){ const k=e/R, ez=k*k*(3-2*k); window._oShown=Math.round(60+(f-60)*(1-ez)) }

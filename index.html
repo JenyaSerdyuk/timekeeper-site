@@ -578,9 +578,10 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 @media (max-width:860px){.intro .launch:not(.ref) #lPhr .pl0,.intro .launch:not(.ref) #lPhr .pl2{display:block}.intro .launch:not(.ref) #lPhr .pdot{display:inline}}
 /* phone: first screen texts centered, lines balanced to about the same length (no stretched gaps, no lonely words) */
 @media (max-width:860px){html body .intro .launch:not(.ref) #lTag,html body .intro .launch:not(.ref) #lPhr,html body .intro .launch:not(.ref) #lPhr .pl0,html body .intro .launch:not(.ref) #lPhr .pl2{text-align:justify!important;text-align-last:center!important;text-wrap:wrap!important;-webkit-hyphens:auto!important;hyphens:auto!important}html body .intro .launch:not(.ref) #lTag .ltag3{text-align:center!important;text-align-last:center!important}}
+#lTag,#lPhr{-webkit-hyphens:none;hyphens:none}
 #lTag .ltag3{display:block;text-align:center;text-align-last:center}#lTag .lt-ref{display:none}.intro .launch.ref #lTag .lt-ref,#lTag.fit2 .lt-ref{display:inline}.intro .launch.ref #lTag .lt-new,#lTag.fit2 .lt-new{display:none}
 .intro .launch .ltag .rl{display:block}
-.intro .launch .rv{opacity:0;filter:blur(10px);transform:translateY(18px);transition:opacity 1.1s ease,filter 1.3s ease,transform 1.3s cubic-bezier(.2,.7,.2,1);will-change:opacity,filter,transform}
+.intro .launch .rv{opacity:0;filter:blur(8px);transform:translateY(14px);transition:opacity .8s ease,filter .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);will-change:opacity,filter,transform}
 .intro .launch .rv.in{opacity:1;filter:blur(0);transform:none}
 @media (prefers-reduced-motion:reduce){.intro .launch .rv{transition:none;filter:none;transform:none}}
 .intro .launch #lPhr,.intro .launch #lTag{margin-inline:auto;text-wrap:pretty;text-align:justify!important;text-align-last:center!important;-webkit-hyphens:none;hyphens:none;word-spacing:0;max-width:calc(100vw - 32px)}
@@ -653,7 +654,9 @@ u,.ul,.intro .launch .to-rsv,.intro .rsv-cta,.tl-lab{text-decoration-line:underl
 .owin svg{width:100%;height:100%;display:block;overflow:visible}
 .ophrase{position:absolute;left:0;right:0;top:40%;text-align:center;transform:translateY(-100%);font-family:var(--f-display);font-weight:300;font-size:clamp(38px,6.5vw,104px);letter-spacing:-.02em;line-height:1;color:#fff;margin:0;opacity:0}
 .ophrase em{font-weight:300}
-.oorder{position:absolute;left:50%;bottom:calc(9svh + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:inline-flex;align-items:center;height:48px;padding:0 30px;border-radius:999px;background:#fff;color:#0a0a0a;text-decoration:none;font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;transition:background .2s,color .2s}
+.oorder{position:absolute;left:50%;bottom:calc(9svh + env(safe-area-inset-bottom,0px));}
+@media (max-width:860px){.oorder{bottom:calc(5svh + env(safe-area-inset-bottom,0px))}}
+.oorder{transform:translateX(-50%);display:inline-flex;align-items:center;height:48px;padding:0 30px;border-radius:999px;background:#fff;color:#0a0a0a;text-decoration:none;font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;transition:background .2s,color .2s}
 .obd{position:absolute;left:50%;transform:translateX(-50%);display:grid;justify-items:center;gap:10px;width:min(92vw,520px);text-align:center;transition:opacity .3s}
 .omodes{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
 .omodes button{height:34px;padding:0 14px;border:1px solid rgba(255,255,255,.4);border-radius:999px;background:transparent;color:#fff;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
@@ -1349,6 +1352,11 @@ em,i.em{font-style:normal!important}
       const x=Math.round(g); seams[i]=x;
       p[0].style.clipPath='inset(0 '+(p[0].clientWidth-x-1)+'px 0 0)';
       p[1].style.clipPath='inset(0 0 0 '+x+'px)';
+      // first scene: the "WHY TF NOT startup-studio" line moves sideways just enough that the parting line runs through the space between two words, not through a letter
+      if(i===0){ const cs=[p[0].querySelector('.cap'),p[1].querySelector('.cap')]; cs.forEach(c=>c&&(c.style.translate=''));
+        const c=cs[0], t=c&&c.firstChild; if(t&&t.nodeType===3){ const r=document.createRange(), L=p[0].getBoundingClientRect().left; let best=null;
+          for(let k=0;k<t.length;k++){ if(t.data[k]!==' ') continue; r.setStart(t,k); r.setEnd(t,k+1); const b=r.getBoundingClientRect(); const m=(b.left+b.right)/2-L; if(best==null||Math.abs(m-x)<Math.abs(best-x)) best=m }
+          if(best!=null){ const d=Math.round((x-best)*10)/10; cs.forEach(c=>c&&(c.style.translate=d+'px 0')) } } }
       p[0].style.transform=tl; p[1].style.transform=tr;
 
     });
@@ -1416,7 +1424,22 @@ em,i.em{font-style:normal!important}
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ try{ sceneLayout() }catch(e){} });
   // the underlined call in the text opens the email field below it
   document.querySelectorAll('.to-rsv').forEach(u=>{ const go=()=>{ const i=$('rsvEmail'); if(i) i.focus({preventScroll:true}) }; u.addEventListener('click',go); u.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go() } }) });
-  function sceneLayout(){ sceneLayout0(); if(window.__leReapply) try{ window.__leReapply() }catch(e){} }
+  // phone: the two texts of the first screen are set flush with the painting's edges; long words get soft hyphen points
+  // (dictionary hyphenation), so the justified lines never open big gaps between words. On a computer they are never hyphenated.
+  const HYW=["dis\u00adcover", "fam\u00adily", "for\u00adever", "gen\u00ader\u00ada\u00adtions", "hun\u00addreds", "mean\u00adings", "mem\u00adory", "out\u00adlive", "per\u00adsonal", "philo\u00adsoph\u00adi\u00adcal", "sec\u00adonds", "\u0417\u0430\u0431\u0440\u043e\u00ad\u043d\u0438\u00ad\u0440\u0443\u0439", "\u0434\u0440\u0443\u00ad\u0433\u0438\u0435", "\u043a\u043e\u0442\u043e\u00ad\u0440\u044b\u0439", "\u043b\u0438\u0447\u00ad\u043d\u044b\u0439", "\u043e\u0431\u044a\u00ad\u0435\u043a\u00ad\u0442\u043e\u0432", "\u043e\u0431\u044a\u00ad\u0435\u043a\u0442", "\u043e\u0442\u043a\u0440\u043e\u00ad\u0435\u0448\u044c", "\u043f\u0435\u0440\u00ad\u0432\u044b\u0445", "\u043f\u0435\u0440\u0435\u00ad\u0436\u0438\u0432\u0451\u0442", "\u043f\u043e\u043a\u043e\u00ad\u043b\u0435\u00ad\u043d\u0438\u0439", "\u0441\u043b\u0435\u00ad\u0434\u0443\u00ad\u044e\u00ad\u0449\u0438\u0445", "\u0441\u043e\u0445\u0440\u0430\u00ad\u043d\u0438\u0442", "\u0441\u0447\u0438\u00ad\u0442\u0430\u00ad\u0435\u0442\u0441\u044f", "\u0441\u0447\u0438\u00ad\u0442\u0430\u0442\u044c\u0441\u044f", "\u0442\u0432\u043e\u00ad\u0435\u0433\u043e", "\u0444\u0438\u043b\u043e\u00ad\u0441\u043e\u0444\u00ad\u0441\u043a\u0438\u0435", "\u0444\u0438\u043b\u043e\u00ad\u0441\u043e\u0444\u00ad\u0441\u043a\u0438\u0439"]; const HYM={}; HYW.forEach(h=>HYM[h.replace(/\u00ad/g,'')]=h);
+  function applyHy(){ ['lTag','lPhr'].forEach(id=>{ const el=$(id); if(!el) return; const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT); let n; while(n=w.nextNode()){ if(n.parentNode.closest('.ltag3,.pl0')) continue; const t=n.data.replace(/[A-Za-z\u0400-\u04FF]{6,}/g,m=>HYM[m]||m); if(t!==n.data) n.data=t } }) }
+  // words of the two texts as separate pieces, so on a phone a line that would open wide gaps gets a hair of letter spacing instead
+  function wrapWords(){ ['lTag','lPhr'].forEach(id=>{ const el=$(id); if(!el) return; const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT), ns=[]; let n; while(n=w.nextNode()) if(!n.parentNode.closest('.lt-ref')&&!n.parentNode.classList.contains('jw')) ns.push(n);
+    ns.forEach(n=>{ const parts=n.data.split(/(\s+)/); if(parts.length<2&&!parts[0]) return; const f=document.createDocumentFragment(); parts.forEach(t=>{ if(!t) return; if(/^\s+$/.test(t)) f.appendChild(document.createTextNode(t)); else { const s=document.createElement('span'); s.className='jw'; s.textContent=t; f.appendChild(s) } }); n.parentNode.replaceChild(f,n) }) }) }
+  function justFix(){ const ts=[...document.querySelectorAll('#lTag .lt-new .jw,#lPhr .jw')]; ts.forEach(t=>t.style.letterSpacing=''); const L=document.querySelector('.intro .launch');
+    if(innerWidth>860||!L||L.classList.contains('ref')) return; const G=new Map();
+    ts.forEach(t=>{ const b=t.closest('.pl0,.pl2,.ltag3')||t.closest('#lTag,#lPhr'); if(b.matches('.pl0,.ltag3')) return; const r=t.getClientRects(); if(r.length!==1) return; if(!G.has(b)) G.set(b,new Map()); const m=G.get(b), k=Math.round(r[0].top); if(!m.has(k)) m.set(k,[]); m.get(k).push({t,r:r[0]}) });
+    const cv=justFix.c||(justFix.c=document.createElement('canvas').getContext('2d'));
+    G.forEach((m,b)=>{ const cs=getComputedStyle(b), fs=parseFloat(cs.fontSize); cv.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily; const sp=cv.measureText(' ').width, W=b.getBoundingClientRect().width;
+      const keys=[...m.keys()].sort((x,y)=>x-y); keys.pop();
+      keys.forEach(k=>{ const l=m.get(k); if(l.length<2) return; let sum=0,gaps=0,ch=0; l.forEach((o,i)=>{ sum+=o.r.width; ch+=o.t.textContent.replace(/­/g,'').length; if(i&&o.r.left-l[i-1].r.right>2) gaps++ }); if(!gaps) return;
+        const def=W-(sum+gaps*sp), ok=gaps*0.22*fs; if(def<=ok) return; const ls=Math.min(0.08*fs,(def-ok)/ch); l.forEach(o=>o.t.style.letterSpacing=ls.toFixed(2)+'px') }) }) }
+  function sceneLayout(){ if(!sceneLayout.hy){ sceneLayout.hy=1; try{ applyHy(); wrapWords() }catch(e){} } sceneLayout0(); try{ justFix() }catch(e){} if(window.__leReapply) try{ window.__leReapply() }catch(e){} }
   function sceneLayout0(){
     if(!sceneLayout.busy){ sceneLayout.busy=1; sceneLayout.ref=refBand(); applyRef(sceneLayout.ref); sceneLayout.busy=0 }
     const S=SCENES[scKey], st=document.querySelector('.intro .stick'); const W=st.clientWidth, H=st.clientHeight;
@@ -1424,7 +1447,8 @@ em,i.em{font-style:normal!important}
     // the painting keeps the size and place it always had (measured without the counting modes)
     const RF=sceneLayout.ref, top0=RF.top0, bot0=RF.bot0, band=Math.max(120,bot0-top0), bc=top0+band/2;
     let sc,left,top;
-    if(S.mode==='fit'){ sc=Math.min(0.80*W/S.obj[2],0.92*band/S.obj[3]); left=W/2-(S.obj[0]+S.obj[2]/2)*sc; top=bc-(S.obj[1]+S.obj[3]/2)*sc }
+    // computer: the painting is 10% smaller than the reference size, same centre
+    if(S.mode==='fit'){ sc=Math.min(0.80*W/S.obj[2],0.92*band/S.obj[3])*(W>860?0.9:1); left=W/2-(S.obj[0]+S.obj[2]/2)*sc; top=bc-(S.obj[1]+S.obj[3]/2)*sc }
     else { const fx=S.fx, fy=S.fy; sc=Math.max(W/S.W*S.z,H/S.H*S.z,(H-bc)/(S.H-fy),bc/fy); left=W/2-fx*sc; top=bc-fy*sc; left=Math.min(0,Math.max(W-S.W*sc,left)); top=Math.min(0,Math.max(H-S.H*sc,top)) }
     // the text above moves up only as much as the counting modes need to fit above the painting
     if(S.mode==='fit'){ const lt=$('lTop'); lt.style.translate=''; const lr=lt.getBoundingClientRect(), nb=lr.bottom-sr.top, ntop=lr.top-sr.top, pt=top+S.obj[1]*sc;
@@ -1442,8 +1466,10 @@ em,i.em{font-style:normal!important}
           const c=ph.cloneNode(true); c.querySelectorAll('.pl0,.pl2,.pbr').forEach(e=>e.remove()); pr.innerHTML=c.innerHTML; ph.appendChild(pr); const L2=pr.getBoundingClientRect().width; pr.remove();
           const w=Math.ceil(Math.max(L1/1.94,L2+4, S.obj[2]*sc*0.95)); [tg,ph].forEach(e=>{ e.style.width=w+'px'; e.style.maxWidth=w+'px' }); return w };
         // a little larger than before (about 20%), as long as the lines still fit on the screen and everything fits above and below the painting
-        let f=Math.min(30,Math.round(f0*1.2*4)/4); for(;f>f0;f-=0.5){ const w=fit(f); const hh=lt.getBoundingClientRect().height+ph.getBoundingClientRect().height; if(w<=W-96 && H-40-(hh+S.obj[3]*sc+md.getBoundingClientRect().height+fm.getBoundingClientRect().height)>=40) break }
-        if(f<=f0) fit(f0) }
+        const bd0=$('iBdate'), bh0=bd0&&bd0.hidden; if(bh0){ bd0.hidden=false; bd0.style.visibility='hidden' } const mh=md.getBoundingClientRect().height; if(bh0){ bd0.hidden=true; bd0.style.visibility='' }
+        // short screens: only if everything would not fit otherwise, the text gets a little smaller (never below 15px); the painting never changes
+        let f=Math.min(30,Math.round(f0*1.2*4)/4); for(;f>15;f-=0.5){ const w=fit(f); const hh=lt.getBoundingClientRect().height+ph.getBoundingClientRect().height; if(w<=W-96 && H-24-(hh+S.obj[3]*sc+mh+fm.getBoundingClientRect().height)>=(f>f0?52:36)) break }
+        if(f<=15) fit(15) }
       const R=e=>{ const k=e.style.transform; if(e!==md) e.style.transform='none'; const r=e.getBoundingClientRect(); if(e!==md) e.style.transform=k; return {t:r.top-sr.top,h:r.height} }, A=R(lt), B=R(ph), F=R(fm);
       // the modes always take the room they need with the date fields shown, so switching modes never moves anything
       const bd=$('iBdate'), bh=bd&&bd.hidden; if(bh){ bd.hidden=false; bd.style.visibility='hidden' } const M=R(md); if(bh){ bd.hidden=true; bd.style.visibility='' }
@@ -1451,7 +1477,7 @@ em,i.em{font-style:normal!important}
       // one rhythm: fixed spaces between the blocks (the modes belong to the painting, so they sit closest); whatever room is left
       // goes above and below the whole group, so the group stays together in the middle of the screen
       let gT=phone?28:20, g1=phone?14:12, gB=phone?30:20, gF=phone?24:16; const sumG=gT+g1+gB+gF;
-      let free=extra-sumG; if(free<0){ const k=Math.max(0.6,(extra)/sumG); gT*=k; g1*=k; gB*=k; gF*=k; free=0 }
+      let free=extra-sumG; if(free<0){ const k=Math.max(0.5,(extra)/sumG); gT*=k; g1*=k; gB*=k; gF*=k; free=0 }
       const y0=minT+free/2, pT=y0+A.h+gT, pB=pT+P, yM=pB+g1, yB=yM+M.h+gB, yF=yB+B.h+gF;
       if(/[?&]top\b/.test(location.search)){ const z0=minT+free/2, zP=z0, zM=zP+P+g1, zA=zM+M.h+gB, zB=zA+A.h+gB*0.6, zF=zB+B.h+gF;
         top=zP-S.obj[1]*sc; sceneLayout.g1=g1; lt.style.translate='0 '+Math.round(zA-A.t)+'px'; md.style.top=Math.round(zM)+'px'; place2(ph,zB); place2(fm,zF) } else {
@@ -2238,6 +2264,13 @@ em,i.em{font-style:normal!important}
     else { if(v>0.5) iTo(secY(GI,0.46),1300); else if(v>0.005) iTo(secY(GI,0),1400) } }
   function stepIntro(now){
     if(IS.a){ const k=Math.min(1,(now-IS.a.t0)/IS.a.dur); jumpTo(IS.a.y0+(IS.a.y1-IS.a.y0)*sm(k)); if(k>=1){ IS.a=null; IS.arr=now; if(IS.q){ const d=IS.q; IS.q=0; iGo(d) } else setTimeout(()=>{ if(!IS.a) window._navJump=false },60) } }
+    // coming back up from below: the painting scene stops the page (a fast flick never flies past it to the top);
+    // only a new gesture after that plays the scenes back, one by one, smoothly
+    { const y84=secY(GI,0.84);
+      if(!IS.a&&!window._navJump){ if(scrollY>y84+200) IS.hd=0;
+        if(IS.py!=null&&IS.py>=y84-1&&scrollY<y84-1){ if(IS.hd&&now-IS.hd>500&&IS.lg>IS.hd){ jumpTo(y84); iGo(-1) } else { IS.hd=now; jumpTo(y84) } }
+        else if(IS.hd&&now-IS.hd<500&&scrollY<y84-1) jumpTo(y84) }
+      IS.py=scrollY }
     const z=!!IS.a||(!window._navJump&&scrollY<secY(GI,0.84)-1);
     if(z!==IS.z){ IS.z=z; if(z) lockOn(); else lockOff() } else if(z&&lenis&&!lenis.isStopped) lenis.stop();
     if(IS.a||!z) return; const v=prog(GI.el), idle=now-Math.max(lastIn,IS.arr);
@@ -2245,8 +2278,8 @@ em,i.em{font-style:normal!important}
     if(v>0.44&&v<0.5&&idle>2000){ iGo(1); return }
     // never left between two scenes (e.g. after a reload): settle on the nearest one
     if(idle>300&&v<0.835&&Math.abs(v)>0.004&&Math.abs(v-0.46)>0.004&&Math.abs(v-0.84)>0.004){ const t=v<0.23?0:(v<0.65?0.46:0.84); iTo(secY(GI,t),900) } }
-  addEventListener('wheel',e=>{ if(!IS.z||e.ctrlKey) return; const n=performance.now(), a=Math.abs(e.deltaY); const fresh=n-IS.lastW>140||a>IS.lastAbs*1.2+2||(IS.lastAbs<4&&a>=12); IS.lastW=n; IS.lastAbs=a; if(fresh&&a>1) iGo(e.deltaY>0?1:-1) },{passive:true});
-  addEventListener('touchstart',e=>{ IS.ty0=e.touches[0]?e.touches[0].clientY:null; IS.td=false },{passive:true});
+  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); if(n-(IS.lw2||0)>140) IS.lg=n; IS.lw2=n; if(!IS.z||e.ctrlKey) return; const fresh=n-IS.lastW>140||a>IS.lastAbs*1.2+2||(IS.lastAbs<4&&a>=12); IS.lastW=n; IS.lastAbs=a; if(fresh&&a>1) iGo(e.deltaY>0?1:-1) },{passive:true});
+  addEventListener('touchstart',e=>{ IS.ty0=e.touches[0]?e.touches[0].clientY:null; IS.td=false; IS.lg=performance.now() },{passive:true});
   addEventListener('touchmove',e=>{ if(!IS.z||IS.td||IS.ty0==null||!e.touches[0]) return; const d=IS.ty0-e.touches[0].clientY; if(Math.abs(d)>14){ IS.td=true; iGo(d>0?1:-1) } },{passive:true});
   addEventListener('keydown',e=>{ if(!IS.z||IS.a||isField(e.target)) return; if(['ArrowDown','PageDown',' '].includes(e.key)) iGo(1); else if(['ArrowUp','PageUp'].includes(e.key)) iGo(-1) });
   function gateIntro(now){ if(!reduce) stepIntro(now); return paced(GI,now,0.2) }
@@ -2259,16 +2292,16 @@ em,i.em{font-style:normal!important}
   // one whole scene to the end: painting → dark "Value your time" → TIME closes; the same gesture up plays it back
   const OS={a:null,z:null,lastW:0,lastAbs:0,ty0:null,td:false};
   function oTo(y1,dur){ window._navJump=true; OS.a={t0:performance.now(),dur,y0:scrollY,y1} }
-  function oStep(dir){ if(OS.a) return; const q=prog(GO.el);
-    if(dir>0){ if(q<0.3) oTo(secY(GO,0.6),1600); else if(q<0.985) oTo(secY(GO,1),1300) }
-    else { if(q>0.8) oTo(secY(GO,0.6),1300); else if(q>0.3) oTo(secY(GO,OH),1400); else oTo(Math.max(0,GO.el.offsetTop-innerHeight*0.6),700) } }
-  function oZone(){ const q=prog(GO.el); return q>=OH-0.004 && scrollY<=secY(GO,1)+2 }
-  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const fresh=n-OS.lastW>160||a>OS.lastAbs*1.4+4; OS.lastW=n; OS.lastAbs=a; if(!OS.z||e.ctrlKey) return; if(fresh&&a>1&&!OS.a) oStep(e.deltaY>0?1:-1) },{passive:true});
+  function oStep(dir){ if(OS.a){ if(performance.now()-OS.a.t0>350) OS.q=dir; return } OS.q=0; const q=prog(GO.el);
+    if(dir>0){ if(q<0.3) oTo(secY(GO,0.6),2200); else if(q<0.985) oTo(secY(GO,1),2000) }
+    else { if(q>0.8) oTo(secY(GO,0.6),2000); else if(q>0.3) oTo(secY(GO,OH),2200); else oTo(Math.max(0,GO.el.offsetTop-innerHeight*0.7),1600) } }
+  function oZone(){ if(OS.rel&&performance.now()-OS.rel<900) return false; const q=prog(GO.el); return q>=OH-0.004 && scrollY<=secY(GO,1)+2 }
+  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const fresh=n-OS.lastW>160||a>OS.lastAbs*1.4+4; OS.lastW=n; OS.lastAbs=a; if(!OS.z||e.ctrlKey) return; if(fresh&&a>1) oStep(e.deltaY>0?1:-1) },{passive:true});
   addEventListener('touchstart',e=>{ OS.ty0=e.touches[0]?e.touches[0].clientY:null; OS.td=false },{passive:true});
-  addEventListener('touchmove',e=>{ if(!OS.z||OS.td||OS.ty0==null||!e.touches[0]) return; const d=OS.ty0-e.touches[0].clientY; if(Math.abs(d)>14){ OS.td=true; if(!OS.a) oStep(d>0?1:-1) } },{passive:true});
+  addEventListener('touchmove',e=>{ if(!OS.z||OS.td||OS.ty0==null||!e.touches[0]) return; const d=OS.ty0-e.touches[0].clientY; if(Math.abs(d)>14){ OS.td=true; oStep(d>0?1:-1) } },{passive:true});
   addEventListener('keydown',e=>{ if(!OS.z||OS.a||isField(e.target)) return; if(['ArrowDown','PageDown',' '].includes(e.key)) oStep(1); else if(['ArrowUp','PageUp'].includes(e.key)) oStep(-1) });
   function outroHold(now){
-    if(OS.a){ const k=Math.min(1,(now-OS.a.t0)/OS.a.dur); jumpTo(OS.a.y0+(OS.a.y1-OS.a.y0)*sm(k)); if(k>=1){ OS.a=null; setTimeout(()=>{ if(!OS.a) window._navJump=false },60) } }
+    if(OS.a){ const k=Math.min(1,(now-OS.a.t0)/OS.a.dur); jumpTo(OS.a.y0+(OS.a.y1-OS.a.y0)*sm(k)); if(k>=1){ OS.a=null; if(OS.q){ const d=OS.q; OS.q=0; oStep(d) } else setTimeout(()=>{ if(!OS.a) window._navJump=false },60) } }
     const z=!!OS.a||(!window._navJump&&oZone());
     if(z!==OS.z){ OS.z=z; if(z) lockOn(); else if(!IS.z) lockOff() } else if(z&&lenis&&!lenis.isStopped) lenis.stop();
     if(OS.a||window._navJump) return; const real=prog(GO.el);
@@ -2283,7 +2316,7 @@ em,i.em{font-style:normal!important}
 
 
   // painting scene: the white text arrives line by line, top first, then the text below, from a soft blur
-  const RV=[[$('lTag'),0],[$('lPhr'),0.36],[$('iModes'),0.72],[$('rsvForm'),1.52]].filter(r=>r[0]);
+  const RV=[[$('lTag'),0],[$('iModes'),0.28],[$('iBdate'),0.5],[$('lPhr'),0.72],[$('rsvForm'),1.0]].filter(r=>r[0]);
   RV.forEach(([el])=>el.classList.add('rv'));
   let rvOn=false;
   function revealIntro(ty){ const want=rvOn?ty>0.3:ty>=0.6; if(want===rvOn) return; rvOn=want;
@@ -2330,7 +2363,8 @@ em,i.em{font-style:normal!important}
         if(window._oBack){ const k=Math.min(1,(now-window._oBack.t0)/900), ez=k*k*(3-2*k); v=Math.round(window._oBack.from+(tgt-window._oBack.from)*ez); if(k>=1) window._oBack=null }
         window._oShown=v; setODigits(v) }
       const bo=String(clamp(1-od*2.2)); if(bo!==frame.bo){ frame.bo=bo; $('oBd').style.opacity=bo; $('oYours').style.opacity=bo; $('oBd').style.pointerEvents=+bo>0.3?'auto':'none' } }
-    { const ob=oc<0.5?'#fff':'#0a0a0a'; if(frame.obg!==ob){ frame.obg=ob; outro.style.background=ob } }
+    // the strip outside the scene (when the phone's browser bar hides) always matches what is on screen: painting, dark scene, white TIME
+    { const sf=clamp((q-0.04)/0.32), ob=oc<0.5?'#fff':(sf<0.5?'linear-gradient(90deg,#0a0a07,#1a1a18 50%,#0a0a07)':'#0a0a0a'); if(frame.obg!==ob){ frame.obg=ob; outro.style.background=ob } }
     $('oL').style.transform='translateX('+(-oc*(seams[1]+4))+'px)'; { const co=String(Math.max(0,1-oc*14)); if(co!==frame.co){ frame.co=co; document.querySelectorAll('.outro .half .cap,.outro .totop').forEach(c=>c.style.opacity=co) } }
     $('oR').style.transform='translateX('+(oc*(W-seams[1]+4))+'px)';
 

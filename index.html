@@ -574,7 +574,8 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .intro .launch.ref #lPhr .pbr{display:none}
 .intro .launch.ref #lPhr .pdot{display:inline}
 /* computer: the first line of the text under the painting is justified edge to edge, so its first word starts exactly under the first word above the painting */
-@media (min-width:861px){.intro .launch:not(.ref) #lPhr:not(.nojust){text-align-last:justify!important}.intro .launch:not(.ref) #lPhr .pl2{display:block;text-align-last:center}.intro .launch:not(.ref) #lPhr .pbr{display:none}}
+@media (min-width:861px){.intro .launch:not(.ref) #lPhr:not(.nojust){text-align-last:justify!important}.intro .launch:not(.ref) #lPhr .pl2{display:block;text-align-last:center}.intro .launch:not(.ref) #lPhr .pl0{display:block;text-align-last:center}html body .intro .launch:not(.ref) #lPhr{text-align:center!important;text-align-last:center!important}.intro .launch:not(.ref) #lPhr .pbr{display:none}}
+@media (max-width:860px){.intro .launch:not(.ref) #lPhr .pl0,.intro .launch:not(.ref) #lPhr .pl2{display:block}.intro .launch:not(.ref) #lPhr .pdot{display:inline}}
 /* phone: first screen texts centered, lines balanced to about the same length (no stretched gaps, no lonely words) */
 @media (max-width:860px){html body .intro .launch:not(.ref) #lTag,html body .intro .launch:not(.ref) #lPhr{text-align:center!important;text-align-last:center!important;text-wrap:balance!important}}
 #lTag .ltag3{display:block;text-align:center;text-align-last:center}#lTag .lt-ref{display:none}.intro .launch.ref #lTag .lt-ref,#lTag.fit2 .lt-ref{display:inline}.intro .launch.ref #lTag .lt-new,#lTag.fit2 .lt-new{display:none}
@@ -948,7 +949,7 @@ em,i.em{font-style:normal!important}
           <div><span class="mono">Since start</span><b class="num" id="sinceStart">0 s</b></div>
           <div><span class="mono">Countdown (80 years)</span><b class="num" id="cd">2,524,608,000</b></div>
         </div>
-        <p class="phrase" id="lPhr">Your time has started. From now on, it is counted. <u class="to-rsv" role="link" tabindex="0">Reserve your time</u>, and it will be counted forever<span class="pdot">.</span><br class="pbr"><span class="pl2"> First objects will have the most seconds of all</span></p>
+        <p class="phrase" id="lPhr"><span class="pl0">Your time has started.</span> From now on, it is counted. <u class="to-rsv" role="link" tabindex="0">Reserve your time</u>, and it will be counted forever<span class="pdot">.</span><br class="pbr"><span class="pl2"> First objects will have the most seconds of all</span></p>
         <form class="rsv" id="rsvForm" novalidate>
           <div class="rsv-row"><span class="rsv-in" id="rsvIn"><input type="email" id="rsvEmail" placeholder="" autocomplete="email" aria-label="Reserve your start now: your email"><label class="rsv-cta" for="rsvEmail">Reserve your start now</label></span><button class="btn" type="submit" id="rsvBtn">Reserve</button></div>
           <p class="rsv-msg mono" id="rsvMsg"></p>
@@ -1431,7 +1432,7 @@ em,i.em{font-style:normal!important}
       if(innerWidth>860){ const tg=$('lTag'), pr=document.createElement('span'); pr.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit';
         const f0=parseFloat(getComputedStyle(tg).fontSize)||18, fit=f=>{ [tg,ph].forEach(e=>e.style.setProperty('font-size',f+'px','important'));
           const a=tg.querySelector('.lt-new').cloneNode(true); a.querySelectorAll('.ltag3').forEach(e=>e.remove()); pr.innerHTML=a.innerHTML; tg.appendChild(pr); const L1=pr.getBoundingClientRect().width; pr.remove();
-          const c=ph.cloneNode(true); c.querySelectorAll('.pl2,.pbr').forEach(e=>e.remove()); pr.innerHTML=c.innerHTML; ph.appendChild(pr); const L2=pr.getBoundingClientRect().width; pr.remove();
+          const c=ph.cloneNode(true); c.querySelectorAll('.pl0,.pl2,.pbr').forEach(e=>e.remove()); pr.innerHTML=c.innerHTML; ph.appendChild(pr); const L2=pr.getBoundingClientRect().width; pr.remove();
           const w=Math.ceil(Math.max(L1/1.94,L2+4, S.obj[2]*sc*0.95)); [tg,ph].forEach(e=>{ e.style.width=w+'px'; e.style.maxWidth=w+'px' }); return w };
         // a little larger than before (about 20%), as long as the lines still fit on the screen and everything fits above and below the painting
         let f=Math.min(28,Math.round(f0*1.3*4)/4); for(;f>f0;f-=0.5){ const w=fit(f); const hh=lt.getBoundingClientRect().height+ph.getBoundingClientRect().height; if(w<=W-96 && H-40-(hh+S.obj[3]*sc+md.getBoundingClientRect().height+fm.getBoundingClientRect().height)>=78) break }
@@ -1443,8 +1444,10 @@ em,i.em{font-style:normal!important}
       let gT=phone?28:24, g1=phone?14:14, gB=phone?30:22, gF=phone?24:18; const sumG=gT+g1+gB+gF;
       let free=extra-sumG; if(free<0){ const k=Math.max(0.25,(extra)/sumG); gT*=k; g1*=k; gB*=k; gF*=k; free=0 }
       const y0=minT+free/2, pT=y0+A.h+gT, pB=pT+P, yM=pB+g1, yB=yM+M.h+gB, yF=yB+B.h+gF;
+      if(/[?&]top\b/.test(location.search)){ const z0=minT+free/2, zP=z0, zM=zP+P+g1, zA=zM+M.h+gB, zB=zA+A.h+gB*0.6, zF=zB+B.h+gF;
+        top=zP-S.obj[1]*sc; sceneLayout.g1=g1; lt.style.translate='0 '+Math.round(zA-A.t)+'px'; md.style.top=Math.round(zM)+'px'; ph.style.translate='0 '+Math.round(zB-B.t)+'px'; fm.style.translate='0 '+Math.round(zF-F.t)+'px' } else {
       top=pT-S.obj[1]*sc; sceneLayout.g1=g1;
-      lt.style.translate='0 '+Math.round(y0-A.t)+'px'; md.style.top=Math.round(yM)+'px'; ph.style.translate='0 '+Math.round(yB-B.t)+'px'; fm.style.translate='0 '+Math.round(yF-F.t)+'px' }
+      lt.style.translate='0 '+Math.round(y0-A.t)+'px'; md.style.top=Math.round(yM)+'px'; ph.style.translate='0 '+Math.round(yB-B.t)+'px'; fm.style.translate='0 '+Math.round(yF-F.t)+'px' } }
     const im=$('sceneImg'); im.style.width=S.W+'px'; im.style.height=S.H+'px'; im.style.transform='translate('+left+'px,'+top+'px) scale('+sc+')';
     const w=$('sceneWin'); w.style.width=(S.w*sc)+'px'; w.style.height=(S.h*sc)+'px'; w.style.left=(left+S.cx*sc)+'px'; w.style.top=(top+S.cy*sc)+'px'; w.style.transform='translate(-50%,-50%) rotate('+S.ang+'deg)'; w.style.background=S.bg||'transparent'; if(scKey==='painting'){ const tp=$('tyt').firstElementChild; tp.style.top=(top+S.cy*sc-S.h*sc/2-Math.max(28,S.h*sc*0.9))+'px';  } w.style.borderRadius=S.rad?(S.rad*sc)+'px':'3px';
     { const u='url("'+S.src+'")'; const sc0=$('scene'); if(sc0&&sc0.dataset.sbg!==u){ sc0.dataset.sbg=u; sc0.style.setProperty('--sbg',u) } const os=$('oScene'); if(os&&!os.dataset.sbg){ os.dataset.sbg=1; os.style.setProperty('--sbg','url("'+SCENES.painting.src+'")') } }

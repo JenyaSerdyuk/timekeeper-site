@@ -808,8 +808,10 @@ em,i.em{font-style:normal!important}
 
 /* moves made by Max in the layout editor (computer), baked in exactly as he placed them */
 @media (min-width:861px){
-  #timeless>h2{translate:9px 0}
-  #timeless>.cw-t>p{translate:21px 0}
+  #timeless{grid-template-columns:1fr}
+  #timeless>h2{justify-self:center;text-align:center;max-width:none;margin-bottom:0}
+  #timeless>.cw-t{justify-self:center;text-align:center}
+  #timeless>.cw-t>p{text-align:center;text-align-last:center}
 }
 
 /* Timeless: 5 objects, silver and gold photos stacked; a vertical line follows the pointer like a curtain.

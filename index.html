@@ -303,7 +303,7 @@ em{font-style:italic;font-weight:300}
 
 /* LIFE LINE */
 .ll{margin-top:8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding-block:26px 30px;position:relative}
-.ll-bar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.ll-bar{display:flex;justify-content:flex-end;align-items:center;gap:16px;flex-wrap:wrap}.ll-bar .ll-scale{display:none}
 .ll-scale{display:flex;gap:18px;align-items:center}
 .ll-ex{color:var(--pink)}
 .ll-ctrl{display:flex;gap:8px;align-items:center}
@@ -466,7 +466,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .ll-store{margin-left:auto;color:#8b8b8b;font-size:10px;letter-spacing:.16em}
 .ll-reg{display:grid;gap:10px;max-width:560px;margin:4px 0 18px}
 .ll-reg label{color:#0a0a0a;font-size:10px;letter-spacing:.16em}
-.ll-reg-msg{color:#8b8b8b;font-size:10px;letter-spacing:.14em;line-height:1.6}
+.ll-reg-msg{color:#8b8b8b;font-size:10px;letter-spacing:.14em;line-height:1.6}.ll-reg-msg:empty{display:none}
 .ll-card.empty .ll-grid img,.ll-card.empty .ll-vid{background:#f2f2f2}
 .ll-card .add{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#0a0a0a}
 .ll-card{position:relative}
@@ -786,7 +786,7 @@ em,i.em{font-style:normal!important}
 .cw-dev .dbuy .p-price{margin:0;color:#6b6b6b!important;font-family:'Onest',ui-sans-serif,system-ui,sans-serif;font-size:clamp(20px,1.8vw,24px);color:#0a0a0a;letter-spacing:-.01em;text-align:center}
 
 /* Start your life line, computer: the field and the button span exactly the line of text under them */
-@media (min-width:861px){.ll-mine .ll-reg{width:max-content;max-width:100%}.ll-mine .ll-reg-msg{white-space:nowrap}}
+@media (min-width:861px){.ll-mine .ll-reg{width:768px;max-width:100%}.ll-mine .ll-reg-msg{white-space:nowrap}}
 
 
 
@@ -1143,7 +1143,6 @@ em,i.em{font-style:normal!important}
   <div class="cw-t"><p>Раз в месяц ты загружаешь 3 фото, 1 видео и короткую заметку, как маленькое письмо самому себе. <u>Вечный дневник</u>, каждый месяц, чтобы собрать <u>альбом своей жизни</u>, который твои родные смогут листать через сотни лет.</p>
     <p>Сегодня мы не можем увидеть фото даже самых близких родственников, не говоря уже о тех, кто жил за сотни лет до нас, хотя именно благодаря им мы существуем. В будущем этой проблемы не будет.</p>
     <p>Ты, то, как ты жил, через что прошёл, <u>останется навсегда</u>. Люди, которых ещё нет и которые родятся только через сотни лет, смогут многое узнать о тебе и беречь эту <u>линию рода</u>.</p>
-    <p>Линия жизни создана, чтобы пережить телефоны, облачные аккаунты и приложения. Она привязана к моменту, записанному в блокчейне, поэтому может храниться сотни лет<button type="button" class="q" data-q="Фото и видео хранятся на наших серверах и привязаны к твоему моменту в блокчейне. Скрытые месяцы видишь только ты." aria-label="Подробнее" aria-expanded="false">?</button>. Твои правнуки смогут открыть её и увидеть, как ты жил, месяц за месяцем: твоё лицо, твой голос, твой город, твои слова. Не рассказ о тебе, а тебя самого, таким, каким ты был.</p>
     <ol class="nl">
       <li><span class="n">01</span><p><b>Регистрация</b> Оставь email, и твоя линия жизни начнётся с твоего момента</p></li>
       <li><span class="n">02</span><p><b>Добавляй месяц</b> Три фото, одно видео и короткая заметка за каждый прожитый месяц</p></li>
@@ -1177,7 +1176,7 @@ em,i.em{font-style:normal!important}
       <div class="ll-mine-head"><h3>Начни свою линию жизни</h3><span class="mono ll-store" id="llStore"></span></div>
       <form class="ll-reg" id="llReg" novalidate>
         <div class="rsv-row"><input type="email" id="llRegEmail" placeholder="твой@email.ru" autocomplete="email" aria-label="Email"><button class="btn" type="submit">Начать</button></div>
-        <p class="mono ll-reg-msg" id="llRegMsg">Твоя линия начинается с твоего момента. Дальше добавляй три фото, одно видео и короткое письмо за каждый месяц</p>
+        <p class="mono ll-reg-msg" id="llRegMsg"></p>
       </form>
       <div class="ll-tiles" id="llTiles" hidden></div>
     </div>
@@ -1576,7 +1575,12 @@ em,i.em{font-style:normal!important}
   document.querySelectorAll('.cw-ll').forEach(sec=>{ sec.classList.add('cw-split'); const h=sec.querySelector(':scope>h2')||sec.querySelector('.ll-left h2'), t=sec.querySelector('.cw-t'), ol=t&&t.querySelector('.nl'); if(!h||!ol) return;
     const left=document.createElement('div'); left.className='ll-left'; const mq=matchMedia('(min-width:861px)');
     const place=()=>{ if(mq.matches){ if(!left.parentNode) sec.insertBefore(left,t); left.appendChild(h); left.appendChild(ol) } else if(left.parentNode){ sec.insertBefore(h,left); t.appendChild(ol); left.remove() } };
-    place(); (mq.addEventListener?mq.addEventListener('change',place):mq.addListener(place)) });
+    place(); (mq.addEventListener?mq.addEventListener('change',place):mq.addListener(place)) ;
+    // computer: narrow the text column until its paragraphs are at least as tall as the 3 steps, so both columns start and end on the same lines
+    const fit=()=>{ if(!mq.matches){ sec.style.gridTemplateColumns=''; return } const ps=[...t.querySelectorAll(':scope>p')]; if(!ps.length) return; ol.style.alignSelf='start'; let pick=0.7;
+      for(let r=1.18;r>=0.7;r-=0.01){ sec.style.gridTemplateColumns=r.toFixed(2)+'fr '+(2-r).toFixed(2)+'fr'; const th=ps[ps.length-1].getBoundingClientRect().bottom-ps[0].getBoundingClientRect().top; if(ol.getBoundingClientRect().height<=th+1){ pick=r; break } }
+      sec.style.gridTemplateColumns=pick.toFixed(2)+'fr '+(2-pick).toFixed(2)+'fr'; ol.style.alignSelf='' };
+    let tm; addEventListener('resize',()=>{ clearTimeout(tm); tm=setTimeout(fit,120) }); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fit); setTimeout(fit,0); addEventListener('load',fit) });
   // A legacy that grows, computer: pick the column split where the 4 points (left) fit inside the text's height (right),
   // so both columns can start and end on the same lines
   (()=>{ const S=$('heirloom'); if(!S) return; const mq=matchMedia('(min-width:861px)');

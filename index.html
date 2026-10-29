@@ -344,7 +344,7 @@ em{font-style:italic;font-weight:300}
 .ll-card .cap{display:grid;gap:2px;padding:7px 2px 0}
 .ll-card .cap b{font-family:var(--f-display);font-weight:400;font-size:14px;line-height:1.2}
 .ll-card .cap span{font-family:var(--f-mono);font-size:10px;color:var(--mute);letter-spacing:.04em}
-.ll-now{position:absolute;top:0;bottom:64px;width:1px;background:var(--pink);z-index:0}
+.ll-now[hidden]{display:none!important}.ll-now{position:absolute;top:0;bottom:64px;width:1px;background:var(--pink);z-index:0}
 .ll-view.zooming .ll-it{opacity:0!important;transition:opacity .12s ease!important}
 .ll-items{position:absolute;inset:0;z-index:1;pointer-events:none}.ll-items .ll-card{pointer-events:auto}
 .ll-card .cap{overflow:hidden}
@@ -460,7 +460,18 @@ em{font-style:italic;font-weight:300}
 .rsv-msg.ok{color:var(--black)}
 .rsv-row input.bad,.res input.bad{border-color:#b00}
 input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
-@media (max-width:480px){.rsv-row{flex-direction:column}.rsv-row .btn{width:100%}}
+/* phone: the email field and its button always stay in one row, as on a computer */
+@media (max-width:480px){
+  .rsv-row,.res.tl-form{position:relative;flex-direction:row!important;flex-wrap:nowrap!important;gap:0!important}
+  .rsv-row .rsv-in,.res.tl-form .rsv-in{flex:1 1 100%!important;min-width:0;width:100%}
+  .rsv-row .btn,.res.tl-form .btn{position:absolute!important;right:4px;top:4px;bottom:4px;height:auto!important;width:auto!important;margin:0!important;padding-inline:16px!important;font-size:12px!important;letter-spacing:.1em;z-index:2}
+  .rsv-row input,.res.tl-form input{padding-right:var(--bw,140px)!important;padding-left:18px!important;text-align:left!important}
+  .rsv-row .rsv-cta,.rsv-row .tl-lab,.res.tl-form .tl-lab{right:var(--bw,140px)!important;left:0!important;justify-content:center;white-space:nowrap;font-size:var(--lf,14px)!important;overflow:hidden}
+  .intro .rsv-row .btn{background:#0a0a0a!important;color:#fff!important;border-color:#0a0a0a!important}
+  html body .intro .rsv-row .rsv-cta{font-size:var(--lf,14px)!important;right:var(--bw,140px)!important;left:0!important}
+}
+/* short phone screen: the first screen's email field and button share one row */
+
 
 
 .ll-modes{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
@@ -526,7 +537,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .scene-win{position:absolute;display:flex;align-items:center;justify-content:center;overflow:visible}
 .scene-win svg{width:100%;height:100%;display:block;overflow:visible}
 .yours{position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:clamp(6px,0.9vw,12px);white-space:nowrap;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:clamp(9px,0.8vw,12px);letter-spacing:.22em;text-transform:uppercase;color:#8b8b8b;pointer-events:none;transition:color .5s}
-.yours.on-metal{color:#f2f2f2;text-shadow:0 1px 2px rgba(0,0,0,.45)}.yours .yn{display:block;margin-top:5px;font-size:.78em;letter-spacing:.16em;opacity:.6}.yours:not(.on-metal) .yn{display:none}
+.yours.on-metal{color:#f2f2f2;text-shadow:0 1px 2px rgba(0,0,0,.45)}.yours.tiny{visibility:hidden}.yours .yn{display:block;margin-top:5px;font-size:.78em;letter-spacing:.16em;opacity:.6}.yours:not(.on-metal) .yn{display:none}
 .seg-on{fill:#ff2b1c;filter:url(#segGlow)}
 .seg-off{fill:#2c0907}
 .intro .launch{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;align-items:center;max-width:none;padding:calc(84px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));gap:0}
@@ -557,16 +568,19 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .intro .launch.ref #lPhr .pdot{display:inline}
 /* computer: the first line of the text under the painting is justified edge to edge, so its first word starts exactly under the first word above the painting */
 @media (min-width:861px){.intro .launch:not(.ref) #lPhr:not(.nojust){text-align-last:justify!important}.intro .launch:not(.ref) #lPhr .pl2{display:block;text-align-last:center}.intro .launch:not(.ref) #lPhr .pbr{display:none}}
-#lTag .ltag3{display:block;text-align:center;text-align-last:center}#lTag .lt-ref{display:none}.intro .launch.ref #lTag .lt-ref,#lTag.fit2 .lt-ref{display:inline}.intro .launch.ref #lTag .lt-new,#lTag.fit2 .lt-new{display:none}
+#lTag .ltag3{display:block;text-align:center;text-align-last:center}
+/* phone and tablet: the first screen texts grow with the screen (16px on a phone, up to 22px on a tablet) */
+@media (max-width:860px){.intro .launch #lTag,.intro .launch #lPhr{font-size:clamp(16px,3vw,22px)!important}}
+/* computer: the texts start higher on the first screen (the top menu is hidden there) */
+@media (min-width:861px){.intro .launch:not(.ref){padding-top:calc(32px + env(safe-area-inset-top,0px))}}
+@media (min-width:861px){.intro .launch.nofill #lTag,.intro .launch.nofill #lPhr{text-align-last:center!important}.intro .launch:not(.ref):not(.nofill) #lTag,.intro .launch:not(.ref):not(.nofill) #lPhr{text-align-last:justify!important}.intro .launch:not(.ref) #lTag .ltag3{text-align-last:center!important}.intro .launch:not(.ref) #lPhr .pl2{display:inline!important}.intro .launch:not(.ref) #lPhr .pdot{display:inline!important}.intro .launch:not(.ref) #lPhr .pbr{display:none!important}}#lTag .lt-ref{display:none}.intro .launch.ref #lTag .lt-ref,#lTag.fit2 .lt-ref{display:inline}.intro .launch.ref #lTag .lt-new,#lTag.fit2 .lt-new{display:none}
 .intro .launch .ltag .rl{display:block}
 .intro .launch .rv{opacity:0;filter:blur(10px);transform:translateY(18px);transition:opacity 1.1s ease,filter 1.3s ease,transform 1.3s cubic-bezier(.2,.7,.2,1);will-change:opacity,filter,transform}
 .intro .launch .rv.in{opacity:1;filter:blur(0);transform:none}
 @media (prefers-reduced-motion:reduce){.intro .launch .rv{transition:none;filter:none;transform:none}}
 .intro .launch #lPhr,.intro .launch #lTag{margin-inline:auto;text-wrap:pretty;text-align:justify!important;text-align-last:center!important;-webkit-hyphens:none;hyphens:none;word-spacing:0;max-width:calc(100vw - 32px)}
-/* phone: both texts on the first screen are centered across the screen width (justified narrow lines left big gaps) */
-@media (max-width:860px){.intro .launch #lPhr,.intro .launch #lTag{text-align:center!important;text-align-last:center!important}}
 .intro .rsv-cta{cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.25em}
-.intro .rsv-cta:hover{text-decoration-thickness:2px}
+.intro .rsv-cta:hover{opacity:.8}
 .intro .rsv{gap:12px;margin-top:2px}
 .intro .launch .sub div{text-align:center;justify-items:center}
 .intro .launch .sub span{text-transform:uppercase;letter-spacing:.14em;font-size:10px}
@@ -589,6 +603,13 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .intro .launch .top{display:grid;gap:16px;justify-items:center}
 .intro .launch .to-rsv{cursor:pointer}
 .intro .launch .ltag .ul{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.22em}
+/* first screen texts: underlined phrases never break onto two lines; lines are centered and balanced (no stretched gaps between words) */
+@media (min-width:861px){.intro .launch .to-rsv,.intro .launch .ltag .ul{white-space:nowrap}}
+@media (min-width:861px){html body .intro .launch:not(.ref):not(.x1):not(.x2) #lTop #lTag,html body .intro .launch:not(.ref):not(.x1):not(.x2) #lTop #lPhr,html body .intro .launch:not(.ref):not(.x1):not(.x2) #lTop #lTag .ltag3{text-align:center!important;text-align-last:center!important;text-wrap:balance}}
+/* phone: the first screen texts are justified edge to edge across the screen (last lines centered) */
+@media (max-width:860px){html body .intro .launch:not(.ref) #lTop #lTag,html body .intro .launch:not(.ref) #lTop #lPhr{text-align:justify!important;text-align-last:center!important;text-wrap:wrap}}
+/* every underline on the site in one style: 1px line, same distance from the text */
+u,.ul,.intro .launch .to-rsv,.intro .rsv-cta,.tl-lab{text-decoration-line:underline!important;text-decoration-thickness:1px!important;text-underline-offset:.22em!important;text-decoration-skip-ink:auto}
 .intro .launch .ltag{margin:0;max-width:none;text-align:center;text-align:center;color:#fff;font-family:var(--f-display);font-weight:300;font-size:clamp(16px,1.6vw,21px);line-height:1.35;letter-spacing:-.01em;text-wrap:balance}
 .sc-tabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
 .sc-tabs .vtab{border-color:rgba(255,255,255,.4);color:#fff;background:rgba(10,10,10,.25);backdrop-filter:blur(6px)}
@@ -604,7 +625,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 #uses .u:nth-child(even){padding-left:34px}
 #uses .u h3{font-size:clamp(18px,1.55vw,22px);text-transform:uppercase;letter-spacing:.02em}
 #uses .u p{font-size:clamp(14px,1.02vw,16px);line-height:1.55}
-#uses .u p b{font-weight:600;color:#0a0a0a}
+#uses .u p b,#uses>.cw-t p b{font-weight:600;color:#0a0a0a}
 @media (max-width:860px){#uses .u:nth-child(odd),#uses .u:nth-child(even){padding-left:0;padding-right:0}}
 .u-top .t{gap:1px;line-height:1.25}
 /* tyt seconds */
@@ -864,7 +885,7 @@ em,i.em{font-style:normal!important}
 
 /* life line, months: a thin vertical mark where a year ends, the new year written beside it */
 .ll-yb{position:absolute;bottom:4px;height:76px;width:1px;margin-left:-.5px;background:rgba(10,10,10,.35);pointer-events:none}
-.ll-yl{position:absolute;bottom:4px;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;color:#0a0a0a;pointer-events:none;white-space:nowrap}
+.ll-yl.c{transform:translateX(-50%)}.ll-yl{position:absolute;bottom:4px;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;color:#0a0a0a;pointer-events:none;white-space:nowrap}
 .ll-ys.open span{visibility:hidden}
 
 /* life line: a short letter for each month */
@@ -879,7 +900,7 @@ em,i.em{font-style:normal!important}
 /* first screen: the counting modes under the top text, same look as on the last screen */
 /* old price: crossed out, lighter and smaller, right after the price */
 .oldp{margin-left:.45em;font-size:max(.72em,11px);color:#9a9a9a;text-decoration:line-through;text-decoration-thickness:1px;font-weight:inherit}
-.intro .imodes{display:grid;gap:6px;justify-items:center;margin-top:-4px;pointer-events:auto;grid-template-areas:"s" "m"}
+.intro .imodes{display:grid;gap:6px;justify-items:center;margin-top:-4px;pointer-events:auto;grid-template-areas:"m" "s"}
 /* first screen: the hint and the date pickers share one row (pickers only in From 0 to now) */
 .intro .imodes>.omodes{grid-area:m}.intro #iHint,.intro #iBdate{grid-area:s;align-self:center}
 /* last screen: no small caption under the digits */
@@ -913,14 +934,14 @@ em,i.em{font-style:normal!important}
       <div class="tyt" id="tyt"><p>Береги своё <em>время</em></p></div>
       <div class="scene" id="scene" aria-hidden="true"><img id="sceneImg" src="img/w/scene.webp" alt=""><div class="scene-shade"></div></div><div class="scene-win" id="sceneWin"><svg id="sceneDigits" preserveAspectRatio="xMidYMid meet"></svg><span class="yours" id="yours">Твоё время с запуска</span></div>
       <div class="launch">
-        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new">Твой личный философский арт-объект, который переживёт тебя <span class="ul">на сотни лет</span> и сохранит память о тебе для следующих поколений твоего рода<span class="ltag3">А другие философские смыслы ты откроешь ниже</span></span><span class="lt-ref" aria-hidden="true">Твой личный арт-объект, который переживёт тебя <span class="ul">на сотни лет</span> и сохранит память о тебе для следующих поколений твоего рода. А другие философские смыслы ты откроешь ниже</span></p><div class="imodes" id="iModes"><div class="omodes" role="group" aria-label="Режим счёта"><button type="button" data-m="now" aria-pressed="true">С этого момента</button><button type="button" data-m="life" aria-pressed="false">С рождения до сейчас</button><button type="button" data-m="back" aria-pressed="false">Хардкорный обратный отсчёт</button></div><p class="ohint" id="iHint"></p><div class="obsel" id="iBdate" hidden><select id="ibD" aria-label="День"><option value="">День</option></select><select id="ibM" aria-label="Месяц"><option value="">Месяц</option></select><select id="ibY" aria-label="Год"><option value="">Год</option></select></div></div></div>
+        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new">Твой личный философский арт-объект, который переживёт тебя <span class="ul">на сотни лет</span> и сохранит память о тебе для следующих поколений твоего рода<span class="ltag3">А другие философские смыслы ты откроешь ниже</span></span><span class="lt-ref" aria-hidden="true">Твой личный арт-объект, который переживёт тебя <span class="ul">на сотни лет</span> и сохранит память о тебе для следующих поколений твоего рода. А другие философские смыслы ты откроешь ниже</span></p><p class="phrase" id="lPhr">Твоё время пошло. С этого момента оно считается. <u class="to-rsv" role="link" tabindex="0">Забронируй своё время</u>, и оно будет считаться вечно<span class="pdot">.</span><br class="pbr"><span class="pl2"> У первых объектов будет больше всего секунд</span></p></div>
         <div class="bottom">
         <div class="sub">
           <div><span class="mono">Момент запущен</span><b class="num" id="startedAt">—</b></div>
           <div><span class="mono">С запуска</span><b class="num" id="sinceStart">0 s</b></div>
           <div><span class="mono">Обратный отсчёт (80 лет)</span><b class="num" id="cd">2,524,608,000</b></div>
         </div>
-        <p class="phrase" id="lPhr">Твоё время пошло. С этого момента оно считается. <u class="to-rsv" role="link" tabindex="0">Забронируй своё время</u>, и оно будет считаться вечно<span class="pdot">.</span><br class="pbr"><span class="pl2"> У первых объектов будет больше всего секунд</span></p>
+        <div class="imodes" id="iModes"><div class="omodes" role="group" aria-label="Режим счёта"><button type="button" data-m="now" aria-pressed="true">С этого момента</button><button type="button" data-m="life" aria-pressed="false">С рождения до сейчас</button><button type="button" data-m="back" aria-pressed="false">Хардкорный обратный отсчёт</button></div><p class="ohint" id="iHint"></p><div class="obsel" id="iBdate" hidden><select id="ibD" aria-label="День"><option value="">День</option></select><select id="ibM" aria-label="Месяц"><option value="">Месяц</option></select><select id="ibY" aria-label="Год"><option value="">Год</option></select></div></div>
         <form class="rsv" id="rsvForm" novalidate>
           <div class="rsv-row"><span class="rsv-in" id="rsvIn"><input type="email" id="rsvEmail" placeholder="" autocomplete="email" aria-label="Забронируй свой старт: твой email"><label class="rsv-cta" for="rsvEmail">Забронируй свой старт</label></span><button class="btn" type="submit" id="rsvBtn">Забронировать</button></div>
           <p class="rsv-msg mono" id="rsvMsg"></p>
@@ -963,7 +984,7 @@ em,i.em{font-style:normal!important}
 <section class="cw" id="uses">
   <h2>Как его использовать</h2>
   <div class="cw-t">
-    <p>Твоё время постоянно куда-то исчезает. Это хранитель твоего времени, и у него экзистенциальный смысл как у главной ценности в этом мире. Нет ничего ценнее твоего времени. С Time Keeper <u>твоё время никогда не исчезнет</u>. Ниже способы применения, которые знаем мы, но ты можешь придумать свои. Главное, чтобы <u>он тебя вдохновлял</u>.</p>
+    <p><b>Твоё время постоянно куда-то исчезает.</b> Это хранитель твоего времени, и у него экзистенциальный смысл как у главной ценности в этом мире. Нет ничего ценнее твоего времени. С Time Keeper <u>твоё время никогда не исчезнет</u>. Ниже способы применения, которые знаем мы, но ты можешь придумать свои. Главное, чтобы <u>он тебя вдохновлял</u>.</p>
     </div>
     <div class="cw-full u-grid uses-l">
       <article class="u">
@@ -1162,16 +1183,17 @@ em,i.em{font-style:normal!important}
   <h2>Наследие, которое растёт в цене</h2>
   <div class="cw-t">
     <p>Time Keeper создан, чтобы пережить своего первого владельца. Его момент зафиксирован в блокчейне, а счёт никогда не останавливается, поэтому с каждым годом объект значит всё больше.</p>
-    <p>Переходя к детям и внукам, он несёт точную секунду своего запуска и линию жизни, собранную за десятилетия: фото, голосовые и видео. Он становится семейной реликвией, которую нельзя скопировать, потому что этот момент хранит только одно устройство в мире.</p>
-    <p>Как личный арт-объект он работает как картина, подписанная самим временем. Каждый экземпляр пронумерован. Первая 1 000 — самая ценная из всех коллекций: она поможет нам расти и расширяться, а у её владельцев будет самая ценная коллекция, потому что в будущем у их арт-объектов будет больше всего секунд. Чем дольше он считает, тем больше истории в нём хранится. Момент может перейти к другому человеку только как арт-объект чужого времени, поэтому его история становится частью его ценности.</p>
+    <p>Переходя к детям и внукам, он несёт точную секунду своего запуска и линию жизни, собранную за десятилетия: фото, голосовые и видео.</p>
+    <p>Как личный арт-объект он работает как картина, подписанная самим временем. Первая 1 000 — самая ценная из всех коллекций: она поможет нам расти и расширяться, а у её владельцев будет самая ценная коллекция, потому что в будущем у их арт-объектов будет больше всего секунд. Чем дольше он считает, тем больше истории в нём хранится.</p>
   </div>
 </section>
 
 <section class="cw cw-ll">
   <h2>Твоя линия жизни</h2>
   <div class="cw-t"><p>Раз в месяц ты загружаешь 3 фото, 1 видео и короткую заметку, как маленькое письмо самому себе. <u>Вечный дневник</u>, каждый месяц, чтобы собрать <u>альбом своей жизни</u>, который твои родные смогут листать через сотни лет.</p>
-    <p>Сегодня мы не можем увидеть фото даже самых близких родственников, не говоря уже обо всей их истории и о тех, кто жил за сотни лет до нас, хотя именно благодаря им мы существуем. В будущем этой проблемы не будет.</p>
-    <p>Ты, то, как ты жил, через что прошёл, <u>останется навсегда</u>. Люди, которых ещё нет и которые родятся только через сотни лет, смогут многое узнать о тебе и беречь эту <u>линию рода</u>.</p>
+    <p>Сегодня мы не можем увидеть фото даже самых близких родственников, не говоря уже обо всей их истории и о тех, кто жил за сотни лет до нас. В будущем этой проблемы не будет.</p>
+    <p>Ты, то, как ты жил, через что прошёл, <u>останется навсегда</u>.</p>
+    <p>Люди, которых ещё нет и которые родятся только через сотни лет, смогут многое узнать о тебе и беречь эту <u>линию рода</u>.</p>
     <p>Зарегистрируйся, публикуй 3 фото и 1 видео раз в месяц и храни свой альбом жизни.</p>
   </div>
   <div class="cw-full ll" id="ll">
@@ -1189,7 +1211,7 @@ em,i.em{font-style:normal!important}
         <div class="ll-axis"></div>
         <div class="ll-ticks" id="llTicks"></div>
         <div class="ll-items" id="llItems"></div>
-        <div class="ll-now" id="llNow"><span class="mono">Сегодня</span></div>
+        <div class="ll-now" id="llNow" hidden></div>
       </div>
     </div>
     <div>
@@ -1356,23 +1378,34 @@ em,i.em{font-style:normal!important}
   // both texts on the first screen, computer only: exactly two lines each, a little inside the painting's edges
   function fitPhr(){ const pw=Math.floor(Math.min(fitTag.pw||innerWidth, innerWidth-32)); if(!REF) document.documentElement.style.setProperty('--pw',pw+'px'); const f=$('rsvForm'); if(f){ f.style.width=pw+'px'; f.style.maxWidth=pw+'px' }
     const els=['lTag','lPhr'].map($).filter(Boolean);
-    if(innerWidth<=860){ const tw=Math.floor(innerWidth-40); els.forEach(el=>{ el.style.width=tw+'px'; el.style.maxWidth=tw+'px'; el.style.removeProperty('font-size'); el.style.removeProperty('line-height') }); return }
+    if(innerWidth<=860){ els.forEach(el=>{ el.style.width=pw+'px'; el.style.maxWidth=pw+'px'; el.style.removeProperty('font-size'); el.style.removeProperty('line-height') }); return }
     const W=Math.floor(pw*0.95);
     els.forEach(el=>{ el.style.width=W+'px'; el.style.maxWidth=W+'px'; el.style.setProperty('line-height','1.35','important') });
+    // computer, the new first screen: both paragraphs fill exactly two full lines (justified edge to edge), in one font size,
+    // as large as the width allows; the third line of the first paragraph is centered under them
+    if(!REF){ const tg=$('lTag'), ph=$('lPhr'); const pr=document.createElement('span'); pr.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit';
+      // computer: both paragraphs fill exactly two full lines at a width a little inside the painting's edges (one size for both, never above 30px)
+      const f1=20; els.forEach(el=>el.style.setProperty('font-size',f1+'px','important'));
+      const a=tg.querySelector('.lt-new').cloneNode(true); a.querySelectorAll('.ltag3').forEach(e=>e.remove()); pr.innerHTML=a.innerHTML; tg.appendChild(pr); const Lt=pr.getBoundingClientRect().width/f1; pr.remove();
+      const c=ph.cloneNode(true); c.querySelectorAll('.pbr').forEach(e=>e.remove()); c.querySelectorAll('.pdot').forEach(e=>e.style.display='inline'); pr.innerHTML=c.innerHTML; ph.appendChild(pr); const Lp=pr.getBoundingClientRect().width/f1; pr.remove();
+      let f=Math.min(30,Math.floor(2*W*0.975/Math.max(Lt,Lp)*4)/4); els.forEach(el=>el.style.setProperty('font-size',f+'px','important'));
+      const two=el=>{ const lh=parseFloat(getComputedStyle(el).lineHeight); const extra=el===tg?tg.querySelector('.ltag3').getBoundingClientRect().height:0; return el.scrollHeight-extra<=lh*2+2 };
+      while(f>12 && !(two(tg)&&two(ph))){ f-=0.25; els.forEach(el=>el.style.setProperty('font-size',f+'px','important')) }
+      return }
     const tg=$('lTag'); if(tg) tg.classList.add('fit2'); const fits=fs=>els.every(el=>{ el.style.setProperty('font-size',fs+'px','important'); return el.scrollHeight<=fs*1.35*2+2 });
     let lo=5, hi=21; while(hi-lo>0.25){ const m=(lo+hi)/2; if(fits(m)) lo=m; else hi=m } fits(Math.floor(lo*4)/4); if(tg) tg.classList.remove('fit2') }
   // the last screen's painting keeps the size it always had: measured on the first screen as it was before the counting modes were added
   let REF=false;
   function refBand(){ const L=document.querySelector('.intro .launch'), st=document.querySelector('.intro .stick');
-    const keep=['lTag','lPhr','rsvForm'].map(id=>[$(id),$(id)?$(id).style.cssText:'']), kpw=fitTag.pw; $('lTop').style.translate=''; L.classList.add('ref'); REF=true;
+    const keep=['lTag','lPhr','rsvForm'].map(id=>[$(id),$(id)?$(id).style.cssText:'']), kpw=fitTag.pw; $('lTop').style.translate=''; const ph0=$('lPhr'), fm0=$('rsvForm'); if(ph0&&fm0) fm0.parentNode.insertBefore(ph0,fm0); L.classList.add('ref'); REF=true;
     fitTag(); fitPhr(); fitTag(); fitPhr();
     const sr=st.getBoundingClientRect(), stp=$('lTop').getBoundingClientRect(), bt=document.querySelector('.intro .launch .bottom').getBoundingClientRect();
-    const r={top0:(stp.bottom-sr.top)+24, bot0:(bt.top-sr.top)-24, pw:fitTag.pw, tag:$('lTag').style.cssText, phr:$('lPhr').style.cssText, form:$('rsvForm')?$('rsvForm').style.cssText:''}; L.classList.remove('ref'); REF=false; return r }
+    const r={top0:(stp.bottom-sr.top)+24, bot0:(bt.top-sr.top)-24, pw:fitTag.pw, tag:$('lTag').style.cssText, phr:$('lPhr').style.cssText, form:$('rsvForm')?$('rsvForm').style.cssText:''}; L.classList.remove('ref'); REF=false; if(ph0) $('lTop').appendChild(ph0); return r }
   // the first screen as it always was: same painting size and place, same text sizes. The counting modes fit in above the painting
   // (the top text moves up only as much as they need); the text under the painting keeps its two lines inside the painting's width
   function applyRef(r){ $('lTag').style.cssText=r.tag; if($('rsvForm')) $('rsvForm').style.cssText=r.form; fitTag.pw=r.pw;
     document.documentElement.style.setProperty('--pw',Math.floor(Math.min(r.pw||innerWidth,innerWidth-32))+'px');
-    const ph=$('lPhr'); ph.style.cssText=r.phr; if(innerWidth<=860) return;
+    const ph=$('lPhr'); ph.style.cssText=r.phr; if(innerWidth<=860) return; fitTag.pw=r.pw; fitPhr(); return;
     const f0=parseFloat(getComputedStyle(ph).fontSize); const fp=fs=>{ ph.style.setProperty('font-size',fs+'px','important'); return ph.scrollHeight<=fs*1.35*2+2 };
     if(!fp(f0)){ let lo=5, hi=f0; while(hi-lo>0.25){ const m=(lo+hi)/2; if(fp(m)) lo=m; else hi=m } fp(Math.floor(lo*4)/4) }
     // the first line under the painting is justified only when it nearly fills the width (no stretched gaps on very wide screens)
@@ -1393,19 +1426,29 @@ em,i.em{font-style:normal!important}
     let sc,left,top;
     if(S.mode==='fit'){ sc=Math.min(0.80*W/S.obj[2],0.92*band/S.obj[3]); left=W/2-(S.obj[0]+S.obj[2]/2)*sc; top=bc-(S.obj[1]+S.obj[3]/2)*sc }
     else { const fx=S.fx, fy=S.fy; sc=Math.max(W/S.W*S.z,H/S.H*S.z,(H-bc)/(S.H-fy),bc/fy); left=W/2-fx*sc; top=bc-fy*sc; left=Math.min(0,Math.max(W-S.W*sc,left)); top=Math.min(0,Math.max(H-S.H*sc,top)) }
-    // the text above moves up only as much as the counting modes need to fit above the painting
-    if(S.mode==='fit'){ const lt=$('lTop'); lt.style.translate=''; const lr=lt.getBoundingClientRect(), nb=lr.bottom-sr.top, ntop=lr.top-sr.top, pt=top+S.obj[1]*sc;
-      const sh=Math.min(Math.max(0,nb+14-pt),Math.max(0,ntop-16)); lt.style.translate=sh?'0 '+(-Math.round(sh))+'px':'' }
-    // phone with a short screen: if the counting modes still do not fit above the painting, the text above gets a little smaller first (down to 13px),
-    // then the painting gets smaller from the top (its bottom stays), so nothing ever overlaps
-    let small=false;
-    if(S.mode==='fit' && innerWidth<=860){ const lt=$('lTop'), tg=$('lTag'), pt=top+S.obj[1]*sc; let fs=parseFloat(getComputedStyle(tg).fontSize);
-      const shift=()=>{ lt.style.translate=''; const lr=lt.getBoundingClientRect(), nb=lr.bottom-sr.top, ntop=lr.top-sr.top, sh=Math.min(Math.max(0,nb+14-pt),Math.max(0,ntop-16)); lt.style.translate=sh?'0 '+(-Math.round(sh))+'px':''; return lt.getBoundingClientRect().bottom-sr.top+14 };
-      let need=shift(); while(need>pt && fs>13){ fs-=0.5; tg.style.setProperty('font-size',fs+'px','important'); need=shift() }
-      if(need>pt){ const pb=top+(S.obj[1]+S.obj[3])*sc; sc=Math.max(40,pb-need)/S.obj[3]; top=pb-(S.obj[1]+S.obj[3])*sc; left=W/2-(S.obj[0]+S.obj[2]/2)*sc; small=sc<Math.max(W/S.W,H/S.H) } }
+    // both texts are above the painting and the counting modes under it: the painting keeps the size it always had when there is room,
+    // otherwise it gets just small enough to sit between the texts and the modes, centered in that space
+    let small=false; $('lTop').style.translate='';
+    // the painting ALWAYS keeps the size it always had (sc from the reference). Both texts sit above it, the counting modes and the email field under it.
+    // The texts are as wide as the painting (computer: a little inside its edges), and get the largest size that still fits above the painting
+    if(S.mode==='fit'){ const phone=innerWidth<=860, G=phone?14:16, L=document.querySelector('.intro .launch'), tg=$('lTag'), ph=$('lPhr'), ph0=S.obj[3]*sc;
+      L.classList.remove('tight','nofill'); fitTag.pw=phone?Math.max(S.obj[2]*sc,0.80*W):S.obj[2]*sc; fitPhr();
+      const room=()=>{ const tb=$('lTop').getBoundingClientRect().bottom-sr.top, bt=document.querySelector('.intro .launch .bottom').getBoundingClientRect().top-sr.top; return [tb,bt,bt-tb-2*G-ph0] };
+      let r=room(); let fs=parseFloat(getComputedStyle(tg).fontSize); const f0=fs, fmin=phone?13:12;
+      if(phone && r[2]<0){ L.classList.add('tight'); r=room() }
+      while(r[2]<0 && fs>fmin){ fs=Math.max(fmin,fs-0.25); [tg,ph].forEach(el=>el.style.setProperty('font-size',fs+'px','important')); r=room() }
+      // computer, a smaller size than the one that fills the painting's width: the text block gets just narrow enough that both paragraphs
+      // still fill exactly two full lines (a clean rectangle, centered, inside the painting's edges)
+      if(!phone && fs<f0-0.1){ const pr=document.createElement('span'); pr.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit';
+        const a=tg.querySelector('.lt-new').cloneNode(true); a.querySelectorAll('.ltag3').forEach(e=>e.remove()); pr.innerHTML=a.innerHTML; tg.appendChild(pr); const Lt=pr.getBoundingClientRect().width; pr.remove();
+        const c=ph.cloneNode(true); c.querySelectorAll('.pbr').forEach(e=>e.remove()); c.querySelectorAll('.pdot').forEach(e=>e.style.display='inline'); pr.innerHTML=c.innerHTML; ph.appendChild(pr); const Lp=pr.getBoundingClientRect().width; pr.remove();
+        let w2=Math.ceil(Math.max(Lt,Lp)/1.95); const two=el=>{ const lh=parseFloat(getComputedStyle(el).lineHeight); const extra=el===tg?tg.querySelector('.ltag3').getBoundingClientRect().height:0; return el.scrollHeight-extra<=lh*2+2 };
+        const setW=v=>[tg,ph].forEach(el=>{ el.style.width=v+'px'; el.style.maxWidth=v+'px' }); setW(w2); let k=0; while(!(two(tg)&&two(ph)) && k++<40){ w2+=4; setW(w2) } r=room() }
+      left=W/2-(S.obj[0]+S.obj[2]/2)*sc; top=Math.max(r[0]+G,(r[0]+r[1])/2-ph0/2)-S.obj[1]*sc; small=false }
+    $('yours').classList.toggle('tiny',S.mode==='fit'&&S.obj[3]*sc<110);
     $('sceneImg').classList.toggle('fade',small);
     const im=$('sceneImg'); im.style.width=S.W+'px'; im.style.height=S.H+'px'; im.style.transform='translate('+left+'px,'+top+'px) scale('+sc+')';
-    const w=$('sceneWin'); w.style.width=(S.w*sc)+'px'; w.style.height=(S.h*sc)+'px'; w.style.left=(left+S.cx*sc)+'px'; w.style.top=(top+S.cy*sc)+'px'; w.style.transform='translate(-50%,-50%) rotate('+S.ang+'deg)'; w.style.background=S.bg||'transparent'; if(scKey==='painting'){ const tp=$('tyt').firstElementChild; tp.style.top=(top+S.cy*sc-S.h*sc/2-Math.max(28,S.h*sc*0.9))+'px'; centerPhr(sr.top+top+(S.obj[1]+S.obj[3])*sc) } w.style.borderRadius=S.rad?(S.rad*sc)+'px':'3px';
+    const w=$('sceneWin'); w.style.width=(S.w*sc)+'px'; w.style.height=(S.h*sc)+'px'; w.style.left=(left+S.cx*sc)+'px'; w.style.top=(top+S.cy*sc)+'px'; w.style.transform='translate(-50%,-50%) rotate('+S.ang+'deg)'; w.style.background=S.bg||'transparent'; if(scKey==='painting'){ const tp=$('tyt').firstElementChild; tp.style.top=(top+S.cy*sc-S.h*sc/2-Math.max(28,S.h*sc*0.9))+'px'; } w.style.borderRadius=S.rad?(S.rad*sc)+'px':'3px';
   }
   const SEGP={a:'2,1 3,0 7,0 8,1 7,2 3,2',b:'8,1 9,2 9,8 8,9 7,8 7,2',c:'8,9 9,10 9,16 8,17 7,16 7,10',d:'2,17 3,16 7,16 8,17 7,18 3,18',e:'2,9 3,10 3,16 2,17 1,16 1,10',f:'2,1 3,2 3,8 2,9 1,8 1,2',g:'2,9 3,8 7,8 8,9 7,10 3,10'};
   function buildDigits(){
@@ -1640,6 +1683,11 @@ em,i.em{font-style:normal!important}
     sw.addEventListener('pointerdown',e=>e.stopPropagation()); sw.addEventListener('pointermove',e=>e.stopPropagation());
     sw.querySelectorAll('button').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); const k=b.dataset.k;
       sw.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); si.src='img/tc/'+k+'-silver.webp?2'; gi.src='img/tc/'+k+'-gold.webp?2' })) });
+  // phone: the button sits inside the email field (one pill); the field's text keeps clear of it
+  { const setBW=()=>document.querySelectorAll('.rsv-row,.res.tl-form').forEach(r=>{ const b=r.querySelector('.btn'); if(!b) return; r.style.setProperty('--bw',(b.offsetWidth+10)+'px');
+      // the label inside the field gets smaller (down to 11px) until it fits next to the button
+      const l=r.querySelector('.rsv-cta,.tl-lab'); r.style.removeProperty('--lf'); if(!l||innerWidth>480) return; let f=14; const room=()=>l.clientWidth-8; const pr=document.createElement('span'); pr.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit'; l.appendChild(pr); pr.textContent=l.childNodes[0]?l.textContent:'';
+      while(f>11 && pr.getBoundingClientRect().width>room()){ f-=0.5; r.style.setProperty('--lf',f+'px') } pr.remove() }); setBW(); addEventListener('resize',setBW); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(setBW); setTimeout(setBW,800) }
   // ---------- press feedback on every button ----------
   addEventListener('pointerdown',e=>{ const b=e.target.closest&&e.target.closest('button,.btn,[role="tab"],.tl-r,a.btn'); if(!b||b.disabled||!b.animate) return;
     b.animate([{scale:'1'},{scale:'.94'},{scale:'1'}],{duration:280,easing:'cubic-bezier(.2,.7,.2,1)'}) },{passive:true});
@@ -1877,7 +1925,7 @@ em,i.em{font-style:normal!important}
     }
     function render(){
       clampX();
-      const w=view.clientWidth, H=view.clientHeight;
+      const w=view.clientWidth, H=view.clientHeight, oneYear=w>860 && ppd>(minP()+monthsP())/2;
       track.style.transform='translateX('+(-x0)+'px)';
       // ticks
       let h=''; const y0=new Date(T0).getUTCFullYear(), y1=new Date(T1).getUTCFullYear();
@@ -1890,7 +1938,8 @@ em,i.em{font-style:normal!important}
         const xa=X(ta), xb=X(tb); if(xb<x0-50||xa>x0+w+50) continue;
         h+='<button type="button" class="ll-ys'+(oM>0.5?' open':'')+'" data-y="'+y+'" style="left:'+(xa+2)+'px;width:'+Math.max(4,xb-xa-4)+'px" aria-label="Show '+y+' by month"><span>'+((xb-xa)<36?'':(yTxt||y%2===0?y:''))+'</span></button>';
         // year boundary: one thin vertical mark through the line, with the new year written next to it
-        if(oM>0&&Date.UTC(y,0,1)>T0) h+='<i class="ll-yb" style="left:'+X(Date.UTC(y,0,1))+'px;opacity:'+oM.toFixed(2)+'"></i><span class="ll-yl" style="left:'+(X(Date.UTC(y,0,1))+8)+'px;opacity:'+oM.toFixed(2)+'">'+y+'</span>';
+        if(oneYear){ const xm=(X(Math.max(T0,Date.UTC(y,0,1)))+X(Math.min(T1,Date.UTC(y+1,0,1))))/2; if(xm>x0+PAD&&xm<x0+w-PAD) h+='<span class="ll-yl c" style="left:'+xm+'px">'+y+'</span>' }
+        else if(oM>0&&Date.UTC(y,0,1)>T0) h+='<i class="ll-yb" style="left:'+X(Date.UTC(y,0,1))+'px;opacity:'+oM.toFixed(2)+'"></i><span class="ll-yl" style="left:'+(X(Date.UTC(y,0,1))+8)+'px;opacity:'+oM.toFixed(2)+'">'+y+'</span>';
         if(oM>0) for(let m=0;m<12;m++){
           const t1=Date.UTC(y,m,1), t2=Date.UTC(y,m+1,1); if(t2<=T0||t1>=T1) continue; const a1=X(Math.max(T0,t1)), a2=X(Math.min(T1,t2));
           if(a2<x0-50||a1>x0+w+50) continue;
@@ -1899,7 +1948,7 @@ em,i.em{font-style:normal!important}
           if(sp>18) h+='<span class="ll-tl m" style="left:'+((a1+a2)/2)+'px;opacity:'+oM.toFixed(2)+'">'+(sp>44?MO[m]:MO[m][0])+'</span>';
         }
       }
-      ticksEl.innerHTML=h;
+      ticksEl.innerHTML=h; if(oneYear) [...ticksEl.children].forEach(n=>{ const l=parseFloat(n.style.left)||0, wd=parseFloat(n.style.width)||0, c=l+wd/2; if(c<x0+PAD*0.9||c>x0+w-PAD*0.9) n.style.display='none' });
       // cards: size by zoom, thin out overlapping, up to two lanes
       const avail=H-64-14;
       // whole-years view with room to spare: one card per year, centred over its year, all on one line
@@ -1918,7 +1967,7 @@ em,i.em{font-style:normal!important}
         const L=lanes===2?((yearMode?(one?((yy-y0)/yS):(mo===0?0:1)):(k/stride))%2):0;
         // each card stands in the exact middle of the span it represents (one month, a quarter, a year…)
         // a card always stands in the middle of its own month, right above that month's bar and name
-        const xc=desk?(X(Date.UTC(yy,mo,1))+X(Date.UTC(yy,mo+1,1)))/2:x; el.style.left=xc+'px'; if(xc<x0-cw || xc>x0+w+cw){ el.classList.add('hid'); return }
+        const xc=desk?(X(Date.UTC(yy,mo,1))+X(Date.UTC(yy,mo+1,1)))/2:x; el.style.left=xc+'px'; if(xc<x0-cw || xc>x0+w+cw || (oneYear && (xc<x0+PAD*0.9 || xc>x0+w-PAD*0.9))){ el.classList.add('hid'); return }
         fill(k); el.classList.remove('hid');
         el.querySelector('.ll-card').style.width=cw+'px';
         const stem = calm ? Math.max(14,Math.min(28,avail-ch-6)) : lanes===2 ? (L===0 ? ch+26 : 12) : Math.max(14,Math.min(40,avail-ch-6));
@@ -1968,7 +2017,8 @@ em,i.em{font-style:normal!important}
       if(ptrs.size===2){ const v=[...ptrs.values()], d=Math.abs(v[0]-v[1]); const r=view.getBoundingClientRect(); if(lastD) zoomAt(ppd*d/lastD,(v[0]+v[1])/2-r.left); lastD=d; moved=true; return }
       const dx=e.clientX-lx; lx=e.clientX; if(!moved && Math.abs(e.clientX-sx)>6){ moved=true; try{ view.setPointerCapture(e.pointerId) }catch(_){} } if(!moved) return; vx=dx; x0-=dx; render();
     });
-    const end=e=>{ const wasPinch=ptrs.size===2; ptrs.delete(e.pointerId); if(wasPinch){ const r=view.getBoundingClientRect(); (ppd>minP()*1.15)?toMonths():toYears() } if(!ptrs.size){ view.classList.remove('drag'); let v=vx; const go=()=>{ v*=0.93; x0-=v; render(); if(Math.abs(v)>.5) inert=requestAnimationFrame(go) }; if(Math.abs(v)>2 && !reduce && moved) inert=requestAnimationFrame(go); setTimeout(()=>moved=false,250) } lastD=0 };
+    const end=e=>{ const wasPinch=ptrs.size===2; ptrs.delete(e.pointerId); if(wasPinch){ const r=view.getBoundingClientRect(); (ppd>minP()*1.15)?toMonths():toYears() } if(!ptrs.size && moved && !wasPinch && view.clientWidth>860 && isMonths()){ view.classList.remove('drag'); const tc=T0+((x0+view.clientWidth/2-PAD)/ppd)*DAY+(-vx*8/ppd)*DAY, yy=new Date(Math.min(Math.max(tc,T0),T1-1)).getUTCFullYear(); animTo(monthsP(),(Math.max(T0,Date.UTC(yy,0,1))-T0)/DAY-PAD/monthsP()); setTimeout(()=>moved=false,250); lastD=0; return }
+      if(!ptrs.size){ view.classList.remove('drag'); let v=vx; const go=()=>{ v*=0.93; x0-=v; render(); if(Math.abs(v)>.5) inert=requestAnimationFrame(go) }; if(Math.abs(v)>2 && !reduce && moved) inert=requestAnimationFrame(go); setTimeout(()=>moved=false,250) } lastD=0 };
     view.addEventListener('pointerup',end); view.addEventListener('pointercancel',end);
     view.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){x0+=80;render()} if(e.key==='ArrowLeft'){x0-=80;render()} if(e.key==='+'||e.key==='='){toMonths()} if(e.key==='-'){toYears()} });
     // minimap
@@ -1999,6 +2049,13 @@ em,i.em{font-style:normal!important}
     ticksEl.addEventListener('click',e=>{ const b=e.target.closest('.ll-ys'); if(!b||moved) return; const y=+b.dataset.y; const ta=Math.max(T0,Date.UTC(y,0,1)), tb=Math.min(T1,Date.UTC(y+1,0,1)); const days=(tb-ta)/DAY;
       animTo(monthsP(),(ta-T0)/DAY-PAD/monthsP()) }); // a year clicked opens the months level from that year's January
     rebuild(); addEventListener('resize',render);
+    // the line always fills its full width: whenever its box changes size (window resize, fonts, layout settling, a wider screen),
+    // the years view is fitted again to the new width and the months view keeps showing one year from the same January
+    { let lw=view.clientWidth, months=false; const fitW=()=>{ const w=view.clientWidth; if(!w||Math.abs(w-lw)<1) return;
+        const wasM=months; lw=w; cancelAnimationFrame(anim); zFade(false);
+        if(wasM){ const t=(x0-PAD)/ppd; ppd=monthsP(); x0=t*ppd+PAD } else { ppd=minP(); x0=0 } render() };
+      const track=()=>{ months=isMonths() }; view.addEventListener('pointerup',()=>setTimeout(track,700)); $('llIn').addEventListener('click',()=>setTimeout(track,700)); $('llOut').addEventListener('click',()=>setTimeout(track,700)); ticksEl.addEventListener('click',()=>setTimeout(track,700));
+      if(window.ResizeObserver) new ResizeObserver(fitW).observe(view); addEventListener('resize',fitW); addEventListener('load',fitW); setTimeout(fitW,500); setTimeout(fitW,2000) }
     const exampleE=E.slice(), exT=[T0,T1,NOW];
 
     // ---------- my life line: storage (cloud via db+assets, else this browser via IndexedDB) ----------
@@ -2188,7 +2245,7 @@ em,i.em{font-style:normal!important}
 
 
   // painting scene: the white text arrives line by line, top first, then the text below, from a soft blur
-  const RV=[[$('lTag'),0],[$('iModes'),0.36],[$('lPhr'),0.72],[$('rsvForm'),1.52]].filter(r=>r[0]);
+  const RV=[[$('lTag'),0],[$('lPhr'),0.36],[$('iModes'),0.72],[$('rsvForm'),1.52]].filter(r=>r[0]);
   RV.forEach(([el])=>el.classList.add('rv'));
   let rvOn=false;
   function revealIntro(ty){ const want=rvOn?ty>0.3:ty>=0.6; if(want===rvOn) return; rvOn=want;

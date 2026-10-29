@@ -56,7 +56,9 @@ em{font-style:italic;font-weight:300}
 
 /* SPLIT SCREENS (intro + outro) */
 .splitsec{height:260vh;position:relative}
-.splitsec .stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;overflow:clip}
+.splitsec .stick{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;overflow:clip}
+/* the dark screens fill the phone screen even when the browser bars hide (no white strip at the bottom) */
+.outro{background:#0a0a0a}
 .under{position:absolute;inset:0;background:var(--black);color:var(--white);display:grid;place-items:center;text-align:center;padding-inline:20px}
 .half{position:absolute;inset:0;background:var(--white);display:grid;place-items:center;will-change:transform}
 .half .name{font-family:var(--f-display);font-weight:400;font-size:clamp(80px,19vw,300px);letter-spacing:.04em;line-height:1;white-space:nowrap;text-transform:uppercase}
@@ -606,7 +608,9 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 @media (min-width:861px){.intro .launch .to-rsv,.intro .launch .ltag .ul{white-space:nowrap}}
 @media (min-width:861px){html body .intro .launch:not(.ref):not(.x1):not(.x2) #lTop #lTag,html body .intro .launch:not(.ref):not(.x1):not(.x2) #lTop #lPhr,html body .intro .launch:not(.ref):not(.x1):not(.x2) #lTop #lTag .ltag3{text-align:center!important;text-align-last:center!important;text-wrap:balance}}
 /* phone: the first screen texts are justified edge to edge across the screen (last lines centered) */
-@media (max-width:860px){html body .intro .launch:not(.ref) #lTop #lTag,html body .intro .launch:not(.ref) #lTop #lPhr{text-align:justify!important;text-align-last:center!important;text-wrap:wrap}}
+@media (max-width:860px){html body .intro .launch:not(.ref) #lTop #lTag,html body .intro .launch:not(.ref) #lTop #lPhr,html body .intro .launch:not(.ref) #lTop #lTag .ltag3{text-align:center!important;text-align-last:center!important;text-wrap:balance!important}}
+/* no line on the site ends up with one lonely word */
+p,li,h2,h3,figcaption{text-wrap:pretty}
 /* every underline on the site in one style: 1px line, same distance from the text */
 u,.ul,.intro .launch .to-rsv,.intro .rsv-cta,.tl-lab{text-decoration-line:underline!important;text-decoration-thickness:1px!important;text-underline-offset:.22em!important;text-decoration-skip-ink:auto}
 .intro .launch .ltag{margin:0;max-width:none;text-align:center;text-align:center;color:#fff;font-family:var(--f-display);font-weight:300;font-size:clamp(16px,1.6vw,21px);line-height:1.35;letter-spacing:-.01em;text-wrap:balance}
@@ -1686,6 +1690,12 @@ em,i.em{font-style:normal!important}
       // the label inside the field gets smaller (down to 11px) until it fits next to the button
       const l=r.querySelector('.rsv-cta,.tl-lab'); r.style.removeProperty('--lf'); if(!l||innerWidth>480) return; let f=14; const room=()=>l.clientWidth-8; const pr=document.createElement('span'); pr.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit'; l.appendChild(pr); pr.textContent=l.childNodes[0]?l.textContent:'';
       while(f>11 && pr.getBoundingClientRect().width>room()){ f-=0.5; r.style.setProperty('--lf',f+'px') } pr.remove() }); setBW(); addEventListener('resize',setBW); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(setBW); setTimeout(setBW,800) }
+  // every (?) stays on the same line as the word before it and the dot after it
+  document.querySelectorAll('button.q').forEach(b=>{ if(b.parentNode.classList&&b.parentNode.classList.contains('qnw')) return; const pv=b.previousSibling, nx=b.nextSibling; const w=document.createElement('span'); w.className='qnw';
+    let pre='', post='';
+    if(pv&&pv.nodeType===3){ const m=pv.textContent.match(/(\S+)$/); if(m){ pre=m[1]; pv.textContent=pv.textContent.slice(0,-pre.length) } }
+    if(nx&&nx.nodeType===3){ const m=nx.textContent.match(/^([.,;:!?»)]+)/); if(m){ post=m[1]; nx.textContent=nx.textContent.slice(post.length) } }
+    b.parentNode.insertBefore(w,b); if(pre) w.appendChild(document.createTextNode(pre)); w.appendChild(b); if(post) w.appendChild(document.createTextNode(post)) });
   // ---------- press feedback on every button ----------
   addEventListener('pointerdown',e=>{ const b=e.target.closest&&e.target.closest('button,.btn,[role="tab"],.tl-r,a.btn'); if(!b||b.disabled||!b.animate) return;
     b.animate([{scale:'1'},{scale:'.94'},{scale:'1'}],{duration:280,easing:'cubic-bezier(.2,.7,.2,1)'}) },{passive:true});
@@ -2274,7 +2284,7 @@ em,i.em{font-style:normal!important}
     nav.classList.toggle('on', intro.getBoundingClientRect().bottom<innerHeight*0.5 && outro.getBoundingClientRect().top>innerHeight*0.4);
 
     const q=reduce?prog(outro):gateOutro(now);
-    const oc=1-ease(clamp((q-0.62)/0.34)); const od=clamp((q-0.04)/0.42); $('oScene').style.opacity=1-od;  const opq=clamp((q-0.44)/0.15); $('oPhrase').style.opacity=opq; $('oPhrase').style.transform='translateY(-100%) scale('+(1.06-0.06*opq)+')';
+    const oc=1-ease(clamp((q-0.62)/0.34)); const od=clamp((q-0.04)/0.42); { const f=clamp((q-0.04)/0.32); $('oScene').style.opacity=String(1-f*f*(3-2*f)); $('oScene').style.visibility=f>=1?'hidden':'visible' }  const opq=clamp((q-0.44)/0.15); $('oPhrase').style.opacity=opq; $('oPhrase').style.transform='translateY(-100%) scale('+(1.06-0.06*opq)+')';
     const ot=outro.getBoundingClientRect().top;
     // painting: your seconds (lived since birth once a date is entered); darkness: the 60 to 0 countdown as before
     if(od>=0.5 && !window._oStart) window._oStart=now;

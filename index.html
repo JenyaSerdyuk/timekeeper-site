@@ -317,7 +317,8 @@ em{font-style:italic;font-weight:300}
 .zb:hover{background:var(--black);color:var(--white)}
 #llZoom{width:min(220px,40vw);accent-color:var(--black)}
 .ll-view{position:relative;height:clamp(262px,21vw,300px);overflow:hidden;cursor:grab;touch-action:pan-y;margin-top:18px;user-select:none;-webkit-user-select:none}
-.ll-view.drag{cursor:grabbing}
+.ll-view.drag{cursor:grabbing}.ll-view img{-webkit-user-drag:none;user-drag:none}.ll-view.drag .ll-card,.ll-view.drag .ll-card:hover{transform:none}
+.ll-view{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40px,#000 calc(100% - 40px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 40px,#000 calc(100% - 40px),transparent 100%)}
 .ll-track{position:absolute;inset:0}
 .ll-axis{position:absolute;left:0;right:0;bottom:64px;height:1px;background:var(--black)}
 .ll-ticks{position:absolute;left:0;right:0;bottom:0;height:64px}
@@ -350,7 +351,7 @@ em{font-style:italic;font-weight:300}
 .ll-view.calm .ll-card .cap{text-align:center;padding:8px 4px 0}
 .ll-view.calm .ll-card .cap b,.ll-view.calm .ll-card .cap span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
 .ll-view.calm .ll-card .cap b{font-size:13px}
-.ll-now span{position:absolute;top:0;left:6px;color:var(--pink);font-size:10px;white-space:nowrap}
+.ll-now span{position:absolute;top:0;right:6px;color:var(--pink);font-size:10px;white-space:nowrap}
 .ll-mini{position:relative;height:30px;margin-top:16px;border:1px solid var(--black);cursor:pointer;touch-action:none}
 .ll-mini-dots i{position:absolute;top:50%;width:3px;height:12px;margin-top:-6px;background:var(--black)}
 .ll-mini-dots i.p{background:var(--pink)}
@@ -599,7 +600,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 #uses .u{padding-block:clamp(15px,1.6vw,21px);row-gap:6px}
 #uses .u:nth-child(odd){padding-right:34px}
 #uses .u:nth-child(even){padding-left:34px}
-#uses .u h3{font-size:clamp(18px,1.55vw,22px)}
+#uses .u h3{font-size:clamp(18px,1.55vw,22px);text-transform:uppercase;letter-spacing:.02em}
 #uses .u p{font-size:clamp(14px,1.02vw,16px);line-height:1.55}
 #uses .u p b{font-weight:600;color:#0a0a0a}
 @media (max-width:860px){#uses .u:nth-child(odd),#uses .u:nth-child(even){padding-left:0;padding-right:0}}
@@ -810,6 +811,14 @@ em,i.em{font-style:normal!important}
 #timeless .cw-t p .q{margin-right:-22px;vertical-align:.04em}
 /* a question mark never stays alone on a line: it is kept with the word before it */
 .qnw{white-space:nowrap}.qnw .q{vertical-align:.04em}
+/* Your life line: title centered, text in one centered column as wide as the email field */
+@media (min-width:861px){
+  .cw-ll{grid-template-columns:1fr}
+  .cw-ll>h2{justify-self:center;text-align:center;max-width:none}
+  .cw-ll>.cw-t{justify-self:center;width:768px;max-width:100%}
+  .cw-ll>.cw-full{grid-area:auto;grid-column:1/-1}
+}
+
 
 /* moves made by Max in the layout editor (computer), baked in exactly as he placed them */
 @media (min-width:861px){
@@ -1018,7 +1027,7 @@ em,i.em{font-style:normal!important}
   <div class="cw-t">
     <p>Лимитированная серия из серебра и золота: всего 100 штук каждой версии<br>Уникальный подарок и инвестиция в одном<button type="button" class="q" data-q="Каждый экземпляр Timeless пронумерован и идёт с сертификатом подлинности. Золото высшей пробы. Он создан, чтобы его передавали вместе с его моментом." aria-label="Подробнее" aria-expanded="false">?</button>.</p>
   </div>
-  <div class="cw-full tl-cmp"><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Брелок: серебро и золото" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/keychain-silver.webp" alt="Брелок · серебро" draggable="false"><img class="g" src="img/tc/keychain-gold.webp" alt="Брелок · золото" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Серебро</span><span class="tlc-r">Золото</span></div><figcaption>Брелок</figcaption></figure><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Подвеска: серебро и золото" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/pendant-silver.webp?2" alt="Подвеска · серебро" draggable="false"><img class="g" src="img/tc/pendant-gold.webp" alt="Подвеска · золото" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Серебро</span><span class="tlc-r">Золото</span></div><figcaption>Подвеска</figcaption></figure><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Картина: серебро и золото" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/painting-silver.webp?3" alt="Картина · серебро" draggable="false"><img class="g" src="img/tc/painting-gold.webp" alt="Картина · золото" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Серебро</span><span class="tlc-r">Золото</span></div><figcaption>Картина</figcaption></figure><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Часы: серебро и золото" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/watch-silver.webp?2" alt="Часы · серебро" draggable="false"><img class="g" src="img/tc/watch-gold.webp?2" alt="Часы · золото" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Серебро</span><span class="tlc-r">Золото</span></div><figcaption>Часы</figcaption></figure><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Аналоговые часы: серебро и золото" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/watch2-silver.webp?2" alt="Аналоговые часы · серебро" draggable="false"><img class="g" src="img/tc/watch2-gold.webp?2" alt="Аналоговые часы · золото" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Серебро</span><span class="tlc-r">Золото</span></div><figcaption>Аналоговые часы</figcaption></figure></div>
+  <div class="cw-full tl-cmp"><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Брелок: серебро и золото" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/keychain-silver.webp" alt="Брелок · серебро" draggable="false"><img class="g" src="img/tc/keychain-gold.webp" alt="Брелок · золото" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Серебро</span><span class="tlc-r">Золото</span></div><figcaption>Брелок</figcaption></figure><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Подвеска: серебро и золото" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/pendant-silver.webp?2" alt="Подвеска · серебро" draggable="false"><img class="g" src="img/tc/pendant-gold.webp" alt="Подвеска · золото" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Серебро</span><span class="tlc-r">Золото</span></div><figcaption>Подвеска</figcaption></figure><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Картина: серебро и золото" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/painting-silver.webp?4" alt="Картина · серебро" draggable="false"><img class="g" src="img/tc/painting-gold.webp" alt="Картина · золото" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Серебро</span><span class="tlc-r">Золото</span></div><figcaption>Картина</figcaption></figure><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Часы: серебро и золото" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/watch-silver.webp?2" alt="Часы · серебро" draggable="false"><img class="g" src="img/tc/watch-gold.webp?2" alt="Часы · золото" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Серебро</span><span class="tlc-r">Золото</span></div><figcaption>Часы</figcaption></figure><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Аналоговые часы: серебро и золото" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/watch2-silver.webp?2" alt="Аналоговые часы · серебро" draggable="false"><img class="g" src="img/tc/watch2-gold.webp?2" alt="Аналоговые часы · золото" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Серебро</span><span class="tlc-r">Золото</span></div><figcaption>Аналоговые часы</figcaption></figure></div>
   <p class="cw-full tl-n">по 100 штук каждой</p>
   <div class="cw-full tl-cta"><form class="res tl-form" id="tlForm" novalidate><span class="rsv-in" id="tlIn"><input type="email" id="tlEmail" placeholder="" autocomplete="email" aria-label="Забронировать серию Timeless: твой email"><label class="tl-lab" for="tlEmail">Забронировать серию Timeless</label></span><button class="btn" type="submit" id="tlBtn">Забронировать</button></form><p class="okmsg" id="tlOk" hidden></p></div>
 </section>
@@ -1152,13 +1161,9 @@ em,i.em{font-style:normal!important}
 <section class="cw cw-ll">
   <h2>Твоя линия жизни</h2>
   <div class="cw-t"><p>Раз в месяц ты загружаешь 3 фото, 1 видео и короткую заметку, как маленькое письмо самому себе. <u>Вечный дневник</u>, каждый месяц, чтобы собрать <u>альбом своей жизни</u>, который твои родные смогут листать через сотни лет.</p>
-    <p>Сегодня мы не можем увидеть фото даже самых близких родственников, не говоря уже о тех, кто жил за сотни лет до нас, хотя именно благодаря им мы существуем. В будущем этой проблемы не будет.</p>
+    <p>Сегодня мы не можем увидеть фото даже самых близких родственников, не говоря уже обо всей их истории и о тех, кто жил за сотни лет до нас, хотя именно благодаря им мы существуем. В будущем этой проблемы не будет.</p>
     <p>Ты, то, как ты жил, через что прошёл, <u>останется навсегда</u>. Люди, которых ещё нет и которые родятся только через сотни лет, смогут многое узнать о тебе и беречь эту <u>линию рода</u>.</p>
-    <ol class="nl">
-      <li><span class="n">01</span><p><b>Регистрация</b> Оставь email, и твоя линия жизни начнётся с твоего момента</p></li>
-      <li><span class="n">02</span><p><b>Добавляй месяц</b> Три фото, одно видео и короткая заметка за каждый прожитый месяц</p></li>
-      <li><span class="n">03</span><p><b>Передай дальше</b> Линия остаётся с устройством и переходит следующему поколению</p></li>
-    </ol>
+    <p>Зарегистрируйся, публикуй 3 фото и 1 видео раз в месяц и храни свой альбом жизни.</p>
   </div>
   <div class="cw-full ll" id="ll">
 
@@ -1587,7 +1592,7 @@ em,i.em{font-style:normal!important}
     const place=()=>{ if(!vt) return; if(mq.matches){ const t=$('pText'); if(t&&vt.previousElementSibling!==t) t.after(vt) } else if(vt.parentNode!==home) home.appendChild(vt) };
     place(); (mq.addEventListener?mq.addEventListener('change',place):mq.addListener(place)) })();
   // Your life line, computer: the title and the 3 steps share the left column, centered; phone: as before
-  document.querySelectorAll('.cw-ll').forEach(sec=>{ sec.classList.add('cw-split'); const h=sec.querySelector(':scope>h2')||sec.querySelector('.ll-left h2'), t=sec.querySelector('.cw-t'), ol=t&&t.querySelector('.nl'); if(!h||!ol) return;
+  document.querySelectorAll('.cw-ll').forEach(sec=>{ const h=sec.querySelector(':scope>h2')||sec.querySelector('.ll-left h2'), t=sec.querySelector('.cw-t'), ol=t&&t.querySelector('.nl'); if(!h||!ol) return; sec.classList.add('cw-split');
     const left=document.createElement('div'); left.className='ll-left'; const mq=matchMedia('(min-width:861px)');
     const place=()=>{ if(mq.matches){ if(!left.parentNode) sec.insertBefore(left,t); left.appendChild(h); left.appendChild(ol) } else if(left.parentNode){ sec.insertBefore(h,left); t.appendChild(ol); left.remove() } };
     place(); (mq.addEventListener?mq.addEventListener('change',place):mq.addListener(place)) ;
@@ -1919,7 +1924,7 @@ em,i.em{font-style:normal!important}
     const isMonths=()=>ppd>(minP()+monthsP())/2;
     const toYears=()=>{ x0=0; animZoom(minP(),0) };
     // going to months always opens one whole year: the year under the pointer (or in the middle of the line)
-    const toMonths=cx=>{ const t=T0+((x0+(cx==null?view.clientWidth/2:cx)-PAD)/ppd)*DAY; const y=new Date(Math.min(Math.max(t,T0),T1)).getUTCFullYear(); animTo(monthsP(),(Math.max(T0,Date.UTC(y,0,1))-T0)/DAY) };
+    const toMonths=cx=>{ const t=T0+((x0+(cx==null?view.clientWidth/2:cx)-PAD)/ppd)*DAY; const y=new Date(Math.min(Math.max(t,T0),T1)).getUTCFullYear(); animTo(monthsP(),(Math.max(T0,Date.UTC(y,0,1))-T0)/DAY-PAD/monthsP()) };
     zoomEl.addEventListener('input',()=>{ +zoomEl.value?toMonths():toYears() });
     $('llIn').onclick=()=>toMonths();
     $('llOut').onclick=()=>toYears();
@@ -1933,6 +1938,7 @@ em,i.em{font-style:normal!important}
     const wz={on:false,t:0,cx:0};
     // drag + pinch
     const ptrs=new Map(); let moved=false, lastD=0, lx=0, vx=0, inert=null, sx=0;
+    view.addEventListener('dragstart',e=>e.preventDefault());
     view.addEventListener('click',e=>{ if(moved){ e.stopPropagation(); e.preventDefault(); moved=false } },true);
     view.addEventListener('pointerdown',e=>{ ptrs.set(e.pointerId,e.clientX); moved=false; lx=e.clientX; sx=e.clientX; vx=0; cancelAnimationFrame(inert); view.classList.add('drag'); if(ptrs.size===2){ const v=[...ptrs.values()]; lastD=Math.abs(v[0]-v[1]) } });
     view.addEventListener('pointermove',e=>{
@@ -1969,7 +1975,7 @@ em,i.em{font-style:normal!important}
     function init(){ ppd=minP(); x0=0; render() }
     function animTo(p1,tLeft){ cancelAnimationFrame(anim); const big=Math.abs(Math.log(p1/ppd))>0.05; if(big) zFade(true); const p0=ppd, l0=(x0-PAD)/ppd, st=performance.now(); const step=n=>{ const k=Math.min(1,(n-st)/520), e=1-Math.pow(1-k,3); ppd=Math.exp(Math.log(p0)+(Math.log(p1)-Math.log(p0))*e); const l=l0+(tLeft-l0)*e; x0=l*ppd+PAD; render(); if(k<1) anim=requestAnimationFrame(step); else if(big) zFade(false) }; anim=requestAnimationFrame(step) }
     ticksEl.addEventListener('click',e=>{ const b=e.target.closest('.ll-ys'); if(!b||moved) return; const y=+b.dataset.y; const ta=Math.max(T0,Date.UTC(y,0,1)), tb=Math.min(T1,Date.UTC(y+1,0,1)); const days=(tb-ta)/DAY;
-      animTo(monthsP(),(ta-T0)/DAY) }); // a year clicked opens the months level from that year's January
+      animTo(monthsP(),(ta-T0)/DAY-PAD/monthsP()) }); // a year clicked opens the months level from that year's January
     rebuild(); addEventListener('resize',render);
     const exampleE=E.slice(), exT=[T0,T1,NOW];
 

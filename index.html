@@ -578,7 +578,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 @media (min-width:861px){.intro .launch:not(.ref) #lPhr:not(.nojust){text-align-last:justify!important}.intro .launch:not(.ref) #lPhr .pl2{display:block;text-align-last:center}.intro .launch:not(.ref) #lPhr .pl0{display:block;text-align-last:center}html body .intro .launch:not(.ref) #lPhr{text-align:center!important;text-align-last:center!important}.intro .launch:not(.ref) #lPhr .pbr{display:none}}
 @media (max-width:860px){.intro .launch:not(.ref) #lPhr .pl0,.intro .launch:not(.ref) #lPhr .pl2{display:block}.intro .launch:not(.ref) #lPhr .pdot{display:inline}}
 /* phone: first screen texts centered, lines balanced to about the same length (no stretched gaps, no lonely words) */
-@media (max-width:860px){html body .intro .launch:not(.ref) #lTag,html body .intro .launch:not(.ref) #lPhr{text-align:center!important;text-align-last:center!important;text-wrap:balance!important}}
+@media (max-width:860px){html body .intro .launch:not(.ref) #lTag,html body .intro .launch:not(.ref) #lPhr,html body .intro .launch:not(.ref) #lPhr .pl0,html body .intro .launch:not(.ref) #lPhr .pl2{text-align:justify!important;text-align-last:center!important;text-wrap:wrap!important;-webkit-hyphens:auto!important;hyphens:auto!important}html body .intro .launch:not(.ref) #lTag .ltag3{text-align:center!important;text-align-last:center!important}}
 #lTag .ltag3{display:block;text-align:center;text-align-last:center}#lTag .lt-ref{display:none}.intro .launch.ref #lTag .lt-ref,#lTag.fit2 .lt-ref{display:inline}.intro .launch.ref #lTag .lt-new,#lTag.fit2 .lt-new{display:none}
 .intro .launch .ltag .rl{display:block}
 .intro .launch .rv{opacity:0;filter:blur(10px);transform:translateY(18px);transition:opacity 1.1s ease,filter 1.3s ease,transform 1.3s cubic-bezier(.2,.7,.2,1);will-change:opacity,filter,transform}
@@ -907,7 +907,7 @@ em,i.em{font-style:normal!important}
 .oldp{margin-left:.45em;font-size:max(.72em,11px);color:#9a9a9a;text-decoration:line-through;text-decoration-thickness:1px;font-weight:inherit}
 .intro .imodes{display:grid;gap:6px;justify-items:center;margin-top:-4px;pointer-events:auto;grid-template-areas:"m" "s"}
 /* the counting modes sit right under the painting */
-.intro .launch>#iModes #iHint{display:none!important}.intro .launch>#iModes #iBdate[hidden]{display:none!important}
+.intro .launch>#iModes #iHint{display:none!important}
 .intro .launch>#iModes{position:absolute;margin:0;transform:translateX(-50%);transform-origin:50% 0;z-index:3;width:max-content}
 .intro .launch>#iModes .omodes{flex-wrap:wrap;justify-content:center}
 
@@ -1433,7 +1433,9 @@ em,i.em{font-style:normal!important}
     // first screen, top to bottom: the first paragraph, the painting (always its usual size), the counting modes right under it,
     // the second paragraph, the email field (as wide as the painting). The free space is shared evenly, so there are no empty zones
     if(S.mode==='fit'&&scKey==='painting'){ const md=$('iModes'), lt=$('lTop'), ph=$('lPhr'), fm=$('rsvForm');
-      [lt,ph,fm].forEach(e=>e&&(e.style.translate='')); if(innerWidth<=860){ const tw=Math.floor(W-32)+'px'; [$('lTag'),ph].forEach(e=>{ e.style.width=tw; e.style.maxWidth=tw }) } md.style.left=(W/2)+'px'; md.style.top='0px'; md.style.transform='translateX(-50%)'; md.style.maxWidth=(innerWidth<=860?Math.floor(S.obj[2]*sc+8):Math.floor(W-32))+'px';
+      [lt,ph,fm].forEach(e=>e&&(e.style.translate=''));
+      // the second paragraph and the email field are placed exactly (not by the page flow), so nothing can push them
+      const place2=(e,y)=>{ e.style.position='absolute'; e.style.margin='0'; e.style.top=Math.round(y)+'px'; e.style.left=Math.round(W/2-e.offsetWidth/2)+'px' }; if(innerWidth<=860){ const tw=Math.floor(S.obj[2]*sc)+'px'; [$('lTag'),ph].forEach(e=>{ e.style.width=tw; e.style.maxWidth=tw }) } md.style.left=(W/2)+'px'; md.style.top='0px'; md.style.transform='translateX(-50%)'; md.style.maxWidth=(innerWidth<=860?Math.floor(S.obj[2]*sc+8):Math.floor(W-32))+'px';
       const P=S.obj[3]*sc, pw=Math.floor(S.obj[2]*sc); if(fm){ fm.style.width=pw+'px'; fm.style.maxWidth=pw+'px' }
       if(innerWidth>860){ const tg=$('lTag'), pr=document.createElement('span'); pr.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit';
         const f0=parseFloat(getComputedStyle(tg).fontSize)||18, fit=f=>{ [tg,ph].forEach(e=>e.style.setProperty('font-size',f+'px','important'));
@@ -1443,7 +1445,9 @@ em,i.em{font-style:normal!important}
         // a little larger than before (about 20%), as long as the lines still fit on the screen and everything fits above and below the painting
         let f=Math.min(30,Math.round(f0*1.2*4)/4); for(;f>f0;f-=0.5){ const w=fit(f); const hh=lt.getBoundingClientRect().height+ph.getBoundingClientRect().height; if(w<=W-96 && H-40-(hh+S.obj[3]*sc+md.getBoundingClientRect().height+fm.getBoundingClientRect().height)>=40) break }
         if(f<=f0) fit(f0) }
-      const R=e=>{ const r=e.getBoundingClientRect(); return {t:r.top-sr.top,h:r.height} }, A=R(lt), M=R(md), B=R(ph), F=R(fm);
+      const R=e=>{ const k=e.style.transform; if(e!==md) e.style.transform='none'; const r=e.getBoundingClientRect(); if(e!==md) e.style.transform=k; return {t:r.top-sr.top,h:r.height} }, A=R(lt), B=R(ph), F=R(fm);
+      // the modes always take the room they need with the date fields shown, so switching modes never moves anything
+      const bd=$('iBdate'), bh=bd&&bd.hidden; if(bh){ bd.hidden=false; bd.style.visibility='hidden' } const M=R(md); if(bh){ bd.hidden=true; bd.style.visibility='' }
       const phone=innerWidth<=860, minT=phone?36:12, minB=phone?24:12, avail=H-minT-minB, extra=avail-(A.h+P+M.h+B.h+F.h);
       // one rhythm: fixed spaces between the blocks (the modes belong to the painting, so they sit closest); whatever room is left
       // goes above and below the whole group, so the group stays together in the middle of the screen
@@ -1451,9 +1455,9 @@ em,i.em{font-style:normal!important}
       let free=extra-sumG; if(free<0){ const k=Math.max(0.6,(extra)/sumG); gT*=k; g1*=k; gB*=k; gF*=k; free=0 }
       const y0=minT+free/2, pT=y0+A.h+gT, pB=pT+P, yM=pB+g1, yB=yM+M.h+gB, yF=yB+B.h+gF;
       if(/[?&]top\b/.test(location.search)){ const z0=minT+free/2, zP=z0, zM=zP+P+g1, zA=zM+M.h+gB, zB=zA+A.h+gB*0.6, zF=zB+B.h+gF;
-        top=zP-S.obj[1]*sc; sceneLayout.g1=g1; lt.style.translate='0 '+Math.round(zA-A.t)+'px'; md.style.top=Math.round(zM)+'px'; ph.style.translate='0 '+Math.round(zB-B.t)+'px'; fm.style.translate='0 '+Math.round(zF-F.t)+'px' } else {
+        top=zP-S.obj[1]*sc; sceneLayout.g1=g1; lt.style.translate='0 '+Math.round(zA-A.t)+'px'; md.style.top=Math.round(zM)+'px'; place2(ph,zB); place2(fm,zF) } else {
       top=pT-S.obj[1]*sc; sceneLayout.g1=g1;
-      lt.style.translate='0 '+Math.round(y0-A.t)+'px'; md.style.top=Math.round(yM)+'px'; ph.style.translate='0 '+Math.round(yB-B.t)+'px'; fm.style.translate='0 '+Math.round(yF-F.t)+'px' } }
+      lt.style.translate='0 '+Math.round(y0-A.t)+'px'; md.style.top=Math.round(yM)+'px'; place2(ph,yB); place2(fm,yF) } }
     const im=$('sceneImg'); im.style.width=S.W+'px'; im.style.height=S.H+'px'; im.style.transform='translate('+left+'px,'+top+'px) scale('+sc+')';
     const w=$('sceneWin'); w.style.width=(S.w*sc)+'px'; w.style.height=(S.h*sc)+'px'; w.style.left=(left+S.cx*sc)+'px'; w.style.top=(top+S.cy*sc)+'px'; w.style.transform='translate(-50%,-50%) rotate('+S.ang+'deg)'; w.style.background=S.bg||'transparent'; if(scKey==='painting'){ const tp=$('tyt').firstElementChild; tp.style.top=(top+S.cy*sc-S.h*sc/2-Math.max(28,S.h*sc*0.9))+'px';  } w.style.borderRadius=S.rad?(S.rad*sc)+'px':'3px';
     { const u='url("'+S.src+'")'; const sc0=$('scene'); if(sc0&&sc0.dataset.sbg!==u){ sc0.dataset.sbg=u; sc0.style.setProperty('--sbg',u) } const os=$('oScene'); if(os&&!os.dataset.sbg){ os.dataset.sbg=1; os.style.setProperty('--sbg','url("'+SCENES.painting.src+'")') } }
@@ -1497,7 +1501,7 @@ em,i.em{font-style:normal!important}
       // computer: right under the painting, the same distance as on the first screen; phone: above it as before
       { const pb=top+(S.obj[1]+S.obj[3])*sc, g=(sceneLayout.g1!=null?sceneLayout.g1:14); ob.style.transformOrigin='50% 0'; ob.style.top=Math.round(pb+g)+'px' } } }
   oLayout(); addEventListener('resize',oLayout); $('oImg').addEventListener('load',oLayout); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(oLayout);
-  buildDigits(); setSceneDigits(0); sceneLayout(); addEventListener('resize',sceneLayout); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(sceneLayout); if(document.fonts&&document.fonts.addEventListener) document.fonts.addEventListener('loadingdone',sceneLayout); setTimeout(sceneLayout,1200); setTimeout(sceneLayout,3000);
+  buildDigits(); setSceneDigits(0); sceneLayout(); addEventListener('resize',sceneLayout); { let st=0; addEventListener('scroll',()=>{ clearTimeout(st); st=setTimeout(()=>{ const r=document.getElementById('top').getBoundingClientRect(); if(r.bottom>0&&r.top<innerHeight) try{ sceneLayout() }catch(e){} },160) },{passive:true}) } if(window.ResizeObserver){ let rq=0; const ro=new ResizeObserver(()=>{ if(rq) return; rq=requestAnimationFrame(()=>{ rq=0; try{ sceneLayout() }catch(e){} }) }); ['lTop','lPhr','rsvForm','iModes'].forEach(id=>$(id)&&ro.observe($(id))); const bt=document.querySelector('.intro .launch .bottom'); if(bt) ro.observe(bt) } if(document.fonts&&document.fonts.ready) document.fonts.ready.then(sceneLayout); if(document.fonts&&document.fonts.addEventListener) document.fonts.addEventListener('loadingdone',sceneLayout); setTimeout(sceneLayout,1200); setTimeout(sceneLayout,3000);
 
   let launched=null, lstep=0;
   // remember the visitor: first start time is kept in this browser, so seconds keep counting on return
@@ -1541,7 +1545,7 @@ em,i.em{font-style:normal!important}
   let birth=null, oMode='now';
   const OM={now:['&nbsp;','Твоё время с запуска'],life:['<span class="one">Каждая секунда твоей жизни, с рождения до сейчас. Укажи дату рождения</span>','Твоё время с рождения'],back:['&nbsp;','Осталось секунд']};
   const YN='Может вызвать тревогу';
-  function setOMode(m){ oMode=m; document.querySelectorAll('.omodes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m)); $('oHint').innerHTML=OM[m][0]; if($('iHint')){ $('iHint').innerHTML=OM[m][0]; $('iHint').style.visibility=(m==='life'||m==='back')?'hidden':'' } $('oYours').textContent=OM[m][1]; $('oBdate').hidden=!(m==='life'||m==='back'); if($('iBdate')) $('iBdate').hidden=!(m==='life'||m==='back'); if($('yours')){ $('yours').textContent=OM[m][1]; if(m==='back'){ const n=document.createElement('span'); n.className='yn'; n.textContent=YN; $('yours').appendChild(n) } } oLayout(); if(typeof sceneLayout==='function') try{ sceneLayout() }catch(e){} }
+  function setOMode(m){ oMode=m; document.querySelectorAll('.omodes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m)); $('oHint').innerHTML=OM[m][0]; if($('iHint')){ $('iHint').innerHTML=OM[m][0]; $('iHint').style.visibility=(m==='life'||m==='back')?'hidden':'' } $('oYours').textContent=OM[m][1]; $('oBdate').hidden=!(m==='life'||m==='back'); if($('iBdate')) $('iBdate').hidden=!(m==='life'||m==='back'); if($('yours')){ $('yours').textContent=OM[m][1]; if(m==='back'){ const n=document.createElement('span'); n.className='yn'; n.textContent=YN; $('yours').appendChild(n) } } oLayout(); if(typeof sceneLayout==='function'){ try{ sceneLayout() }catch(e){} requestAnimationFrame(()=>{ try{ sceneLayout() }catch(e){} }); setTimeout(()=>{ try{ sceneLayout() }catch(e){} },120) } }
   document.querySelectorAll('.omodes button').forEach(b=>b.addEventListener('click',()=>setOMode(b.dataset.m)));
   // birth date: the same pickers on the first and the last screen, kept in sync
   (()=>{ const sets=[['obD','obM','obY'],['ibD','ibM','ibY']].map(a=>a.map(id=>$(id))).filter(a=>a.every(Boolean)), yr=new Date().getFullYear();
@@ -2202,7 +2206,7 @@ em,i.em{font-style:normal!important}
   const KO_D=0.56, KO_F=[[0.1,1.0],[0.32,1.125],[0.44,0.56],[KO_D,0.4]], KO_B=[[0.1,0.9],[0,0.15]];
   // both split screens follow the scroll, but at a limited pace: a fast flick still plays slowly and smoothly,
   // and the page is held back so the scene cannot be skipped. Nothing moves without the visitor scrolling.
-  function paced(g,now,rate){ const real=prog(g.el); const dt=Math.min(0.05,(now-(g.lt||now))/1000); g.lt=now;
+  function paced(g,now,rate){ const real=prog(g.el); if(g===GI&&real>0.835&&(g.v==null||g.v>0.82)){ g.v=real; return real } const dt=Math.min(0.05,(now-(g.lt||now))/1000); g.lt=now;
     if(window._navJump||g.st===null){ g.st='s'; g.v=real; return real }
     const mx=rate*dt; let st=(real-g.v)*(1-Math.exp(-dt*6)); if(st>mx) st=mx; if(st<-mx) st=-mx; g.v+=st; if(Math.abs(real-g.v)<0.0008) g.v=real;
     const lead=0.1; if(pinned(g)||Math.abs(real-g.v)>lead){ if(real-g.v>lead) jumpTo(secY(g,g.v+lead)); else if(g.v-real>lead) jumpTo(secY(g,g.v-lead)) }
@@ -2232,11 +2236,11 @@ em,i.em{font-style:normal!important}
   const IS={a:null,z:null,lastW:0,lastAbs:0,arr:0,td:false,ty0:null};
   function iTo(y1,dur){ window._navJump=true; IS.a={t0:performance.now(),dur,y0:scrollY,y1} }
   function iGo(dir){ if(IS.a){ if(performance.now()-IS.a.t0>350) IS.q=dir; return } IS.q=0; const v=prog(GI.el);
-    if(dir>0){ if(v<0.44) iTo(secY(GI,0.46),1200); else if(v<0.83) iTo(secY(GI,0.84),1300); else { const nx=GI.el.nextElementSibling; iTo(nx?nx.getBoundingClientRect().top+scrollY:secY(GI,1)+innerHeight,750) } }
+    if(dir>0){ if(v<0.44) iTo(secY(GI,0.46),1200); else if(v<0.83) iTo(secY(GI,0.84),1300); else return }
     else { if(v>0.5) iTo(secY(GI,0.46),1300); else if(v>0.005) iTo(secY(GI,0),1400) } }
   function stepIntro(now){
     if(IS.a){ const k=Math.min(1,(now-IS.a.t0)/IS.a.dur); jumpTo(IS.a.y0+(IS.a.y1-IS.a.y0)*sm(k)); if(k>=1){ IS.a=null; IS.arr=now; if(IS.q){ const d=IS.q; IS.q=0; iGo(d) } else setTimeout(()=>{ if(!IS.a) window._navJump=false },60) } }
-    const z=!!IS.a||(!window._navJump&&scrollY<secY(GI,1)-1);
+    const z=!!IS.a||(!window._navJump&&scrollY<secY(GI,0.84)-1);
     if(z!==IS.z){ IS.z=z; if(z) lockOn(); else lockOff() } else if(z&&lenis&&!lenis.isStopped) lenis.stop();
     if(IS.a||!z) return; const v=prog(GI.el), idle=now-Math.max(lastIn,IS.arr);
     // black screen with the counter: after 2 s without input the painting comes in by itself
@@ -2285,7 +2289,7 @@ em,i.em{font-style:normal!important}
   RV.forEach(([el])=>el.classList.add('rv'));
   let rvOn=false;
   function revealIntro(ty){ const want=rvOn?ty>0.3:ty>=0.6; if(want===rvOn) return; rvOn=want;
-    RV.forEach(([el,d])=>{ el.style.transitionDelay=want?d+'s':'0s'; el.classList.toggle('in',want) }) }
+    RV.forEach(([el,d])=>{ el.style.transitionDelay=want?d+'s':'0s'; el.classList.toggle('in',want) }); try{ sceneLayout() }catch(e){} }
   function frame(now){
     if(lenis) lenis.raf(now);
     const nowMs=Date.now(), el=(now-t0)/1000, W=innerWidth;
@@ -2328,6 +2332,7 @@ em,i.em{font-style:normal!important}
         if(window._oBack){ const k=Math.min(1,(now-window._oBack.t0)/900), ez=k*k*(3-2*k); v=Math.round(window._oBack.from+(tgt-window._oBack.from)*ez); if(k>=1) window._oBack=null }
         window._oShown=v; setODigits(v) }
       const bo=String(clamp(1-od*2.2)); if(bo!==frame.bo){ frame.bo=bo; $('oBd').style.opacity=bo; $('oYours').style.opacity=bo; $('oBd').style.pointerEvents=+bo>0.3?'auto':'none' } }
+    { const ob=oc<0.5?'#fff':'#0a0a0a'; if(frame.obg!==ob){ frame.obg=ob; outro.style.background=ob } }
     $('oL').style.transform='translateX('+(-oc*(seams[1]+4))+'px)'; { const co=String(Math.max(0,1-oc*14)); if(co!==frame.co){ frame.co=co; document.querySelectorAll('.outro .half .cap,.outro .totop').forEach(c=>c.style.opacity=co) } }
     $('oR').style.transform='translateX('+(oc*(W-seams[1]+4))+'px)';
 

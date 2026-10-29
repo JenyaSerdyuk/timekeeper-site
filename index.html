@@ -534,6 +534,9 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 /* painting-on-the-wall launch scene */
 .intro .under{background:#2b2b29;color:#fff;padding:0}
 .scene{position:absolute;inset:0;overflow:hidden}
+/* the scene photo never leaves a plain band above or below it: a soft, blurred copy of the same photo fills the whole screen behind it */
+#sceneImg,#oImg{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 9%,#000 91%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 9%,#000 91%,transparent 100%)}
+.scene::before,.oscene::before{content:'';position:absolute;inset:-60px;background:var(--sbg) center/cover no-repeat;filter:blur(36px);opacity:1;pointer-events:none}
 .scene img{position:absolute;left:0;top:0;transform-origin:0 0;max-width:none;user-select:none;pointer-events:none}
 .scene-win{position:absolute;display:flex;align-items:center;justify-content:center;overflow:visible}
 .scene-win svg{width:100%;height:100%;display:block;overflow:visible}
@@ -569,12 +572,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .intro .launch.ref #lPhr .pdot{display:inline}
 /* computer: the first line of the text under the painting is justified edge to edge, so its first word starts exactly under the first word above the painting */
 @media (min-width:861px){.intro .launch:not(.ref) #lPhr:not(.nojust){text-align-last:justify!important}.intro .launch:not(.ref) #lPhr .pl2{display:block;text-align-last:center}.intro .launch:not(.ref) #lPhr .pbr{display:none}}
-#lTag .ltag3{display:block;text-align:center;text-align-last:center}
-/* phone and tablet: the first screen texts grow with the screen (16px on a phone, up to 22px on a tablet) */
-@media (max-width:860px){.intro .launch #lTag,.intro .launch #lPhr{font-size:clamp(16px,3vw,22px)!important}}
-/* computer: the texts start higher on the first screen (the top menu is hidden there) */
-@media (min-width:861px){.intro .launch:not(.ref){padding-top:calc(32px + env(safe-area-inset-top,0px))}}
-@media (min-width:861px){.intro .launch.nofill #lTag,.intro .launch.nofill #lPhr{text-align-last:center!important}.intro .launch:not(.ref):not(.nofill) #lTag,.intro .launch:not(.ref):not(.nofill) #lPhr{text-align-last:justify!important}.intro .launch:not(.ref) #lTag .ltag3{text-align-last:center!important}.intro .launch:not(.ref) #lPhr .pl2{display:inline!important}.intro .launch:not(.ref) #lPhr .pdot{display:inline!important}.intro .launch:not(.ref) #lPhr .pbr{display:none!important}}#lTag .lt-ref{display:none}.intro .launch.ref #lTag .lt-ref,#lTag.fit2 .lt-ref{display:inline}.intro .launch.ref #lTag .lt-new,#lTag.fit2 .lt-new{display:none}
+#lTag .ltag3{display:block;text-align:center;text-align-last:center}#lTag .lt-ref{display:none}.intro .launch.ref #lTag .lt-ref,#lTag.fit2 .lt-ref{display:inline}.intro .launch.ref #lTag .lt-new,#lTag.fit2 .lt-new{display:none}
 .intro .launch .ltag .rl{display:block}
 .intro .launch .rv{opacity:0;filter:blur(10px);transform:translateY(18px);transition:opacity 1.1s ease,filter 1.3s ease,transform 1.3s cubic-bezier(.2,.7,.2,1);will-change:opacity,filter,transform}
 .intro .launch .rv.in{opacity:1;filter:blur(0);transform:none}
@@ -606,9 +604,6 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .intro .launch .ltag .ul{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.22em}
 /* first screen texts: underlined phrases never break onto two lines; lines are centered and balanced (no stretched gaps between words) */
 @media (min-width:861px){.intro .launch .to-rsv,.intro .launch .ltag .ul{white-space:nowrap}}
-@media (min-width:861px){html body .intro .launch:not(.ref):not(.x1):not(.x2) #lTop #lTag,html body .intro .launch:not(.ref):not(.x1):not(.x2) #lTop #lPhr,html body .intro .launch:not(.ref):not(.x1):not(.x2) #lTop #lTag .ltag3{text-align:center!important;text-align-last:center!important;text-wrap:balance}}
-/* phone: the first screen texts are justified edge to edge across the screen (last lines centered) */
-@media (max-width:860px){html body .intro .launch:not(.ref) #lTop #lTag,html body .intro .launch:not(.ref) #lTop #lPhr,html body .intro .launch:not(.ref) #lTop #lTag .ltag3{text-align:center!important;text-align-last:center!important;text-wrap:balance!important}}
 /* no line on the site ends up with one lonely word */
 p,li,h2,h3,figcaption{text-wrap:pretty}
 /* every underline on the site in one style: 1px line, same distance from the text */
@@ -904,6 +899,11 @@ em,i.em{font-style:normal!important}
 /* old price: crossed out, lighter and smaller, right after the price */
 .oldp{margin-left:.45em;font-size:max(.72em,11px);color:#9a9a9a;text-decoration:line-through;text-decoration-thickness:1px;font-weight:inherit}
 .intro .imodes{display:grid;gap:6px;justify-items:center;margin-top:-4px;pointer-events:auto;grid-template-areas:"m" "s"}
+/* the counting modes sit on the painting, under the digits and their caption */
+.intro .launch>#iModes{position:absolute;margin:0;transform:translateX(-50%);transform-origin:50% 0;z-index:3;width:max-content}
+.intro .launch>#iModes .omodes{flex-wrap:wrap;justify-content:center}
+.intro .launch>#iModes .omodes button{background:rgba(10,10,10,.55);color:#fff;border-color:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.intro .launch>#iModes .omodes button[aria-pressed="true"]{background:#fff;color:#0a0a0a;border-color:#fff}
 /* first screen: the hint and the date pickers share one row (pickers only in From 0 to now) */
 .intro .imodes>.omodes{grid-area:m}.intro #iHint,.intro #iBdate{grid-area:s;align-self:center}
 /* last screen: no small caption under the digits */
@@ -937,19 +937,20 @@ em,i.em{font-style:normal!important}
       <div class="tyt" id="tyt"><p>Take your <em>time</em></p></div>
       <div class="scene" id="scene" aria-hidden="true"><img id="sceneImg" src="img/w/scene.webp" alt=""><div class="scene-shade"></div></div><div class="scene-win" id="sceneWin"><svg id="sceneDigits" preserveAspectRatio="xMidYMid meet"></svg><span class="yours" id="yours">Your time since start</span></div>
       <div class="launch">
-        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new">Your personal philosophical art object that will outlive you <span class="ul">by hundreds of years</span> and keep your memory alive for the next generations of your family tree<span class="ltag3">And other philosophical meanings you will discover below</span></span><span class="lt-ref" aria-hidden="true">Your personal art object that will outlive you <span class="ul">by hundreds of years</span> and keep your memory alive for the next generations of your family tree. And other philosophical meanings you will discover below</span></p><p class="phrase" id="lPhr">Your time has started. From now on, it is counted. <u class="to-rsv" role="link" tabindex="0">Reserve your time</u>, and it will be counted forever<span class="pdot">.</span><br class="pbr"><span class="pl2"> First objects will have the most seconds of all</span></p></div>
+        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new">Your personal philosophical art object that will outlive you <span class="ul">by hundreds of years</span> and keep your memory alive for the next generations of your family tree<span class="ltag3">And other philosophical meanings you will discover below</span></span><span class="lt-ref" aria-hidden="true">Your personal art object that will outlive you <span class="ul">by hundreds of years</span> and keep your memory alive for the next generations of your family tree. And other philosophical meanings you will discover below</span></p></div>
         <div class="bottom">
         <div class="sub">
           <div><span class="mono">Moment started</span><b class="num" id="startedAt">—</b></div>
           <div><span class="mono">Since start</span><b class="num" id="sinceStart">0 s</b></div>
           <div><span class="mono">Countdown (80 years)</span><b class="num" id="cd">2,524,608,000</b></div>
         </div>
-        <div class="imodes" id="iModes"><div class="omodes" role="group" aria-label="Counting mode"><button type="button" data-m="now" aria-pressed="true">From now</button><button type="button" data-m="life" aria-pressed="false">From 0 to now</button><button type="button" data-m="back" aria-pressed="false">Hardcore backwards mode</button></div><p class="ohint" id="iHint"></p><div class="obsel" id="iBdate" hidden><select id="ibD" aria-label="Day"><option value="">Day</option></select><select id="ibM" aria-label="Month"><option value="">Month</option></select><select id="ibY" aria-label="Year"><option value="">Year</option></select></div></div>
+        <p class="phrase" id="lPhr">Your time has started. From now on, it is counted. <u class="to-rsv" role="link" tabindex="0">Reserve your time</u>, and it will be counted forever<span class="pdot">.</span><br class="pbr"><span class="pl2"> First objects will have the most seconds of all</span></p>
         <form class="rsv" id="rsvForm" novalidate>
           <div class="rsv-row"><span class="rsv-in" id="rsvIn"><input type="email" id="rsvEmail" placeholder="" autocomplete="email" aria-label="Reserve your start now: your email"><label class="rsv-cta" for="rsvEmail">Reserve your start now</label></span><button class="btn" type="submit" id="rsvBtn">Reserve</button></div>
           <p class="rsv-msg mono" id="rsvMsg"></p>
         </form>
                 </div>
+        <div class="imodes" id="iModes"><div class="omodes" role="group" aria-label="Counting mode"><button type="button" data-m="now" aria-pressed="true">From now</button><button type="button" data-m="life" aria-pressed="false">From 0 to now</button><button type="button" data-m="back" aria-pressed="false">Hardcore backwards mode</button></div><p class="ohint" id="iHint"></p><div class="obsel" id="iBdate" hidden><select id="ibD" aria-label="Day"><option value="">Day</option></select><select id="ibM" aria-label="Month"><option value="">Month</option></select><select id="ibY" aria-label="Year"><option value="">Year</option></select></div></div>
       </div>
     </div>
     <div class="half l" id="iL"><span class="cap mono">WHY TF NOT startup-studio</span><span class="name" id="iNameL">Time</span></div>
@@ -973,7 +974,7 @@ em,i.em{font-style:normal!important}
 </style>
 <section class="cw" id="explain">
   <h2>What it is</h2>
-  <div class="cw-t"><p>Time Keeper is an object at the intersection of philosophy, hardware and art. From the moment you start it, it fixes that moment on the blockchain and counts every second after it<button type="button" class="q" data-q="The start moment is written to a public blockchain. Nobody can change or delete it, including us." aria-label="More about this" aria-expanded="false">?</button>. The moment can never be changed, by anyone. It is bound to you and your family line forever.</p></div>
+  <div class="cw-t"><p>Time Keeper is an object at the intersection of philosophy, hardware and art. From the moment you start it, it fixes that moment on the blockchain and counts every second after it. The moment can never be changed, by anyone. It is bound to you and your family line forever.<button type="button" class="q" data-q="The start moment is written to a public blockchain. Nobody can change or delete it, including us." aria-label="More about this" aria-expanded="false">?</button></p></div>
 </section>
 
 <section class="cw cw-idea" id="idea">
@@ -1004,7 +1005,7 @@ em,i.em{font-style:normal!important}
       </article>
       <article class="u">
         <h3>Remember time is <em>short</em></h3>
-        <p><b>Your seconds are too important to take for granted.</b> The countdown from 2.5 billion shows how much of an average life may be left<button type="button" class="q" data-q="The countdown starts from 2,524,608,000 seconds, which is 80 years of life." aria-label="More about this" aria-expanded="false">?</button>. Seeing it every day changes how you spend your time. A reason to stop and think, <u>an object for self-reflection and self-improvement</u></p>
+        <p><b>Your seconds are too important to take for granted.</b> The countdown from 2.5 billion shows how much of an average life may be left. Seeing it every day changes how you spend your time. A reason to stop and think, <u>an object for self-reflection and self-improvement</u><button type="button" class="q" data-q="The countdown starts from 2,524,608,000 seconds, which is 80 years of life." aria-label="More about this" aria-expanded="false">?</button></p>
       </article>
       <article class="u">
         <h3>Mark an important <em>start</em></h3>
@@ -1058,7 +1059,7 @@ em,i.em{font-style:normal!important}
 <section class="cw cw-tl" id="timeless">
   <h2>Timeless series</h2>
   <div class="cw-t">
-    <p>A limited series in silver and gold: only 100 pieces of each version<br>A unique gift combined with an investment<button type="button" class="q" data-q="Every Timeless piece is numbered and comes with a certificate of authenticity. The gold is of the finest purity. It is made to be passed on together with its moment." aria-label="More about this" aria-expanded="false">?</button>.</p>
+    <p>A limited series in silver and gold: only 100 pieces of each version<br>A unique gift combined with an investment<button type="button" class="q" data-q="Every Timeless piece is numbered and comes with a certificate of authenticity. The gold is of the finest purity. It is made to be passed on together with its moment." aria-label="More about this" aria-expanded="false">?</button></p>
   </div>
   <div class="cw-full tl-cmp"><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Keychain: silver and gold" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/keychain-silver.webp" alt="Keychain · silver" draggable="false"><img class="g" src="img/tc/keychain-gold.webp" alt="Keychain · gold" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Silver</span><span class="tlc-r">Gold</span></div><figcaption>Keychain</figcaption></figure><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Pendant: silver and gold" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/pendant-silver.webp?2" alt="Pendant · silver" draggable="false"><img class="g" src="img/tc/pendant-gold.webp" alt="Pendant · gold" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Silver</span><span class="tlc-r">Gold</span></div><figcaption>Pendant</figcaption></figure><figure class="tlc"><div class="tlc-in" role="slider" tabindex="0" aria-label="Painting: silver and gold" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/painting-silver.webp?5" alt="Painting · silver" draggable="false"><img class="g" src="img/tc/painting-gold.webp?5" alt="Painting · gold" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Silver</span><span class="tlc-r">Gold</span></div><figcaption>Painting</figcaption></figure><figure class="tlc tlc-w"><div class="tlc-in" role="slider" tabindex="0" aria-label="Watch: silver and gold" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><img class="s" src="img/tc/watch-silver.webp?2" alt="Watch · silver" draggable="false"><img class="g" src="img/tc/watch-gold.webp?2" alt="Watch · gold" draggable="false"><i class="tlc-ln"></i><span class="tlc-l">Silver</span><span class="tlc-r">Gold</span><span class="tlc-sw" role="group" aria-label="Design"><button type="button" data-k="watch" aria-pressed="true">Calculator</button><button type="button" data-k="watch2" aria-pressed="false">Analog</button></span></div><figcaption>Watch</figcaption></figure></div>
   <p class="cw-full tl-n">100 pieces of each</p>
@@ -1179,25 +1180,21 @@ em,i.em{font-style:normal!important}
 
 <section class="cw" id="lost">
   <h2>What if you lose it?</h2>
-  <div class="cw-t"><p>Everything is saved on the blockchain. You will be able to get access to your time again after paying a fine, because time must be <span class="qnw">valued<button type="button" class="q" data-q="Your moment and your life line are kept on the blockchain and on our servers, so they are never lost. After the payment you get access to the same moment and life line again." aria-label="More about this" aria-expanded="false">?</button>.</span></p></div>
+  <div class="cw-t"><p>Everything is saved on the blockchain. You will be able to get access to your time again after paying a fine, because time must be <span class="qnw">valued<button type="button" class="q" data-q="Your moment and your life line are kept on the blockchain and on our servers, so they are never lost. After the payment you get access to the same moment and life line again." aria-label="More about this" aria-expanded="false">?</button></span></p></div>
 </section>
 
 <section class="cw" id="heirloom">
   <h2>A legacy that grows in value</h2>
   <div class="cw-t">
-    <p>Time Keeper is made to outlive its first owner. The moment it holds is fixed on the blockchain and the count never stops, so the object means more with every year it exists.</p>
-    <p>Passed to children and grandchildren, it carries the exact second it was started and the life line collected over decades: photos, voice notes and videos.</p>
+    <p><span>Time Keeper is made to outlive its first owner. The moment it holds is fixed on the blockchain and the count never stops, so the object means more with every year it exists.</span> <span>Passed to children and grandchildren, it carries the exact second it was started and the life line collected over decades: photos, voice notes and videos.</span></p>
     <p>As a personal art object it works like a painting signed by time itself. The first 1,000 is the most valuable of all collections: it will help us grow and expand, and its owners will hold the most valuable collection, because in the future their art objects will have the most seconds of all. The longer it counts, the more history it holds.</p>
   </div>
 </section>
 
 <section class="cw cw-ll">
   <h2>Your life line</h2>
-  <div class="cw-t"><p>Once a month, you upload 3 photos, 1 video and a short note, like a small letter to yourself. <u>An eternal diary</u>, every month, to build <u>the album of your life</u> that your relatives can look through hundreds of years from now.</p>
-    <p>Today we cannot see photos, let alone the whole story, even of our closest relatives, not to mention those who lived hundreds of years before us. In the future this problem will not exist.</p>
-    <p>You, the way you lived, what you went through, <u>will stay forever</u>.</p>
-    <p>People who do not exist yet and will only be born hundreds of years from now will be able to learn a lot about you and take care of this <u>family line</u>.</p>
-    <p>Register, post 3 photos and 1 video once a month, and keep the album of your life.</p>
+  <div class="cw-t"><p>Once a month, you upload 3 photos, 1 video and a short note, like a small letter to yourself. <u>An eternal diary</u>, every month, to build <u>the album of your life</u> that your relatives can look through hundreds of years from now. <span>Today we cannot see photos, let alone the whole story, even of our closest relatives, not to mention those who lived hundreds of years before us. In the future this problem will not exist.</span></p>
+    <p>You, the way you lived, what you went through, <u>will stay forever</u>. <span>People who do not exist yet and will only be born hundreds of years from now will be able to learn a lot about you and take care of this</span> <u>family line</u>. <span>Register, post 3 photos and 1 video once a month, and keep the album of your life.</span></p>
   </div>
   <div class="cw-full ll" id="ll">
 
@@ -1384,31 +1381,20 @@ em,i.em{font-style:normal!important}
     if(innerWidth<=860){ els.forEach(el=>{ el.style.width=pw+'px'; el.style.maxWidth=pw+'px'; el.style.removeProperty('font-size'); el.style.removeProperty('line-height') }); return }
     const W=Math.floor(pw*0.95);
     els.forEach(el=>{ el.style.width=W+'px'; el.style.maxWidth=W+'px'; el.style.setProperty('line-height','1.35','important') });
-    // computer, the new first screen: both paragraphs fill exactly two full lines (justified edge to edge), in one font size,
-    // as large as the width allows; the third line of the first paragraph is centered under them
-    if(!REF){ const tg=$('lTag'), ph=$('lPhr'); const pr=document.createElement('span'); pr.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit';
-      // computer: both paragraphs fill exactly two full lines at a width a little inside the painting's edges (one size for both, never above 30px)
-      const f1=20; els.forEach(el=>el.style.setProperty('font-size',f1+'px','important'));
-      const a=tg.querySelector('.lt-new').cloneNode(true); a.querySelectorAll('.ltag3').forEach(e=>e.remove()); pr.innerHTML=a.innerHTML; tg.appendChild(pr); const Lt=pr.getBoundingClientRect().width/f1; pr.remove();
-      const c=ph.cloneNode(true); c.querySelectorAll('.pbr').forEach(e=>e.remove()); c.querySelectorAll('.pdot').forEach(e=>e.style.display='inline'); pr.innerHTML=c.innerHTML; ph.appendChild(pr); const Lp=pr.getBoundingClientRect().width/f1; pr.remove();
-      let f=Math.min(30,Math.floor(2*W*0.975/Math.max(Lt,Lp)*4)/4); els.forEach(el=>el.style.setProperty('font-size',f+'px','important'));
-      const two=el=>{ const lh=parseFloat(getComputedStyle(el).lineHeight); const extra=el===tg?tg.querySelector('.ltag3').getBoundingClientRect().height:0; return el.scrollHeight-extra<=lh*2+2 };
-      while(f>12 && !(two(tg)&&two(ph))){ f-=0.25; els.forEach(el=>el.style.setProperty('font-size',f+'px','important')) }
-      return }
     const tg=$('lTag'); if(tg) tg.classList.add('fit2'); const fits=fs=>els.every(el=>{ el.style.setProperty('font-size',fs+'px','important'); return el.scrollHeight<=fs*1.35*2+2 });
     let lo=5, hi=21; while(hi-lo>0.25){ const m=(lo+hi)/2; if(fits(m)) lo=m; else hi=m } fits(Math.floor(lo*4)/4); if(tg) tg.classList.remove('fit2') }
   // the last screen's painting keeps the size it always had: measured on the first screen as it was before the counting modes were added
   let REF=false;
   function refBand(){ const L=document.querySelector('.intro .launch'), st=document.querySelector('.intro .stick');
-    const keep=['lTag','lPhr','rsvForm'].map(id=>[$(id),$(id)?$(id).style.cssText:'']), kpw=fitTag.pw; $('lTop').style.translate=''; const ph0=$('lPhr'), fm0=$('rsvForm'); if(ph0&&fm0) fm0.parentNode.insertBefore(ph0,fm0); L.classList.add('ref'); REF=true;
+    const keep=['lTag','lPhr','rsvForm'].map(id=>[$(id),$(id)?$(id).style.cssText:'']), kpw=fitTag.pw; $('lTop').style.translate=''; L.classList.add('ref'); REF=true;
     fitTag(); fitPhr(); fitTag(); fitPhr();
     const sr=st.getBoundingClientRect(), stp=$('lTop').getBoundingClientRect(), bt=document.querySelector('.intro .launch .bottom').getBoundingClientRect();
-    const r={top0:(stp.bottom-sr.top)+24, bot0:(bt.top-sr.top)-24, pw:fitTag.pw, tag:$('lTag').style.cssText, phr:$('lPhr').style.cssText, form:$('rsvForm')?$('rsvForm').style.cssText:''}; L.classList.remove('ref'); REF=false; if(ph0) $('lTop').appendChild(ph0); return r }
+    const r={top0:(stp.bottom-sr.top)+24, bot0:(bt.top-sr.top)-24, pw:fitTag.pw, tag:$('lTag').style.cssText, phr:$('lPhr').style.cssText, form:$('rsvForm')?$('rsvForm').style.cssText:''}; L.classList.remove('ref'); REF=false; return r }
   // the first screen as it always was: same painting size and place, same text sizes. The counting modes fit in above the painting
   // (the top text moves up only as much as they need); the text under the painting keeps its two lines inside the painting's width
   function applyRef(r){ $('lTag').style.cssText=r.tag; if($('rsvForm')) $('rsvForm').style.cssText=r.form; fitTag.pw=r.pw;
     document.documentElement.style.setProperty('--pw',Math.floor(Math.min(r.pw||innerWidth,innerWidth-32))+'px');
-    const ph=$('lPhr'); ph.style.cssText=r.phr; if(innerWidth<=860) return; fitTag.pw=r.pw; fitPhr(); return;
+    const ph=$('lPhr'); ph.style.cssText=r.phr; if(innerWidth<=860) return;
     const f0=parseFloat(getComputedStyle(ph).fontSize); const fp=fs=>{ ph.style.setProperty('font-size',fs+'px','important'); return ph.scrollHeight<=fs*1.35*2+2 };
     if(!fp(f0)){ let lo=5, hi=f0; while(hi-lo>0.25){ const m=(lo+hi)/2; if(fp(m)) lo=m; else hi=m } fp(Math.floor(lo*4)/4) }
     // the first line under the painting is justified only when it nearly fills the width (no stretched gaps on very wide screens)
@@ -1420,7 +1406,8 @@ em,i.em{font-style:normal!important}
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ try{ sceneLayout() }catch(e){} });
   // the underlined call in the text opens the email field below it
   document.querySelectorAll('.to-rsv').forEach(u=>{ const go=()=>{ const i=$('rsvEmail'); if(i) i.focus({preventScroll:true}) }; u.addEventListener('click',go); u.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go() } }) });
-  function sceneLayout(){
+  function sceneLayout(){ sceneLayout0(); if(window.__leReapply) try{ window.__leReapply() }catch(e){} }
+  function sceneLayout0(){
     if(!sceneLayout.busy){ sceneLayout.busy=1; sceneLayout.ref=refBand(); applyRef(sceneLayout.ref); sceneLayout.busy=0 }
     const S=SCENES[scKey], st=document.querySelector('.intro .stick'); const W=st.clientWidth, H=st.clientHeight;
     const stp=$('lTop').getBoundingClientRect(), bt=document.querySelector('.intro .launch .bottom').getBoundingClientRect(), sr=st.getBoundingClientRect();
@@ -1429,29 +1416,17 @@ em,i.em{font-style:normal!important}
     let sc,left,top;
     if(S.mode==='fit'){ sc=Math.min(0.80*W/S.obj[2],0.92*band/S.obj[3]); left=W/2-(S.obj[0]+S.obj[2]/2)*sc; top=bc-(S.obj[1]+S.obj[3]/2)*sc }
     else { const fx=S.fx, fy=S.fy; sc=Math.max(W/S.W*S.z,H/S.H*S.z,(H-bc)/(S.H-fy),bc/fy); left=W/2-fx*sc; top=bc-fy*sc; left=Math.min(0,Math.max(W-S.W*sc,left)); top=Math.min(0,Math.max(H-S.H*sc,top)) }
-    // both texts are above the painting and the counting modes under it: the painting keeps the size it always had when there is room,
-    // otherwise it gets just small enough to sit between the texts and the modes, centered in that space
-    let small=false; $('lTop').style.translate='';
-    // the painting ALWAYS keeps the size it always had (sc from the reference). Both texts sit above it, the counting modes and the email field under it.
-    // The texts are as wide as the painting (computer: a little inside its edges), and get the largest size that still fits above the painting
-    if(S.mode==='fit'){ const phone=innerWidth<=860, G=phone?14:16, L=document.querySelector('.intro .launch'), tg=$('lTag'), ph=$('lPhr'), ph0=S.obj[3]*sc;
-      L.classList.remove('tight','nofill'); fitTag.pw=phone?Math.max(S.obj[2]*sc,0.80*W):S.obj[2]*sc; fitPhr();
-      const room=()=>{ const tb=$('lTop').getBoundingClientRect().bottom-sr.top, bt=document.querySelector('.intro .launch .bottom').getBoundingClientRect().top-sr.top; return [tb,bt,bt-tb-2*G-ph0] };
-      let r=room(); let fs=parseFloat(getComputedStyle(tg).fontSize); const f0=fs, fmin=phone?13:12;
-      if(phone && r[2]<0){ L.classList.add('tight'); r=room() }
-      while(r[2]<0 && fs>fmin){ fs=Math.max(fmin,fs-0.25); [tg,ph].forEach(el=>el.style.setProperty('font-size',fs+'px','important')); r=room() }
-      // computer, a smaller size than the one that fills the painting's width: the text block gets just narrow enough that both paragraphs
-      // still fill exactly two full lines (a clean rectangle, centered, inside the painting's edges)
-      if(!phone && fs<f0-0.1){ const pr=document.createElement('span'); pr.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit';
-        const a=tg.querySelector('.lt-new').cloneNode(true); a.querySelectorAll('.ltag3').forEach(e=>e.remove()); pr.innerHTML=a.innerHTML; tg.appendChild(pr); const Lt=pr.getBoundingClientRect().width; pr.remove();
-        const c=ph.cloneNode(true); c.querySelectorAll('.pbr').forEach(e=>e.remove()); c.querySelectorAll('.pdot').forEach(e=>e.style.display='inline'); pr.innerHTML=c.innerHTML; ph.appendChild(pr); const Lp=pr.getBoundingClientRect().width; pr.remove();
-        let w2=Math.ceil(Math.max(Lt,Lp)/1.95); const two=el=>{ const lh=parseFloat(getComputedStyle(el).lineHeight); const extra=el===tg?tg.querySelector('.ltag3').getBoundingClientRect().height:0; return el.scrollHeight-extra<=lh*2+2 };
-        const setW=v=>[tg,ph].forEach(el=>{ el.style.width=v+'px'; el.style.maxWidth=v+'px' }); setW(w2); let k=0; while(!(two(tg)&&two(ph)) && k++<40){ w2+=4; setW(w2) } r=room() }
-      left=W/2-(S.obj[0]+S.obj[2]/2)*sc; top=Math.max(r[0]+G,(r[0]+r[1])/2-ph0/2)-S.obj[1]*sc; small=false }
-    $('yours').classList.toggle('tiny',S.mode==='fit'&&S.obj[3]*sc<110);
-    $('sceneImg').classList.toggle('fade',small);
+    // the text above moves up only as much as the counting modes need to fit above the painting
+    if(S.mode==='fit'){ const lt=$('lTop'); lt.style.translate=''; const lr=lt.getBoundingClientRect(), nb=lr.bottom-sr.top, ntop=lr.top-sr.top, pt=top+S.obj[1]*sc;
+      const sh=Math.min(Math.max(0,nb+14-pt),Math.max(0,ntop-16)); lt.style.translate=sh?'0 '+(-Math.round(sh))+'px':'' }
     const im=$('sceneImg'); im.style.width=S.W+'px'; im.style.height=S.H+'px'; im.style.transform='translate('+left+'px,'+top+'px) scale('+sc+')';
-    const w=$('sceneWin'); w.style.width=(S.w*sc)+'px'; w.style.height=(S.h*sc)+'px'; w.style.left=(left+S.cx*sc)+'px'; w.style.top=(top+S.cy*sc)+'px'; w.style.transform='translate(-50%,-50%) rotate('+S.ang+'deg)'; w.style.background=S.bg||'transparent'; if(scKey==='painting'){ const tp=$('tyt').firstElementChild; tp.style.top=(top+S.cy*sc-S.h*sc/2-Math.max(28,S.h*sc*0.9))+'px'; } w.style.borderRadius=S.rad?(S.rad*sc)+'px':'3px';
+    const w=$('sceneWin'); w.style.width=(S.w*sc)+'px'; w.style.height=(S.h*sc)+'px'; w.style.left=(left+S.cx*sc)+'px'; w.style.top=(top+S.cy*sc)+'px'; w.style.transform='translate(-50%,-50%) rotate('+S.ang+'deg)'; w.style.background=S.bg||'transparent'; if(scKey==='painting'){ const tp=$('tyt').firstElementChild; tp.style.top=(top+S.cy*sc-S.h*sc/2-Math.max(28,S.h*sc*0.9))+'px'; centerPhr(sr.top+top+(S.obj[1]+S.obj[3])*sc) } w.style.borderRadius=S.rad?(S.rad*sc)+'px':'3px';
+    { const u='url("'+S.src+'")'; const sc0=$('scene'); if(sc0&&sc0.dataset.sbg!==u){ sc0.dataset.sbg=u; sc0.style.setProperty('--sbg',u) } const os=$('oScene'); if(os&&!os.dataset.sbg){ os.dataset.sbg=1; os.style.setProperty('--sbg','url("'+SCENES.painting.src+'")') } }
+    if(scKey==='painting'){ sceneLayout.geo={sc,left,top,W,H}; if(typeof oLayout==='function') try{ oLayout() }catch(e){} }
+    // the counting modes sit on the painting itself, under the digits and their caption, centered, never past the painting's edges
+    { const md=$('iModes'); if(md){ const pb=top+(S.obj[1]+S.obj[3])*sc, pl=left+S.obj[0]*sc, pw2=S.obj[2]*sc, y=$('yours'), yb=(y&&y.offsetParent)?(y.getBoundingClientRect().bottom-sr.top):(top+S.cy*sc+S.h*sc/2+18);
+        md.style.transform=''; md.style.left=(pl+pw2/2)+'px'; md.style.top=(yb+Math.max(8,S.h*sc*0.35))+'px'; md.style.maxWidth=Math.floor(pw2*0.94)+'px';
+        const r=md.getBoundingClientRect(), room=pb-8-(r.top-sr.top), k=Math.min(1,room/Math.max(1,r.height),pw2*0.94/Math.max(1,r.width)); md.style.transform='translateX(-50%) scale('+Math.max(0.5,k).toFixed(3)+')' } }
   }
   const SEGP={a:'2,1 3,0 7,0 8,1 7,2 3,2',b:'8,1 9,2 9,8 8,9 7,8 7,2',c:'8,9 9,10 9,16 8,17 7,16 7,10',d:'2,17 3,16 7,16 8,17 7,18 3,18',e:'2,9 3,10 3,16 2,17 1,16 1,10',f:'2,1 3,2 3,8 2,9 1,8 1,2',g:'2,9 3,8 7,8 8,9 7,10 3,10'};
   function buildDigits(){
@@ -1478,11 +1453,16 @@ em,i.em{font-style:normal!important}
 
   function oLayout(){ const S=SCENES.painting, st=document.querySelector('.outro .stick'); const W=st.clientWidth, H=st.clientHeight;
     const ist=document.querySelector('.intro .stick'), sr=ist.getBoundingClientRect(), stp=$('lTop').getBoundingClientRect(), bt=document.querySelector('.intro .launch .bottom').getBoundingClientRect();
-    const rf=sceneLayout.ref||{top0:(stp.bottom-sr.top)+24,bot0:(bt.top-sr.top)-24}; const band=Math.max(120,rf.bot0-rf.top0); const sc=Math.min(0.80*W/S.obj[2],0.92*band/S.obj[3]); const left=W/2-(S.obj[0]+S.obj[2]/2)*sc, top=H/2-(S.obj[1]+S.obj[3]/2)*sc;
+    const rf=sceneLayout.ref||{top0:(stp.bottom-sr.top)+24,bot0:(bt.top-sr.top)-24}; const band=Math.max(120,rf.bot0-rf.top0); let sc=Math.min(0.80*W/S.obj[2],0.92*band/S.obj[3]), left=W/2-(S.obj[0]+S.obj[2]/2)*sc, top=H/2-(S.obj[1]+S.obj[3]/2)*sc;
+    // the last screen's painting is exactly the first screen's: same size, same place
+    { const g=sceneLayout.geo; if(g&&Math.abs(g.W-W)<2&&Math.abs(g.H-H)<2){ sc=g.sc; left=g.left; top=g.top } }
     const im=$('oImg'); im.style.width=S.W+'px'; im.style.height=S.H+'px'; im.style.transform='translate('+left+'px,'+top+'px) scale('+sc+')';
     const w=$('oWin'), cy=top+S.cy*sc, wh=S.h*sc; w.style.width=(S.w*sc)+'px'; w.style.height=wh+'px'; w.style.left=(left+S.cx*sc)+'px'; w.style.top=cy+'px';
     $('oPhrase').style.top=(cy-wh/2-Math.max(28,wh*0.9))+'px';
-    { const ob=$('oBd'), pt=top+S.obj[1]*sc; ob.style.top=Math.max(12,pt-ob.offsetHeight-12)+'px' } }
+    // the buttons above the painting stay inside the painting's left and right edges (smaller when needed)
+    { const ob=$('oBd'), pt=top+S.obj[1]*sc, pw=S.obj[2]*sc; ob.style.width=Math.floor(pw)+'px'; ob.style.transform='translateX(-50%)'; ob.style.transformOrigin='50% 100%';
+      const md=ob.querySelector('.omodes'); let k=1; if(md){ md.style.flexWrap='nowrap'; const need=md.scrollWidth; k=Math.min(1,(pw-4)/Math.max(1,need)); md.style.flexWrap='' }
+      ob.style.transform='translateX(-50%) scale('+k.toFixed(3)+')'; ob.style.width=Math.floor(pw/k)+'px'; ob.style.top=Math.max(12,pt-ob.offsetHeight*k-12-(ob.offsetHeight*(1-k)))+'px' } }
   oLayout(); addEventListener('resize',oLayout); $('oImg').addEventListener('load',oLayout); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(oLayout);
   buildDigits(); setSceneDigits(0); sceneLayout(); addEventListener('resize',sceneLayout); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(sceneLayout); if(document.fonts&&document.fonts.addEventListener) document.fonts.addEventListener('loadingdone',sceneLayout); setTimeout(sceneLayout,1200); setTimeout(sceneLayout,3000);
 
@@ -1690,12 +1670,16 @@ em,i.em{font-style:normal!important}
       // the label inside the field gets smaller (down to 11px) until it fits next to the button
       const l=r.querySelector('.rsv-cta,.tl-lab'); r.style.removeProperty('--lf'); if(!l||innerWidth>480) return; let f=14; const room=()=>l.clientWidth-8; const pr=document.createElement('span'); pr.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit'; l.appendChild(pr); pr.textContent=l.childNodes[0]?l.textContent:'';
       while(f>11 && pr.getBoundingClientRect().width>room()){ f-=0.5; r.style.setProperty('--lf',f+'px') } pr.remove() }); setBW(); addEventListener('resize',setBW); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(setBW); setTimeout(setBW,800) }
-  // every (?) stays on the same line as the word before it and the dot after it
-  document.querySelectorAll('button.q').forEach(b=>{ if(b.parentNode.classList&&b.parentNode.classList.contains('qnw')) return; const pv=b.previousSibling, nx=b.nextSibling; const w=document.createElement('span'); w.className='qnw';
-    let pre='', post='';
-    if(pv&&pv.nodeType===3){ const m=pv.textContent.match(/(\S+)$/); if(m){ pre=m[1]; pv.textContent=pv.textContent.slice(0,-pre.length) } }
-    if(nx&&nx.nodeType===3){ const m=nx.textContent.match(/^([.,;:!?»)]+)/); if(m){ post=m[1]; nx.textContent=nx.textContent.slice(post.length) } }
-    b.parentNode.insertBefore(w,b); if(pre) w.appendChild(document.createTextNode(pre)); w.appendChild(b); if(post) w.appendChild(document.createTextNode(post)) });
+  // every (?) stands at the very end of its paragraph, on the same line as the last word
+  document.querySelectorAll('button.q').forEach(b=>{ const blk=b.closest('p,li,h2,h3,figcaption,label')||b.parentNode; if(!blk) return;
+    // undo an old wrapper around the button
+    const w0=b.parentNode; if(w0.classList&&w0.classList.contains('qnw')){ while(w0.firstChild) w0.parentNode.insertBefore(w0.firstChild,w0); w0.remove() }
+    blk.normalize();
+    // the last text node of the paragraph (deepest, skipping the button itself)
+    const tw=document.createTreeWalker(blk,NodeFilter.SHOW_TEXT,{acceptNode:n=>(b.contains(n)||!n.textContent.trim())?NodeFilter.FILTER_SKIP:NodeFilter.FILTER_ACCEPT}); let last=null,n; while((n=tw.nextNode())) last=n;
+    const w=document.createElement('span'); w.className='qnw';
+    if(last){ const m=last.textContent.match(/(\S+)(\s*)$/); if(m){ const word=last.splitText(last.textContent.length-m[0].length); word.textContent=m[1]; word.parentNode.insertBefore(w,word); w.appendChild(word) } }
+    if(!w.parentNode) blk.appendChild(w); w.appendChild(b) });
   // ---------- press feedback on every button ----------
   addEventListener('pointerdown',e=>{ const b=e.target.closest&&e.target.closest('button,.btn,[role="tab"],.tl-r,a.btn'); if(!b||b.disabled||!b.animate) return;
     b.animate([{scale:'1'},{scale:'.94'},{scale:'1'}],{duration:280,easing:'cubic-bezier(.2,.7,.2,1)'}) },{passive:true});
@@ -2369,6 +2353,8 @@ em,i.em{font-style:normal!important}
   const mv=el=>{ let m=st.moves.get(el); if(!m){ m={dx:0,dy:0,w:null,st:{},o:{},w0:el.getBoundingClientRect().width,tr:el.style.translate||'',wd:el.style.width||'',mw:el.style.maxWidth||''}; st.moves.set(el,m) } return m };
   const TP=['font-family','font-weight','font-size','line-height','letter-spacing','margin-top','margin-bottom','display'];
   const apply=el=>{ const m=st.moves.get(el); if(!m) return; TP.forEach(p=>{ if(!(p in m.o)) m.o[p]=[el.style.getPropertyValue(p),el.style.getPropertyPriority(p)]; if(m.st[p]!=null&&m.st[p]!=='') el.style.setProperty(p,m.st[p],'important'); else el.style.setProperty(p,m.o[p][0],m.o[p][1]) }); el.style.translate=(m.dx||m.dy)?m.dx+'px '+m.dy+'px':m.tr; if(m.w!=null){ el.style.width=m.w+'px'; el.style.maxWidth='none'; el.style.minWidth='0'; el.style.flex='0 0 auto'; el.style.boxSizing='border-box' } else { el.style.width=m.wd; el.style.maxWidth=m.mw; el.style.minWidth=''; el.style.flex=''; el.style.boxSizing='' } };
+  // the page re-fits the first screen now and then (fonts, resize); the editor's moves are put back right after, so nothing jumps back
+  window.__leReapply=()=>{ st.moves.forEach((m,el)=>{ m.tr=''; m.wd=m.wd; apply(el) }); if(st.on) show() };
   // history: every finished action (drag, width, arrow keys, reset) is one step; ⌘Z back, ⌘⌃Z (or ⌘⇧Z) forward
   const H={back:[],fwd:[]};
   const snapNow=()=>{ const o=[]; st.moves.forEach((m,el)=>{ const j=JSON.stringify(m.st); if(m.dx||m.dy||m.w!=null||j!=='{}') o.push([el,m.dx,m.dy,m.w,j]) }); return o }; // untouched blocks are left out, so a click alone is never a step
@@ -2482,8 +2468,10 @@ em,i.em{font-style:normal!important}
   ['click','mousedown','mouseup','touchstart','touchend','submit','focusin','contextmenu'].forEach(t=>addEventListener(t,e=>{ if(st.on&&!isUI(e.target)&&!editing(e.target)){ e.preventDefault(); e.stopPropagation(); if(t==='focusin'&&e.target.blur) e.target.blur() } },true));
   addEventListener('pointerdown',e=>{ if(!st.on) return; { const a=document.activeElement; if(a&&a!==e.target&&isUI(a)&&!isUI(e.target)&&a.blur) a.blur() } if(editing(e.target)) return; if(st.typing&&!isUI(e.target)) endType(); if(isUI(e.target)&&e.target.tagName!=='I') return; e.preventDefault(); e.stopPropagation();
     if(e.target.tagName==='I'&&st.sel){ st.drag={k:'w',before:snapNow(),x:e.clientX,ws:st.sels.map(el=>{ const m=mv(el); return m.w!=null?m.w:el.getBoundingClientRect().width })}; return }
-    const el=document.elementFromPoint(e.clientX,e.clientY); if(!el||isUI(el)) return;
-    { const n=performance.now(), dbl=n-lastDown.t<420&&Math.hypot(e.clientX-lastDown.x,e.clientY-lastDown.y)<6; lastDown={t:dbl?0:n,x:e.clientX,y:e.clientY}; if(dbl&&!e.metaKey&&!e.ctrlKey){ startType(el); return } }
+    let el=document.elementFromPoint(e.clientX,e.clientY); if(!el||isUI(el)) return;
+    // a word or a piece of text inside a paragraph cannot move on its own: the whole paragraph (the nearest block) is taken
+    const hit0=el; while(el&&el.parentElement&&el!==document.body&&getComputedStyle(el).display==='inline') el=el.parentElement;
+    { const n=performance.now(), dbl=n-lastDown.t<420&&Math.hypot(e.clientX-lastDown.x,e.clientY-lastDown.y)<6; lastDown={t:dbl?0:n,x:e.clientX,y:e.clientY}; if(dbl&&!e.metaKey&&!e.ctrlKey){ startType(hit0); return } }
     if(e.metaKey||e.ctrlKey){ st.drag={k:'box',x:e.clientX,y:e.clientY,el,moved:false}; return } // ⌘ + click toggles a block, ⌘ + drag draws a selection frame
     else { const hit=st.sels.find(x=>x===el||x.contains(el)); if(hit){ st.sel=hit; show() } else pickOnly(el) } // grabbing anything inside a selected block drags the whole selection
     st.drag={k:'m',before:snapNow(),x:e.clientX,y:e.clientY,start:st.sels.map(s=>{ const m=mv(s); return [m.dx,m.dy] }),u0:union(st.sels),T:targets()} },true);

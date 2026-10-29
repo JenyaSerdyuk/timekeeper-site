@@ -1,5 +1,6 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Time Keeper — арт-объект, который фиксирует твой момент в блокчейне и считает каждую секунду твоего времени."><meta property="og:title" content="Время · Time Keeper"><meta property="og:description" content="Твой личный арт-объект, который переживёт тебя на сотни лет."><meta property="og:image" content="img/w/scene.webp"><meta property="og:type" content="website"><style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0;background:#fff;color:#000}img{max-width:100%}[hidden]{display:none!important}</style><script>window.TK_LEADS="https://functions.yandexcloud.net/d4edaakn8obmp1ic8uaj"</script></head><body><title>Время · Time Keeper — хранитель твоего времени</title>
 <script>document.documentElement.lang='ru'</script>
+<style>html.fw .intro .stick,html.fw .outro .stick{opacity:0}.intro .stick{transition:opacity .25s}</style><script>(function(){var d=document.documentElement;d.classList.add('fw');var done=function(){d.classList.remove('fw')};setTimeout(done,2500);if(document.fonts&&document.fonts.load){Promise.all(['300 20px Jost','400 20px Jost','400 12px "JetBrains Mono"','400 16px "Onest"'].map(function(f){return document.fonts.load(f)})).then(done,done)}else done()})()</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 
 
@@ -585,7 +586,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .intro .launch .sub div{text-align:center;justify-items:center}
 .intro .launch .sub span{text-transform:uppercase;letter-spacing:.14em;font-size:10px}
 .intro .launch .sub b{font-variant-numeric:tabular-nums;font-weight:400}
-.intro .rsv-row input{font-size:16px}.intro .rsv .btn{font-size:15px}
+.intro .rsv-row input{font-size:16px;height:42px!important}@media (min-width:481px){.intro .rsv .btn{height:42px!important}}@media (max-width:480px){html body .intro .rsv-row .btn{height:auto!important;top:4px;bottom:4px}}.intro .rsv .btn{font-size:15px}
 .intro .rsv-row input{text-align:center}
 .intro .rsv .btn{letter-spacing:.08em;text-transform:uppercase;font-weight:500}
 .intro .rsv-msg{letter-spacing:.04em;font-size:12px}
@@ -903,8 +904,7 @@ em,i.em{font-style:normal!important}
 /* the counting modes sit on the painting, under the digits and their caption */
 .intro .launch>#iModes{position:absolute;margin:0;transform:translateX(-50%);transform-origin:50% 0;z-index:3;width:max-content}
 .intro .launch>#iModes .omodes{flex-wrap:wrap;justify-content:center}
-.intro .launch>#iModes .omodes button{background:rgba(10,10,10,.55);color:#fff;border-color:rgba(255,255,255,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
-.intro .launch>#iModes .omodes button[aria-pressed="true"]{background:#fff;color:#0a0a0a;border-color:#fff}
+
 /* first screen: the hint and the date pickers share one row (pickers only in From 0 to now) */
 .intro .imodes>.omodes{grid-area:m}.intro #iHint,.intro #iBdate{grid-area:s;align-self:center}
 /* last screen: no small caption under the digits */
@@ -1420,14 +1420,21 @@ em,i.em{font-style:normal!important}
     // the text above moves up only as much as the counting modes need to fit above the painting
     if(S.mode==='fit'){ const lt=$('lTop'); lt.style.translate=''; const lr=lt.getBoundingClientRect(), nb=lr.bottom-sr.top, ntop=lr.top-sr.top, pt=top+S.obj[1]*sc;
       const sh=Math.min(Math.max(0,nb+14-pt),Math.max(0,ntop-16)); lt.style.translate=sh?'0 '+(-Math.round(sh))+'px':'' }
+    // first screen, top to bottom: the first paragraph, the painting (always its usual size), the counting modes right under it,
+    // the second paragraph, the email field (as wide as the painting). The free space is shared evenly, so there are no empty zones
+    if(S.mode==='fit'&&scKey==='painting'){ const md=$('iModes'), lt=$('lTop'), ph=$('lPhr'), fm=$('rsvForm');
+      [lt,ph,fm].forEach(e=>e&&(e.style.translate='')); md.style.left=(W/2)+'px'; md.style.top='0px'; md.style.transform='translateX(-50%)'; md.style.maxWidth=(innerWidth<=860?Math.floor(Math.max(S.obj[2]*sc,W-32)):Math.floor(W-32))+'px';
+      const P=S.obj[3]*sc, pw=Math.floor(S.obj[2]*sc); if(fm){ fm.style.width=pw+'px'; fm.style.maxWidth=pw+'px' }
+      const R=e=>{ const r=e.getBoundingClientRect(); return {t:r.top-sr.top,h:r.height} }, A=R(lt), M=R(md), B=R(ph), F=R(fm);
+      const phone=innerWidth<=860, minT=phone?36:28, minB=phone?24:28, avail=H-minT-minB, extra=avail-(A.h+P+M.h+B.h+F.h);
+      let g1, g; if(extra>=0){ g1=Math.max(10,Math.min(phone?16:22,extra*0.12)); g=(extra-g1)/3 } else { g1=8; g=Math.max(6,(extra-g1)/3) }
+      const y0=minT, pT=y0+A.h+g, pB=pT+P, yM=pB+g1, yB=yM+M.h+g, yF=yB+B.h+g;
+      top=pT-S.obj[1]*sc;
+      lt.style.translate='0 '+Math.round(y0-A.t)+'px'; md.style.top=Math.round(yM)+'px'; ph.style.translate='0 '+Math.round(yB-B.t)+'px'; fm.style.translate='0 '+Math.round(yF-F.t)+'px' }
     const im=$('sceneImg'); im.style.width=S.W+'px'; im.style.height=S.H+'px'; im.style.transform='translate('+left+'px,'+top+'px) scale('+sc+')';
-    const w=$('sceneWin'); w.style.width=(S.w*sc)+'px'; w.style.height=(S.h*sc)+'px'; w.style.left=(left+S.cx*sc)+'px'; w.style.top=(top+S.cy*sc)+'px'; w.style.transform='translate(-50%,-50%) rotate('+S.ang+'deg)'; w.style.background=S.bg||'transparent'; if(scKey==='painting'){ const tp=$('tyt').firstElementChild; tp.style.top=(top+S.cy*sc-S.h*sc/2-Math.max(28,S.h*sc*0.9))+'px'; centerPhr(sr.top+top+(S.obj[1]+S.obj[3])*sc) } w.style.borderRadius=S.rad?(S.rad*sc)+'px':'3px';
+    const w=$('sceneWin'); w.style.width=(S.w*sc)+'px'; w.style.height=(S.h*sc)+'px'; w.style.left=(left+S.cx*sc)+'px'; w.style.top=(top+S.cy*sc)+'px'; w.style.transform='translate(-50%,-50%) rotate('+S.ang+'deg)'; w.style.background=S.bg||'transparent'; if(scKey==='painting'){ const tp=$('tyt').firstElementChild; tp.style.top=(top+S.cy*sc-S.h*sc/2-Math.max(28,S.h*sc*0.9))+'px';  } w.style.borderRadius=S.rad?(S.rad*sc)+'px':'3px';
     { const u='url("'+S.src+'")'; const sc0=$('scene'); if(sc0&&sc0.dataset.sbg!==u){ sc0.dataset.sbg=u; sc0.style.setProperty('--sbg',u) } const os=$('oScene'); if(os&&!os.dataset.sbg){ os.dataset.sbg=1; os.style.setProperty('--sbg','url("'+SCENES.painting.src+'")') } }
     if(scKey==='painting'){ sceneLayout.geo={sc,left,top,W,H}; if(typeof oLayout==='function') try{ oLayout() }catch(e){} }
-    // the counting modes sit on the painting itself, under the digits and their caption, centered, never past the painting's edges
-    { const md=$('iModes'); if(md){ const pb=top+(S.obj[1]+S.obj[3])*sc, pl=left+S.obj[0]*sc, pw2=S.obj[2]*sc, y=$('yours'), yb=(y&&y.offsetParent)?(y.getBoundingClientRect().bottom-sr.top):(top+S.cy*sc+S.h*sc/2+18);
-        md.style.transform=''; md.style.left=(pl+pw2/2)+'px'; md.style.top=(yb+Math.max(8,S.h*sc*0.35))+'px'; md.style.maxWidth=Math.floor(pw2*0.94)+'px';
-        const r=md.getBoundingClientRect(), room=pb-8-(r.top-sr.top), k=Math.min(1,room/Math.max(1,r.height),pw2*0.94/Math.max(1,r.width)); md.style.transform='translateX(-50%) scale('+Math.max(0.5,k).toFixed(3)+')' } }
   }
   const SEGP={a:'2,1 3,0 7,0 8,1 7,2 3,2',b:'8,1 9,2 9,8 8,9 7,8 7,2',c:'8,9 9,10 9,16 8,17 7,16 7,10',d:'2,17 3,16 7,16 8,17 7,18 3,18',e:'2,9 3,10 3,16 2,17 1,16 1,10',f:'2,1 3,2 3,8 2,9 1,8 1,2',g:'2,9 3,8 7,8 8,9 7,10 3,10'};
   function buildDigits(){

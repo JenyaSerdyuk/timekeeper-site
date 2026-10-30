@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Time Keeper — an art object that anchors your moment on the blockchain and counts every second of your time."><meta property="og:title" content="Time · Time Keeper"><meta property="og:description" content="Your personal art object that will outlive you by hundreds of years."><meta property="og:image" content="img/w/scene.webp"><meta property="og:type" content="website"><style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0;background:#fff;color:#000}img{max-width:100%}[hidden]{display:none!important}</style><script>window.TK_LEADS="https://functions.yandexcloud.net/d4edaakn8obmp1ic8uaj"</script></head><body><title>Time · Time Keeper — the keeper of your time</title><script>document.documentElement.lang='en'</script>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Time Keeper — an art object that anchors your moment on the blockchain and counts every second of your time."><meta property="og:title" content="Time · Time Keeper"><meta property="og:description" content="Your personal art object that will outlive you by hundreds of years."><meta property="og:image" content="img/w/scene.webp"><meta property="og:type" content="website"><link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" type="image/png" sizes="32x32" href="fav32.png"><link rel="icon" type="image/png" sizes="192x192" href="fav192.png"><link rel="apple-touch-icon" href="fav180.png"><style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0;background:#fff;color:#000}img{max-width:100%}[hidden]{display:none!important}</style><script>window.TK_LEADS="https://functions.yandexcloud.net/d4edaakn8obmp1ic8uaj"</script></head><body><title>Time · Time Keeper — the keeper of your time</title><script>document.documentElement.lang='en'</script>
 <script>/* every visit starts on the first scene, white TIME: the browser (or the page that shows the site) does not jump back to an old scroll spot after a reload. Until the visitor touches the page, the page is held at the very top, so nothing plays by itself */(function(){if(location.hash)return;try{history.scrollRestoration="manual"}catch(e){}var t0=Date.now(),user=false,H=3000;['wheel','touchstart','keydown','pointerdown'].forEach(function(ev){addEventListener(ev,function(){user=true},{passive:true,capture:true})});function top(){if(user||Date.now()-t0>H)return;if((window.scrollY||document.documentElement.scrollTop)!==0){if(window._lenis){try{window._lenis.scrollTo(0,{immediate:true,force:true})}catch(e){}}window.scrollTo(0,0)}}top();var id=setInterval(function(){top();if(user||Date.now()-t0>H)clearInterval(id)},16);addEventListener('DOMContentLoaded',top);addEventListener('load',top);addEventListener('pageshow',top);addEventListener('scroll',top,{passive:true})})()</script><style id="fwS">.intro .stick,.outro .stick{opacity:0!important}</style><script>(function(){var ok=false,done=function(){if(ok)return;ok=true;var e=document.getElementById('fwS');if(e)e.remove()};setTimeout(done,4000);if(!document.fonts){done();return}
 var F=['300 20px Jost','400 20px Jost','400 12px "JetBrains Mono"','400 16px "Hanken Grotesk"'],has=function(){var n=0;document.fonts.forEach(function(f){if(/Jost/.test(f.family))n++});return n>0};
 (function wait(){if(ok)return;if(!has()){setTimeout(wait,30);return}Promise.all(F.map(function(f){return document.fonts.load(f)})).then(function(){requestAnimationFrame(function(){requestAnimationFrame(done)})},done)})()})()</script>
@@ -570,7 +570,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .intro #lPhr .pdot{display:none}
 @media (max-width:860px){.intro #lPhr .pbr{display:none}.intro #lPhr .pdot{display:inline}}
 /* reference state (measured, never shown): the first screen as it always was */
-.intro .launch.ref #iModes{display:none}
+/* the modes stand on their own (absolute), so while the reference is measured they are only hidden, never taken out: taking them out would cut their smooth appearance short */ .intro .launch.ref #iModes{visibility:hidden}
 .intro .launch.ref #lPhr .pbr{display:none}
 .intro .launch.ref #lPhr .pdot{display:inline}
 /* computer: the first line of the text under the painting is justified edge to edge, so its first word starts exactly under the first word above the painting */
@@ -848,6 +848,10 @@ em,i.em{font-style:normal!important}
 #timeless .cw-t p .q{margin-right:-22px;vertical-align:.04em}
 /* the hanging ? (and its larger tap area) never widens the page on a narrow phone */
 #timeless{overflow-x:clip}
+.intro .launch #lPhr{min-height:var(--phrH,0px)}
+/* Hardcore phrase: its own centred, evenly split lines; the reserve sentence starts on the next line */
+.intro .launch #lPhr .pbk{display:block;text-align:center!important;text-align-last:center!important;text-wrap:balance}.intro .launch #lPhr .pbd{display:none}
+@media (max-width:860px){html body .intro .launch #lPhr .pbd{display:inline}html body .intro .launch:not(.ref) #lPhr .pl0:has(.pbk)::after{content:none}}
 /* phone: the Timeless lead reads as two centered lines, never stretched with wide gaps */
 @media (max-width:860px){#timeless .cw-t p{text-align:center!important;text-align-last:center!important}}
 /* the hint under the 3D view splits into two even lines when it does not fit, never one word alone */
@@ -959,7 +963,7 @@ em,i.em{font-style:normal!important}
       <div class="tyt" id="tyt"><p>Take your <em>time</em></p></div>
       <div class="scene" id="scene" aria-hidden="true"><img id="sceneImg" src="img/w/scene.webp" alt=""><div class="scene-shade"></div></div><div class="scene-win" id="sceneWin"><svg id="sceneDigits" preserveAspectRatio="xMidYMid meet"></svg><span class="yours" id="yours">Your time since start</span></div>
       <div class="launch">
-        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new"><span class="tl1">Your personal philosophical art object that will outlive you <span class="ul">by hundreds of years</span></span> <span class="tl2">and keep your memory alive for the next generations of your family tree</span><span class="ltag3">And other philosophical meanings you will discover below</span></span><span class="lt-ref" aria-hidden="true">Your personal art object that will outlive you <span class="ul">by hundreds of years</span> and keep your memory alive for the next generations of your family tree. And other philosophical meanings you will discover below</span></p></div>
+        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new"><span class="tl1">A personal philosophical art object that will outlive you <span class="ul">by hundreds of years</span></span> <span class="tl2">and keep the memory of you alive for generations of your family tree</span><span class="ltag3">And other philosophical meanings you will discover below</span></span><span class="lt-ref" aria-hidden="true">A personal art object that will outlive you <span class="ul">by hundreds of years</span> and keep the memory of you alive for generations of your family tree. And other philosophical meanings you will discover below</span></p></div>
         <div class="bottom">
         <div class="sub">
           <div><span class="mono">Moment started</span><b class="num" id="startedAt">—</b></div>
@@ -993,6 +997,8 @@ em,i.em{font-style:normal!important}
 .motto{max-width:1176px;margin:0 auto;padding-block:clamp(28px,3.4vw,48px);text-align:center;font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-weight:400;font-size:clamp(20px,2.2vw,30px);line-height:1.3;letter-spacing:-.015em;color:#0a0a0a}.motto p{margin:0;color:#8b8b8b}.motto p+p{color:#0a0a0a}.motto+.cw{border-top:1px solid rgba(10,10,10,.08)}
 /* the motto sits exactly in the middle between the line above (end of the uses grid) and the line below */
 .motto{padding-top:0}
+/* the second quote: one line, in black, with a hairline above it like the first one has */
+.motto.motto-q{border-top:1px solid rgba(10,10,10,.08);padding-top:clamp(28px,3.4vw,48px)}.motto.motto-q p{color:#0a0a0a}
 </style>
 <section class="cw" id="explain">
   <h2>What it is</h2>
@@ -1223,6 +1229,7 @@ em,i.em{font-style:normal!important}
   <div class="cw-t"><p>Everything is saved on the blockchain. You will be able to get access to your time again after paying a fine, because time must be <span class="qnw">valued<button type="button" class="q" data-q="Your moment and your life line are kept on the blockchain and on our servers, so they are never lost. After the payment you get access to the same moment and life line again." aria-label="More about this" aria-expanded="false">?</button></span></p></div>
 </section>
 
+<div class="motto motto-q"><p>Time is the only irreplaceable resource</p></div>
 <section class="cw" id="heirloom">
   <h2>A legacy that grows in value</h2>
   <div class="cw-t">
@@ -1470,7 +1477,13 @@ em,i.em{font-style:normal!important}
       const keys=[...m.keys()].sort((x,y)=>x-y); keys.pop();
       keys.forEach(k=>{ const l=m.get(k); if(l.length<2) return; let sum=0,gaps=0,ch=0; l.forEach((o,i)=>{ sum+=o.r.width; ch+=o.t.textContent.replace(/­/g,'').length; if(i&&o.r.left-l[i-1].r.right>2) gaps++ }); if(!gaps) return;
         const def=W-(sum+gaps*sp), ok=gaps*0.22*fs; if(def<=ok) return; const ls=Math.min(0.08*fs,(def-ok)/ch); l.forEach(o=>o.t.style.letterSpacing=ls.toFixed(2)+'px') }) }) }
-  function sceneLayout(){ if(!sceneLayout.hy){ sceneLayout.hy=1; try{ applyHy(); wrapWords() }catch(e){} } sceneLayout0(); if(window.__leReapply) try{ window.__leReapply() }catch(e){} }
+  function sceneLayout(){ if(!sceneLayout.hy){ sceneLayout.hy=1; try{ applyHy(); wrapWords() }catch(e){} } sceneLayout0(); try{ phrFit() }catch(e){} if(window.__leReapply) try{ window.__leReapply() }catch(e){} }
+  // the phrase under the painting keeps the height of its longest version (Hardcore has its own words), so switching modes never moves anything
+  function phrFit(){ const P=window.__PH0, ph=$('lPhr'), p=ph&&ph.querySelector('.pl0'); if(!P||P.def==null||!p) return;
+    const root=document.documentElement, was=root.style.getPropertyValue('--phrH'); root.style.setProperty('--phrH','0px');
+    const cur=p.innerHTML, alt=[P.def, P.bh()]; let h=0;
+    alt.forEach(t=>{ p.innerHTML=t; h=Math.max(h,ph.getBoundingClientRect().height) }); p.innerHTML=cur;
+    const v=Math.ceil(h)+'px'; root.style.setProperty('--phrH',v); if(v!==was) sceneLayout0() }
   function sceneLayout0(){
     if(!sceneLayout.busy){ sceneLayout.busy=1; sceneLayout.ref=refBand(); applyRef(sceneLayout.ref); sceneLayout.busy=0 }
     const S=SCENES[scKey], st=document.querySelector('.intro .stick'); const W=st.clientWidth, H=st.clientHeight;
@@ -1605,7 +1618,11 @@ em,i.em{font-style:normal!important}
   let birth=null, oMode='now';
   const OM={now:['&nbsp;','Your time since start'],life:['<span class="one">Every second you have lived, from 0 to now. Enter your birth date</span>','Your time since birth'],back:['&nbsp;','Seconds left']};
   const YN='May cause anxiety';
-  function setOMode(m){ oMode=m; document.querySelectorAll('.omodes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m)); $('oHint').innerHTML=OM[m][0]; if($('iHint')){ $('iHint').innerHTML=OM[m][0]; $('iHint').style.visibility=(m==='life'||m==='back')?'hidden':'' } $('oYours').textContent=OM[m][1]; $('oBdate').hidden=!(m==='life'||m==='back'); if($('iBdate')) $('iBdate').hidden=!(m==='life'||m==='back'); if($('yours')){ $('yours').textContent=OM[m][1]; if(m==='back'){ const n=document.createElement('span'); n.className='yn'; n.textContent=YN; $('yours').appendChild(n) } } oLayout(); if(typeof sceneLayout==='function'){ try{ sceneLayout() }catch(e){} requestAnimationFrame(()=>{ try{ sceneLayout() }catch(e){} }); setTimeout(()=>{ try{ sceneLayout() }catch(e){} },120) } }
+  // the phrase under the painting on the first screen: in Hardcore mode it speaks about time running out, in the other modes about time that has started
+  const PH0=window.__PH0={def:null,back:['Your time is finite.','But the memory of it can last forever'],bh:()=>'<span class="pbk">'+PH0.back[0]+' '+PH0.back[1]+'<i class="pbd">.</i></span>'};
+  function setPhrase(m){ const p=document.querySelector('#lPhr .pl0'); if(!p) return; if(PH0.def==null) PH0.def=p.innerHTML;
+    p.innerHTML=m==='back'?PH0.bh():PH0.def }
+  function setOMode(m){ oMode=m; try{ setPhrase(m) }catch(e){} document.querySelectorAll('.omodes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m)); $('oHint').innerHTML=OM[m][0]; if($('iHint')){ $('iHint').innerHTML=OM[m][0]; $('iHint').style.visibility=(m==='life'||m==='back')?'hidden':'' } $('oYours').textContent=OM[m][1]; $('oBdate').hidden=!(m==='life'||m==='back'); if($('iBdate')) $('iBdate').hidden=!(m==='life'||m==='back'); if($('yours')){ $('yours').textContent=OM[m][1]; if(m==='back'){ const n=document.createElement('span'); n.className='yn'; n.textContent=YN; $('yours').appendChild(n) } } oLayout(); if(typeof sceneLayout==='function'){ try{ sceneLayout() }catch(e){} requestAnimationFrame(()=>{ try{ sceneLayout() }catch(e){} }); setTimeout(()=>{ try{ sceneLayout() }catch(e){} },120) } }
   document.querySelectorAll('.omodes button').forEach(b=>b.addEventListener('click',()=>setOMode(b.dataset.m)));
   // birth date: the same pickers on the first and the last screen, kept in sync
   (()=>{ const sets=[['obD','obM','obY'],['ibD','ibM','ibY']].map(a=>a.map(id=>$(id))).filter(a=>a.every(Boolean)), yr=new Date().getFullYear();

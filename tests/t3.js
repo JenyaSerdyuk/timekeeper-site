@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+const SP='/tmp/claude-0/-home-claude/a45a2340-2bd1-5ade-9aa0-7c944c85ba5a/scratchpad/ux/';
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await b.newPage({viewport:{width:1440,height:900}}); const errs=[]; p.on('pageerror',e=>errs.push(e.message));
+await p.route(/jsdelivr|gstatic|googleapis/,r=>r.abort());
+await p.goto('http://localhost:8765/tk_test.html#device',{waitUntil:'load'}); await p.waitForTimeout(4000);
+await p.screenshot({path:SP+'d_device.png'});
+await p.click('#dtabs button:nth-child(4)'); await p.waitForTimeout(2500);
+await p.evaluate(()=>document.querySelector('.dbuy').scrollIntoView({block:'center'})); await p.waitForTimeout(500);
+await p.screenshot({path:SP+'d_paint.png'});
+console.log(errs); await b.close()})();

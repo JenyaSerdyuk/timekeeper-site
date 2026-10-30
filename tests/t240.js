@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1440,height:900}});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+p.on('console',m=>{if(m.text().startsWith('IG'))console.log(m.text())});await p.route('**/',async r=>{const res=await r.fetch();let t=await res.text();t=t.replace('function iGo(dir){','function iGo(dir){ console.log("IG",dir,Math.round(performance.now()),!!IS.a,prog(GI.el).toFixed(2));');r.fulfill({response:res,body:t})});await p.goto('http://localhost:8766/',{waitUntil:'networkidle'});await p.waitForTimeout(1500);await p.mouse.move(700,450);
+const Q=async t=>console.log(t,await p.evaluate(()=>{const o=document.querySelector('.intro');return ((scrollY-o.offsetTop)/(o.offsetHeight-innerHeight)).toFixed(3)+' y='+Math.round(scrollY)}));
+const flick=async()=>{for(let i=0;i<25;i++){await p.mouse.wheel(0,Math.max(1,Math.round(60*Math.pow(0.82,i))));await p.waitForTimeout(40)}};
+await flick();await Q('t1');await p.waitForTimeout(1500);await Q('after1');
+await flick();await Q('t2');await p.waitForTimeout(1500);await Q('after2');
+await flick();await p.waitForTimeout(1500);await Q('after3');
+console.log(errs.join(';'));
+const c=await p.evaluate(()=>[document.getElementById('iL').style.clipPath,document.getElementById('iNameL').style.translate,innerWidth/2].join(' | '));console.log(c);
+await b.close()})();

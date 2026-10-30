@@ -1,5 +1,5 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Time Keeper — an art object that anchors your moment on the blockchain and counts every second of your time."><meta property="og:title" content="Time · Time Keeper"><meta property="og:description" content="Your personal art object that will outlive you by hundreds of years."><meta property="og:image" content="img/w/scene.webp"><meta property="og:type" content="website"><style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0;background:#fff;color:#000}img{max-width:100%}[hidden]{display:none!important}</style><script>window.TK_LEADS="https://functions.yandexcloud.net/d4edaakn8obmp1ic8uaj"</script></head><body><title>Time · Time Keeper — the keeper of your time</title>
-<script>/* every visit starts on the first scene: the browser does not jump back to an old scroll spot after the page is shown */try{if(!location.hash){history.scrollRestoration="manual";window.scrollTo(0,0)}}catch(e){}</script><style id="fwS">.intro .stick,.outro .stick{opacity:0!important}</style><script>(function(){var ok=false,done=function(){if(ok)return;ok=true;var e=document.getElementById('fwS');if(e)e.remove()};setTimeout(done,4000);if(!document.fonts){done();return}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Time Keeper — an art object that anchors your moment on the blockchain and counts every second of your time."><meta property="og:title" content="Time · Time Keeper"><meta property="og:description" content="Your personal art object that will outlive you by hundreds of years."><meta property="og:image" content="img/w/scene.webp"><meta property="og:type" content="website"><style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0;background:#fff;color:#000}img{max-width:100%}[hidden]{display:none!important}</style><script>window.TK_LEADS="https://functions.yandexcloud.net/d4edaakn8obmp1ic8uaj"</script></head><body><title>Time · Time Keeper — the keeper of your time</title><script>document.documentElement.lang='en'</script>
+<script>/* every visit starts on the first scene, white TIME: the browser (or the page that shows the site) does not jump back to an old scroll spot after a reload. Until the visitor touches the page, the page is held at the very top, so nothing plays by itself */(function(){if(location.hash)return;try{history.scrollRestoration="manual"}catch(e){}var t0=Date.now(),user=false,H=3000;['wheel','touchstart','keydown','pointerdown'].forEach(function(ev){addEventListener(ev,function(){user=true},{passive:true,capture:true})});function top(){if(user||Date.now()-t0>H)return;if((window.scrollY||document.documentElement.scrollTop)!==0){if(window._lenis){try{window._lenis.scrollTo(0,{immediate:true,force:true})}catch(e){}}window.scrollTo(0,0)}}top();var id=setInterval(function(){top();if(user||Date.now()-t0>H)clearInterval(id)},16);addEventListener('DOMContentLoaded',top);addEventListener('load',top);addEventListener('pageshow',top);addEventListener('scroll',top,{passive:true})})()</script><style id="fwS">.intro .stick,.outro .stick{opacity:0!important}</style><script>(function(){var ok=false,done=function(){if(ok)return;ok=true;var e=document.getElementById('fwS');if(e)e.remove()};setTimeout(done,4000);if(!document.fonts){done();return}
 var F=['300 20px Jost','400 20px Jost','400 12px "JetBrains Mono"','400 16px "Hanken Grotesk"'],has=function(){var n=0;document.fonts.forEach(function(f){if(/Jost/.test(f.family))n++});return n>0};
 (function wait(){if(ok)return;if(!has()){setTimeout(wait,30);return}Promise.all(F.map(function(f){return document.fonts.load(f)})).then(function(){requestAnimationFrame(function(){requestAnimationFrame(done)})},done)})()})()</script>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -846,6 +846,14 @@ em,i.em{font-style:normal!important}
 
 /* Timeless intro: the ? hangs after the line, so the words themselves are centered; its circle sits on the middle of the capitals */
 #timeless .cw-t p .q{margin-right:-22px;vertical-align:.04em}
+/* the hanging ? (and its larger tap area) never widens the page on a narrow phone */
+#timeless{overflow-x:clip}
+/* phone: the Timeless lead reads as two centered lines, never stretched with wide gaps */
+@media (max-width:860px){#timeless .cw-t p{text-align:center!important;text-align-last:center!important}}
+/* the hint under the 3D view splits into two even lines when it does not fit, never one word alone */
+.xvh{text-wrap:balance;padding-inline:12px}
+/* ways to use on a computer: the two cards of a row share their lines, so the texts start on the same level even when one title takes two lines */
+@media (min-width:861px){#uses .u-grid{grid-auto-rows:auto}#uses .u-grid>.u{grid-row:span 3;display:grid;grid-template-rows:subgrid;align-content:start}}
 /* a question mark never stays alone on a line: it is kept with the word before it */
 .qnw{white-space:nowrap}.qnw .q{vertical-align:.04em}
 /* Your life line: title centered, text in one centered column as wide as the email field */
@@ -1006,26 +1014,32 @@ em,i.em{font-style:normal!important}
     </div>
     <div class="cw-full u-grid uses-l">
       <article class="u">
+        <span class="u-n">01</span>
         <h3>Pass it down as a <em>family relic</em></h3>
         <p><b>What will you leave to your family tree for hundreds of years ahead? It will never be like it used to be. Now your relatives will know about you even thousands of years from now.</b> Even 300 years from now, your heirs will get a hello from an unusual ancestor. Time Keeper is made to be handed down, as <u>something that will remain for hundreds of years after you</u></p>
       </article>
       <article class="u">
+        <span class="u-n">02</span>
         <h3>Use it as a <em>deep philosophical gift</em></h3>
         <p><b>If you don’t know what to give someone who has everything, give them time.</b> For someone close to you, as a <u>reminder of how important life is</u>. You do not give them a thing, <u>you give them a moment</u> that will always remind them of you. Their count begins the second they start it and stays theirs for life</p>
       </article>
       <article class="u">
+        <span class="u-n">03</span>
         <h3>YOU + ART + PHILOSOPHY + TECH</h3>
         <p><b>Your own philosophical art object</b> for self-reflection, constantly reminding you of the beautiful, wild river called <u>life</u></p>
       </article>
       <article class="u">
+        <span class="u-n">04</span>
         <h3>Remember time is <em>short</em></h3>
         <p><b>Your seconds are too important to take for granted.</b> The countdown from 2.5 billion shows how much of an average life may be left. Seeing it every day changes how you spend your time. A reason to stop and think, <u>an object for self-reflection and self-improvement</u><button type="button" class="q" data-q="The countdown starts from 2,524,608,000 seconds, which is 80 years of life." aria-label="More about this" aria-expanded="false">?</button></p>
       </article>
       <article class="u">
+        <span class="u-n">05</span>
         <h3>Mark an important <em>start</em></h3>
         <p><b>Use it as a symbolic reminder of the most important event in your life, one that will stay with you until the end.</b> The birth of a child, your own wedding or a friends’ wedding, the start of a business or a new stage of life. These are turning points that can be marked with a symbolic gift</p>
       </article>
       <article class="u">
+        <span class="u-n">06</span>
         <h3>Quit a bad <em>habit</em></h3>
         <p><b>Use it as support that helps you find the strength not to give up in a hard fight.</b> Start it on the first day without a destructive habit, <u>so you never go back to it</u>. After a few million seconds nobody wants to start from zero</p>
       </article>
@@ -1033,6 +1047,17 @@ em,i.em{font-style:normal!important}
   <div hidden>
   </div>
 </section>
+<style>
+/* ways to use: more air, hairline dividers, a thin number over each card */
+#uses .u-grid{border-top-width:.5px}
+#uses .u{border-bottom-width:.5px!important;padding-block:clamp(30px,3.4vw,48px)!important;row-gap:10px!important}
+#uses .u:nth-child(odd){border-right-width:.5px}
+#uses .u>.u-n{grid-column:1/-1;grid-row:1;justify-self:center;font-family:'Hanken Grotesk',ui-sans-serif,system-ui,sans-serif;font-weight:400;font-size:clamp(28px,2.6vw,38px);line-height:1;letter-spacing:.04em;color:#b5b5b5;font-variant-numeric:tabular-nums}
+#uses .u>h3{grid-column:1/-1!important;grid-row:2!important;justify-self:stretch;text-align:center!important}
+#uses .u>p{grid-column:1/-1!important;grid-row:3!important}
+@media (min-width:861px){#uses .u:nth-child(odd){padding-right:56px!important}#uses .u:nth-child(even){padding-left:56px!important}}
+</style>
+
 
 <div class="motto"><p>Some things are hard to remember</p><p>Some things you’ll never forget</p></div>
 <section class="cw cw-dev" id="device">
@@ -1056,6 +1081,7 @@ em,i.em{font-style:normal!important}
       <div class="dbuy">
         <div class="dtitle"><h3 id="pName">Keychain</h3><span class="p-price" id="pPrice"></span></div>
         <p id="pText"></p>
+        <p id="pDevN" hidden>The seconds start counting on the blockchain from the moment of purchase. You will receive the device soon after production ends, but your seconds will already be running</p>
         <div class="ue" id="pExtra" hidden></div>
         <div class="eds" id="pEds" role="group" aria-label="Edition" hidden></div>
         <div class="p-acts"><button type="button" class="btn p-buy" id="pBuy">Buy</button><button type="button" class="btn p-add" id="pAdd">Add to cart</button><div class="btn p-add p-step" id="pStep" hidden><button type="button" id="pMi" aria-label="Remove one"><span class="pm"></span></button><output id="pQ" aria-live="polite">1</output><button type="button" id="pPl" aria-label="Add one"><span class="pm pl"></span></button></div></div>
@@ -1588,8 +1614,11 @@ em,i.em{font-style:normal!important}
       for(let y=yr;y>=yr-110;y--) Y.add(new Option(y,y)) });
     const upd=src=>{ const [D,M,Y]=src; if(D.value!==''&&M.value!==''&&Y.value!==''){ const dt=new Date(+Y.value,+M.value,+D.value); if(dt.getMonth()!==+M.value){ D.value=String(new Date(+Y.value,+M.value+1,0).getDate()); return upd(src) } birth=dt.getTime()<Date.now()?dt.getTime():null } else birth=null;
       sets.forEach(o=>{ if(o!==src){ o[0].value=D.value; o[1].value=M.value; o[2].value=Y.value } }) };
-    sets.forEach(set=>set.forEach(el=>el.addEventListener('change',()=>upd(set)))) })();
-  setOMode('now');
+    sets.forEach(set=>set.forEach(el=>el.addEventListener('change',()=>upd(set))));
+    // demo for the investor: the birth date is already filled in (5 November 1981)
+    if(sets.length){ const [D,M,Y]=sets[0]; D.value='5'; M.value='10'; Y.value='1981'; upd(sets[0]) } })();
+  // demo for the investor: the counting starts in Hardcore backwards mode
+  setOMode('back');
   const uses=[];
 
   // ---------- side panel ----------
@@ -1614,7 +1643,7 @@ em,i.em{font-style:normal!important}
     [...$('dThumbs').children].forEach((t,k)=>t.onclick=()=>setDImg(k));
     $('dThumbs').hidden=f.imgs.length<2;
     setDImg(0);
-    $('pName').textContent=f.k; $('pPrice').innerHTML=PR(f.p); $('pText').innerHTML=f.t.replace(/\.$/,''); $('pText').hidden=!f.t; $('pExtra').innerHTML=f.extra||''; $('pExtra').hidden=!f.extra;
+    $('pName').textContent=f.k; $('pPrice').innerHTML=PR(f.p); $('pText').innerHTML=f.t.replace(/\.$/,''); $('pText').hidden=!f.t; $('pDevN').hidden=!f.dev; $('pExtra').innerHTML=f.extra||''; $('pExtra').hidden=!f.extra;
     $('pBtn').textContent='Reserve the '+f.k.toLowerCase(); $('pBuy').textContent=(f.dev?'Pre-order the ':'Buy the ')+f.k.toLowerCase(); $('pOk').hidden=true; drawEds(); drawNote(); if(window._syncAdd) window._syncAdd();
     const vt=$('vtabs'); vt.hidden=!f.vars;
     if(window.XV) XV.tab(f.k);
@@ -1853,7 +1882,7 @@ em,i.em{font-style:normal!important}
   // ---------- keychain: exploded view inside the Keychain tab ----------
   window.XV=(function(){
     const box=$('xvB'), img=$('xvImg'), sp=$('xvSp'), lb=$('xvLb'), hint=box.querySelector('.xvh');
-    const DIRS={Keychain:'img/xv/','Keychain|gold':'img/xvg/',Pendant:'img/xvp/','Pendant|gold':'img/xvpg/',Painting:'img/xva/','Watch:watch':'img/xvw/','Watch:watch2':'img/xvw2/'}, CACHE={}; let curK='', fin='silver';
+    const DIRS={Keychain:'img/xv/','Keychain|gold':'img/xvg/',Pendant:'img/xvp/',Painting:'img/xva/','Watch:watch':'img/xvw/','Watch:watch2':'img/xvw2/'}, CACHE={}; let curK='', fin='silver';
     let C=null, els={}, on=false, raf=0, lt=0, shown='', mode='A', ang=0, da=0, vel=0, tv=0, tw=null, rot=null, opened=false, wait=0, drag=null;
     const sstep=x=>x*x*(3-2*x), V='?v=14';
     // frames load only when the visitor gets close to this section, and only for the open tab
@@ -1872,7 +1901,7 @@ em,i.em{font-style:normal!important}
         const u='url("'+im.src+'")'; if(sp.dataset.u!==im.src){ sp.style.backgroundImage=u; sp.dataset.u=im.src; sp.style.backgroundSize=(q.cols*100)+'% '+(q.rows*100)+'%' }
         sp.style.backgroundPosition=((j%q.cols)/(q.cols-1)*100)+'% '+(Math.floor(j/q.cols)/(q.rows-1)*100)+'%'; sp.style.display='block'; img.style.visibility='hidden'; shown=key; return }
       const im=o.f[i]; if(im.complete && im.naturalWidth){ img.src=im.src; img.style.visibility=''; sp.style.display='none'; shown=key } }
-    function setHint(){ hint.textContent=(C&&C.noex)?'Drag to rotate · 360°':mode==='A'?'Drag to rotate · click to take it apart':'Drag to rotate · click to assemble' }
+    function setHint(){ hint.textContent=((C&&C.noex)?'Drag to rotate · 360°':mode==='A'?'Drag to rotate · click to take it apart':'Drag to rotate · click to assemble').replace(' · ','\u00a0· ') }
     function lab(meta,f,vis){ const n=meta.length; if(!n) return; const a=Math.floor(f), b=Math.min(n-1,a+1), u=f-a, W=lb.clientWidth, Hh=lb.clientHeight, narrow=innerWidth<=860, col=narrow?Math.min(C.col,0.72):C.col, G=narrow?15:21, L=[];
       for(const k in els){ const A=meta[((a%n)+n)%n][k], B=meta[((b%n)+n)%n][k]; if(!A||!B) continue; L.push({k,x:A[0]+(B[0]-A[0])*u,y:(A[1]+(B[1]-A[1])*u+(k==='button'?0.012:0))*Hh}) }
       L.sort((p,q)=>p.y-q.y); for(let i=1;i<L.length;i++) if(L[i].y-L[i-1].y<G) L[i].y=L[i-1].y+G;
@@ -2691,10 +2720,13 @@ em,i.em{font-style:normal!important}
 <style>
 /* phone: the first text flows as one even paragraph (its two parts are not forced onto separate lines on a narrow screen) */
 @media (max-width:860px){html body .intro .launch:not(.ref) #lTag .tl1,html body .intro .launch:not(.ref) #lTag .tl2{display:inline!important}}
+/* phone: the last sentence continues the same paragraph after a full stop, so the whole text is one even block */
+@media (max-width:860px){html body .intro .launch:not(.ref) #lTag .ltag3{display:inline!important;text-align:inherit!important;text-align-last:inherit!important}html body .intro .launch:not(.ref) #lTag .tl2::after{content:'. '}}
 </style>
 
 <style>
 /* phone: the text under the painting flows as one even paragraph too */
 @media (max-width:860px){html body .intro .launch:not(.ref) #lPhr .pl0,html body .intro .launch:not(.ref) #lPhr .pl1,html body .intro .launch:not(.ref) #lPhr .pl2{display:inline!important}html body .intro .launch:not(.ref) #lPhr .pl0::after,html body .intro .launch:not(.ref) #lPhr .pl1::after{content:'.'}}
 </style>
+
 <style>.tk-cons{margin:0;font:400 11px/1.4 'Hanken Grotesk',sans-serif;color:#8b8b8b;text-align:center}.tk-cons a{color:inherit;text-decoration:underline}.tk-cons-float{position:absolute;left:0;right:0;top:calc(100% + 6px);opacity:0;pointer-events:none;transition:opacity .2s}.tk-cons-float.on{opacity:1;pointer-events:auto}.intro .tk-cons-float{color:rgba(255,255,255,.6)}</style><script>(function(){var T="By submitting, you agree to our <a href=\"privacy.html\" target=\"_blank\">privacy policy</a>";['rsvForm','pForm','tlForm','llReg'].forEach(function(id){var f=document.getElementById(id);if(!f)return;if(getComputedStyle(f).position==='static')f.style.position='relative';var p=document.createElement('p');p.className='tk-cons tk-cons-float';p.innerHTML=T;f.appendChild(p);f.addEventListener('focusin',function(){p.classList.add('on')})})})();</script></body></html>

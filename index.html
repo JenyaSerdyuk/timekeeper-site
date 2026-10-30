@@ -1444,7 +1444,7 @@ em,i.em{font-style:normal!important}
       const keys=[...m.keys()].sort((x,y)=>x-y); keys.pop();
       keys.forEach(k=>{ const l=m.get(k); if(l.length<2) return; let sum=0,gaps=0,ch=0; l.forEach((o,i)=>{ sum+=o.r.width; ch+=o.t.textContent.replace(/­/g,'').length; if(i&&o.r.left-l[i-1].r.right>2) gaps++ }); if(!gaps) return;
         const def=W-(sum+gaps*sp), ok=gaps*0.22*fs; if(def<=ok) return; const ls=Math.min(0.08*fs,(def-ok)/ch); l.forEach(o=>o.t.style.letterSpacing=ls.toFixed(2)+'px') }) }) }
-  function sceneLayout(){ if(!sceneLayout.hy){ sceneLayout.hy=1; try{ applyHy(); wrapWords() }catch(e){} } sceneLayout0(); try{ justFix() }catch(e){} if(window.__leReapply) try{ window.__leReapply() }catch(e){} }
+  function sceneLayout(){ if(!sceneLayout.hy){ sceneLayout.hy=1; try{ applyHy(); wrapWords() }catch(e){} } sceneLayout0(); if(window.__leReapply) try{ window.__leReapply() }catch(e){} }
   function sceneLayout0(){
     if(!sceneLayout.busy){ sceneLayout.busy=1; sceneLayout.ref=refBand(); applyRef(sceneLayout.ref); sceneLayout.busy=0 }
     const S=SCENES[scKey], st=document.querySelector('.intro .stick'); const W=st.clientWidth, H=st.clientHeight;
@@ -2336,9 +2336,7 @@ em,i.em{font-style:normal!important}
     if(OS.ga&&now-(OS.lastW||0)>200) OS.ga=false;
     const z=!!OS.a||OS.ga||(!window._navJump&&oZone());
     if(z!==OS.z){ OS.z=z; if(z) lockOn(); else if(!IS.z) lockOff() } else if(z&&lenis&&!lenis.isStopped) lenis.stop();
-    if(OS.a||window._navJump){ OS.py=scrollY; return } const real=prog(GO.el);
-    // between that white screen and the painting the page never rests half and half: it glides on to the whole scene
-    { const yW=oW(), sOH=secY(GO,OH); if(OS.py!=null&&scrollY>yW+3&&scrollY<sOH-3&&Math.abs(scrollY-OS.py)>0.5){ const dn=scrollY>OS.py; OS.py=scrollY; killFling(); oHold.armed=false; OS.td=true; if(dn) oTo(sOH,1500); else { OS.out=true; oTo(yW,1500) } return } OS.py=scrollY }
+    if(OS.a||window._navJump) return; const real=prog(GO.el);
     // arriving from above: the scroll (and its inertia) stops exactly on the painting
     if(real<OH-0.015){ oHold.armed=true; return }
     if(oHold.armed && real>OH+0.001 && real<0.3){ oHold.armed=false; jumpTo(secY(GO,OH)); GO.v=OH; OS.td=true; return }
@@ -2688,5 +2686,10 @@ em,i.em{font-style:normal!important}
   .cw-t p,.u p,.cw-dev .dbuy p{text-align:justify!important;text-align-last:left;-webkit-hyphens:auto;hyphens:auto}
   #uses .u h3{text-align:center}
 }
+</style>
+
+<style>
+/* phone: the first text flows as one even paragraph (its two parts are not forced onto separate lines on a narrow screen) */
+@media (max-width:860px){html body .intro .launch:not(.ref) #lTag .tl1,html body .intro .launch:not(.ref) #lTag .tl2{display:inline!important}}
 </style>
 <style>.tk-cons{margin:0;font:400 11px/1.4 'Hanken Grotesk',sans-serif;color:#8b8b8b;text-align:center}.tk-cons a{color:inherit;text-decoration:underline}.tk-cons-float{position:absolute;left:0;right:0;top:calc(100% + 6px);opacity:0;pointer-events:none;transition:opacity .2s}.tk-cons-float.on{opacity:1;pointer-events:auto}.intro .tk-cons-float{color:rgba(255,255,255,.6)}</style><script>(function(){var T="By submitting, you agree to our <a href=\"privacy.html\" target=\"_blank\">privacy policy</a>";['rsvForm','pForm','tlForm','llReg'].forEach(function(id){var f=document.getElementById(id);if(!f)return;if(getComputedStyle(f).position==='static')f.style.position='relative';var p=document.createElement('p');p.className='tk-cons tk-cons-float';p.innerHTML=T;f.appendChild(p);f.addEventListener('focusin',function(){p.classList.add('on')})})})();</script></body></html>

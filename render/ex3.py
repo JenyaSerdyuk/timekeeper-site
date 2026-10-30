@@ -210,17 +210,20 @@ def run(prod, frames, W, Hh, samples, outdir):
         # tall vertical strips seen in the flat faces: the brushed metal shows them as soft vertical bands, like the photos
         for k, (x, st) in enumerate(((-38, 2.6), (8, 1.4), (46, 3.0))):
             L.append(softbox('rs%d' % k, (9*s, 120*s), tuple(base + Vector((x*s, -2*s, 0))), c + Vector((x*s*0.0, 0, 0)), st*R0))
-        for o in L: o.visible_shadow = False
+        for o in L: o.visible_shadow = False; o.visible_camera = False  # light cards only light and reflect, never seen by the camera
         # glass: hide the light cards in its reflection so the digits stay clear
         for o in bpy.data.objects:
             if o.type == 'MESH' and o.name.startswith('glass'):
                 o.visible_glossy = True
+    # light panels never cast a shadow (otherwise their faint outlines show on the floor in the background)
+    for o in bpy.data.objects:
+        if o.type == 'MESH' and not o.visible_camera: o.visible_shadow = False
     nt = sc.world.node_tree; bg = nt.nodes['Background']; bg.inputs[1].default_value = 1.0
     env = [n for n in nt.nodes if n.type == 'TEX_ENVIRONMENT'][0]
     mix = nt.nodes.new('ShaderNodeMixRGB'); mix.blend_type = 'ADD'; mix.inputs[0].default_value = 1.0; mix.inputs[2].default_value = (0.32, 0.32, 0.33, 1)
     mul = nt.nodes.new('ShaderNodeMixRGB'); mul.blend_type = 'MULTIPLY'; mul.inputs[0].default_value = 1.0; mul.inputs[2].default_value = (0.85, 0.85, 0.85, 1)
     nt.links.new(env.outputs[0], mul.inputs[1]); nt.links.new(mul.outputs[0], mix.inputs[1]); nt.links.new(mix.outputs[0], bg.inputs[0])
-    bpy.ops.mesh.primitive_plane_add(size=1200, location=(0, 0, -6))
+    bpy.ops.mesh.primitive_plane_add(size=20000, location=(0, 0, -6))  # big enough that its far edge never enters the frame
     fl = bpy.context.active_object; fl.is_shadow_catcher = True
     sc.cycles.samples = samples
     root = bpy.data.objects.new('root', None); link(root)

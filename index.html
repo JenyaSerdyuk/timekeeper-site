@@ -1888,7 +1888,7 @@ em,i.em{font-style:normal!important}
     const box=$('xvB'), img=$('xvImg'), sp=$('xvSp'), lb=$('xvLb'), hint=box.querySelector('.xvh');
     const DIRS={Keychain:'img/xv/','Keychain|gold':'img/xvg/',Pendant:'img/xvp/',Painting:'img/xva/','Watch:watch':'img/xvw/','Watch:watch2':'img/xvw2/'}, CACHE={}; let curK='', fin='silver';
     let C=null, els={}, on=false, raf=0, lt=0, shown='', mode='A', ang=0, da=0, vel=0, tv=0, tw=null, rot=null, opened=false, wait=0, drag=null;
-    const sstep=x=>x*x*(3-2*x), V='?v=14';
+    const sstep=x=>x*x*(3-2*x), V='?v=15';
     // frames load only when the visitor gets close to this section, and only for the open tab
     let armed=false;
     function pre(c,set,n,spr){ const o=c.S[set]; o.n=n; if(spr){ o.sp=spr; for(let i=0;i<spr.chunks;i++){ const im=new Image(); im.src=c.dir+set+'s'+i+'.jpg'+V; o.f.push(im) } return } for(let i=0;i<n;i++){ const im=new Image(); im.decoding='async'; im.src=c.dir+set+String(i).padStart(2,'0')+'.jpg'+V; o.f.push(im) } }

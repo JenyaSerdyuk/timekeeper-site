@@ -1014,27 +1014,27 @@ html body .intro #rsvEmail{text-align:center!important}
 </style>
 <section class="cw" id="explain">
   <h2>What it is</h2>
-  <div class="cw-t"><p>Time Keeper is an object at the intersection of philosophy, hardware and art. From the moment you start it, it fixes that moment on the blockchain and counts every second after it. The moment can never be changed, by anyone. It is bound to you and your family line forever.<button type="button" class="q" data-q="The start moment is written to a public blockchain. Nobody can change or delete it, including us." aria-label="More about this" aria-expanded="false">?</button></p></div>
+  <div class="cw-t"><p>Time Keeper is an object at the intersection of philosophy, hardware and art. From the moment you start it, it fixes that moment on the blockchain and counts forever. It is bound to you and your family line forever.<button type="button" class="q" data-q="The start moment is written to a public blockchain. Nobody can change or delete it, including us." aria-label="More about this" aria-expanded="false">?</button></p></div>
 </section>
 
 <section class="cw cw-idea" id="idea">
   <h2>Why Time Keeper exists</h2>
   <div class="cw-t">
     <p>We invested our own money, time, soul, depression and nerves to release this product, because it is beautiful and it has to exist. Even if this product changes the lives of 100 people, it will mean our work was not for nothing.</p>
-    <p>It was made because people spend their time as if it were endless, because it would be good to leave something behind for hundreds of years, for your future generations, and for ourselves too. We believe there are others just like us.</p>
+    <p>It was made because people spend their time as if it were endless, and it would be good to leave something behind for your descendants for hundreds of years. We believe there are others just like us.</p>
   </div>
 </section>
 
 <section class="cw" id="uses">
   <h2>Ways to use it</h2>
   <div class="cw-t">
-    <p><b>Your time keeps disappearing somewhere.</b> This is the keeper of your time, and it has an existential meaning as the main value in this world. There is nothing more valuable than your time. With Time Keeper, <u>your time will never disappear</u>. Below are the ways to use it that we know, but you can come up with your own. The main thing is that <u>it inspires you</u>.</p>
+    <p><b>Your time keeps disappearing somewhere.</b> There is nothing more valuable than your time. With Time Keeper, <u>your time will never disappear</u>. Below are the ways to use it that we know, but you can come up with your own. The main thing is that <u>it inspires you</u>.</p>
     </div>
     <div class="cw-full u-grid uses-l">
       <article class="u">
         <span class="u-n">01</span>
         <h3>Pass it down as a <em>family relic</em></h3>
-        <p><b>What will you leave to your family tree for hundreds of years ahead? It will never be like it used to be. Now your relatives will know about you even thousands of years from now.</b> Even 300 years from now, your heirs will get a hello from an unusual ancestor. Time Keeper is made to be handed down, as <u>something that will remain for hundreds of years after you</u></p>
+        <p><b>What will you leave to your family tree for hundreds of years ahead? Now your descendants will know about you even thousands of years from now.</b> Even 300 years from now, your heirs will get a hello from an unusual ancestor. Time Keeper is made to be handed down, as <u>something that will remain for hundreds of years after you</u></p>
       </article>
       <article class="u">
         <span class="u-n">02</span>
@@ -1251,8 +1251,8 @@ html body .intro #rsvEmail{text-align:center!important}
 
 <section class="cw cw-ll">
   <h2>Your life line</h2>
-  <div class="cw-t"><p>Once a month, you upload 3 photos, 1 video and a short note, like a small letter to yourself. <u>An eternal diary</u>, every month, to build <u>the album of your life</u> that your relatives can look through hundreds of years from now. <span>Today we cannot see photos, let alone the whole story, even of our closest relatives, not to mention those who lived hundreds of years before us. In the future this problem will not exist.</span></p>
-    <p>You, the way you lived, what you went through, <u>will stay forever</u>. <span>People who do not exist yet and will only be born hundreds of years from now will be able to learn a lot about you and take care of this</span> <u>family line</u>.</p>
+  <div class="cw-t"><p>Once a month, you upload 3 photos, 1 video and a short note, like a small letter to yourself. <u>An eternal diary</u> and <u>the album of your life</u> that your descendants can look through hundreds of years from now. <span>Today we cannot see the story even of our closest relatives. In the future this problem will not exist.</span></p>
+    <p>You, the way you lived, what you went through, <u>will stay forever</u>. <span>People born hundreds of years from now will learn about you and take care of this</span> <u>family line</u>.</p>
   </div>
   <div class="cw-full ll" id="ll">
 
@@ -1488,7 +1488,37 @@ html body .intro #rsvEmail{text-align:center!important}
       const keys=[...m.keys()].sort((x,y)=>x-y); keys.pop();
       keys.forEach(k=>{ const l=m.get(k); if(l.length<2) return; let sum=0,gaps=0,ch=0; l.forEach((o,i)=>{ sum+=o.r.width; ch+=o.t.textContent.replace(/­/g,'').length; if(i&&o.r.left-l[i-1].r.right>2) gaps++ }); if(!gaps) return;
         const def=W-(sum+gaps*sp), ok=gaps*0.22*fs; if(def<=ok) return; const ls=Math.min(0.08*fs,(def-ok)/ch); l.forEach(o=>o.t.style.letterSpacing=ls.toFixed(2)+'px') }) }) }
-  function sceneLayout(){ if(!sceneLayout.hy){ sceneLayout.hy=1; try{ applyHy(); wrapWords() }catch(e){} } window.__scK=1; sceneLayout0(); try{ fitScreen() }catch(e){} if(window.__leReapply) try{ window.__leReapply() }catch(e){} }
+  function sceneLayout(){ if(!sceneLayout.hy){ sceneLayout.hy=1; try{ applyHy(); wrapWords() }catch(e){} } window.__scK=1; sceneLayout0(); try{ fitScreen() }catch(e){} try{ splitLayout() }catch(e){} if(window.__leReapply) try{ window.__leReapply() }catch(e){} }
+
+  // computer: the painting large on the left with the counting modes under it; the text and the email field on the right,
+  // centred on the painting. Phones keep the layout above (everything one under another)
+  function splitLayout(){ const R0=document.documentElement, lt=$('lTop'), md=$('iModes'), tg=$('lTag'), ph=$('lPhr'), fm=$('rsvForm');
+    if(scKey!=='painting'||innerWidth<=860){ if(R0.classList.contains('tk-split')){ R0.classList.remove('tk-split'); ['position','left','top','width','maxWidth','margin','translate'].forEach(k=>{ lt.style[k]='' }); } return }
+    R0.classList.add('tk-split');
+    const S=SCENES.painting, st=document.querySelector('.intro .stick'), W=st.clientWidth, H=st.clientHeight, sr=st.getBoundingClientRect();
+    const mx=Math.max(32,Math.round(W*0.045)), gap=Math.max(40,Math.round(W*0.04)), colW0=Math.round(W*0.56);
+    const fz=Math.max(17,Math.min(26,Math.round((W-2*mx-colW0-gap)/21)));
+    [tg,ph].forEach(e=>e.style.setProperty('font-size',fz+'px','important'));
+    md.querySelectorAll('.omodes button').forEach(b=>{ b.style.height=Math.round(fz*1.45)+'px'; b.style.fontSize=(Math.round(fz*0.56*2)/2)+'px'; b.style.padding='0 '+Math.round(fz*0.75)+'px' });
+    md.querySelectorAll('.obsel select').forEach(x=>{ x.style.height=Math.round(fz*1.6)+'px'; x.style.fontSize=Math.round(fz*0.7)+'px' });
+    const rb=$('rsvBtn'); if(rb) rb.style.fontSize=(Math.round(fz*0.62*2)/2)+'px';
+    const bd=$('iBdate'), bh=bd&&bd.hidden; if(bh){ bd.hidden=false; bd.style.visibility='hidden' } md.style.maxWidth=colW0+'px'; const mh=md.getBoundingClientRect().height; if(bh){ bd.hidden=true; bd.style.visibility='' }
+    const g1=sceneLayout.g1!=null?sceneLayout.g1:12;
+    const pw=Math.min(colW0,(H-80-mh-g1)*S.obj[2]/S.obj[3]), sc=pw/S.obj[2], P=S.obj[3]*sc, py=Math.round((H-(P+g1+mh))/2), px=mx;
+    const left=px-S.obj[0]*sc, top=py-S.obj[1]*sc;
+    const im=$('sceneImg'); im.style.transform='translate('+left+'px,'+top+'px) scale('+sc+')';
+    const w=$('sceneWin'); w.style.width=(S.w*sc)+'px'; w.style.height=(S.h*sc)+'px'; w.style.left=(left+S.cx*sc)+'px'; w.style.top=(top+S.cy*sc)+'px';
+    const tp=$('tyt').firstElementChild; if(tp) tp.style.top=(top+S.cy*sc-S.h*sc/2-Math.max(28,S.h*sc*0.9))+'px';
+    md.style.left=Math.round(px+pw/2)+'px'; md.style.top=Math.round(py+P+g1)+'px'; md.style.maxWidth=Math.floor(pw)+'px';
+    // the right column
+    const rx=Math.round(px+pw+gap), rw=Math.round(W-mx-rx);
+    [tg,ph].forEach(e=>{ e.style.width=rw+'px'; e.style.maxWidth=rw+'px' }); fm.style.width=rw+'px'; fm.style.maxWidth=rw+'px';
+    const at=(e,x,y)=>{ e.style.position='absolute'; e.style.margin='0'; e.style.translate='none'; const op=(e.offsetParent||st).getBoundingClientRect(); e.style.left=Math.round(sr.left+x-op.left)+'px'; e.style.top=Math.round(sr.top+y-op.top)+'px' };
+    lt.style.width=rw+'px'; lt.style.maxWidth=rw+'px';
+    const Hh=e=>{ const k=e.style.transform; e.style.transform='none'; const h=e.getBoundingClientRect().height; e.style.transform=k; return h };
+    const a=Hh(lt), b=Hh(ph), c=Hh(fm), G=Math.round(fz*1.5); let y=Math.round(py+P/2-(a+b+c+2*G)/2);
+    at(lt,rx,y); y+=a+G; at(ph,rx,y); y+=b+G; at(fm,rx,y);
+    sceneLayout.geo={sc,left,top,W,H}; if(typeof oLayout==='function') try{ oLayout() }catch(e){} }
   // short screens (a laptop with the browser bars, a small phone): if the group would not fit, the painting gets just as much smaller
   // as needed, so the field at the bottom never runs into the next block. On normal screens nothing changes
   function fitScreen(){ if(scKey!=='painting'||innerWidth<=860) return; const st=document.querySelector('.intro .stick'), H=st.clientHeight, phone=innerWidth<=860;
@@ -1602,6 +1632,12 @@ html body .intro #rsvEmail{text-align:center!important}
           const sr=st.getBoundingClientRect(), obB=ob.getBoundingClientRect().bottom-sr.top; if(bh){ bd.hidden=true; bd.style.visibility='' }
           const odr=od.getBoundingClientRect(), odT=odr.top-sr.top, gap=Math.max(18,g*1.6);
           if(odT<obB+gap){ od.style.bottom='auto'; od.style.top=Math.round(obB+gap)+'px' } } } } }
+  { const oL0=oLayout; oLayout=function(){ oL0(); try{ oSplit() }catch(e){} } }
+  // last screen on a computer: the painting stands where it stands on the first screen (left); buttons, Order and the line above follow it
+  function oSplit(){ const ob=$('oBd'), od=$('oOrder'), op=$('oPhrase'); const on=document.documentElement.classList.contains('tk-split')&&innerWidth>860, g=sceneLayout.geo;
+    if(!on||!g){ [ob,od].forEach(e=>e&&(e.style.left='')); if(op){ op.style.left=''; op.style.right='' } return }
+    const S=SCENES.painting, W=document.querySelector('.outro .stick').clientWidth, cx=Math.round(g.left+(S.obj[0]+S.obj[2]/2)*g.sc);
+    ob.style.left=cx+'px'; if(od) od.style.left=cx+'px'; if(op){ op.style.left=(cx-W/2)+'px'; op.style.right=(W/2-cx)+'px' } }
   oLayout(); addEventListener('resize',oLayout); $('oImg').addEventListener('load',oLayout); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(oLayout);
   buildDigits(); setSceneDigits(0); sceneLayout(); addEventListener('resize',sceneLayout); /* once the fonts and pictures are in, the first screen is fitted again, so it already looks final before anyone switches a mode */ if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ try{ sceneLayout() }catch(e){} }); addEventListener('load',()=>setTimeout(()=>{ try{ sceneLayout() }catch(e){} },60)); { let st=0; addEventListener('scroll',()=>{ clearTimeout(st); st=setTimeout(()=>{ const r=document.getElementById('top').getBoundingClientRect(); if(r.bottom>0&&r.top<innerHeight) try{ sceneLayout() }catch(e){} },160) },{passive:true}) } if(window.ResizeObserver){ let rq=0; const ro=new ResizeObserver(()=>{ if(rq) return; rq=requestAnimationFrame(()=>{ rq=0; try{ sceneLayout() }catch(e){} }) }); ['lTop','lPhr','rsvForm','iModes'].forEach(id=>$(id)&&ro.observe($(id))); const bt=document.querySelector('.intro .launch .bottom'); if(bt) ro.observe(bt) } if(document.fonts&&document.fonts.ready) document.fonts.ready.then(sceneLayout); if(document.fonts&&document.fonts.addEventListener) document.fonts.addEventListener('loadingdone',sceneLayout); setTimeout(sceneLayout,1200); setTimeout(sceneLayout,3000);
 
@@ -1926,7 +1962,7 @@ html body .intro #rsvEmail{text-align:center!important}
     const box=$('xvB'), img=$('xvImg'), sp=$('xvSp'), lb=$('xvLb'), hint=box.querySelector('.xvh');
     const DIRS={Keychain:'img/xv/','Keychain|gold':'img/xvg/',Pendant:'img/xvp/',Painting:'img/xva/','Watch:watch':'img/xvw/','Watch:watch2':'img/xvw2/'}, CACHE={}; let curK='', fin='silver';
     let C=null, els={}, on=false, raf=0, lt=0, shown='', mode='A', ang=0, da=0, vel=0, tv=0, tw=null, rot=null, opened=false, wait=0, drag=null;
-    const sstep=x=>x*x*(3-2*x), V='?v=15';
+    const sstep=x=>x*x*(3-2*x), V='?v=16';
     // frames load only when the visitor gets close to this section, and only for the open tab
     let armed=false;
     function pre(c,set,n,spr){ const o=c.S[set]; o.n=n; if(spr){ o.sp=spr; for(let i=0;i<spr.chunks;i++){ const im=new Image(); im.src=c.dir+set+'s'+i+'.jpg'+V; o.f.push(im) } return } for(let i=0;i<n;i++){ const im=new Image(); im.decoding='async'; im.src=c.dir+set+String(i).padStart(2,'0')+'.jpg'+V; o.f.push(im) } }
@@ -2455,7 +2491,7 @@ html body .intro #rsvEmail{text-align:center!important}
     nav.classList.toggle('on', intro.getBoundingClientRect().bottom<innerHeight*0.5 && outro.getBoundingClientRect().top>innerHeight*0.4);
 
     const q=reduce?prog(outro):gateOutro(now);
-    const oc=1-ease(clamp((q-0.62)/0.34)); const od=clamp((q-0.04)/0.42); if(!frame.osc){ frame.osc=1; $('oScene').style.opacity='1'; $('oScene').style.visibility='visible' }  const opq=clamp((q-0.3)/0.2); $('oPhrase').style.opacity=opq; $('oPhrase').style.transform='translateY(-100%) scale('+(1.06-0.06*opq)+')';
+    const oc=1-ease(clamp((q-0.62)/0.34)); const od=clamp((q-0.04)/0.42); if(!frame.osc){ frame.osc=1; $('oScene').style.opacity='1'; $('oScene').style.visibility='visible' }  const opq=clamp(od*2.2); $('oPhrase').style.opacity=opq; $('oPhrase').style.transform='translateY(-100%) scale('+(1.06-0.06*opq)+')';
     const ot=outro.getBoundingClientRect().top;
     // painting: your seconds (lived since birth once a date is entered); darkness: the 60 to 0 countdown as before
     if(od>=0.5 && !window._oStart) window._oStart=now;
@@ -2804,5 +2840,78 @@ html body #device .stage3d{justify-self:center;width:calc(50% - var(--g)/2)}}
 /* product tiles a little smaller (about 15%) */
 #device .ptiles{width:min(85%,460px)!important;max-width:none!important;margin-inline:auto!important}
 @media (min-width:861px){html body #device .ptiles{width:85%!important}}
+</style>
+<script>
+/* review emulator: only in the prototype (never on the live sites). Buttons: off / computer 1440x900 / phone 390x844 */
+(function(){
+  const live=/whytfnot|xn--b1agvo1f|timekeeper\.one|время|localhost|127\.0\.0\.1/.test(location.hostname);
+  let inEmu=false; try{ inEmu=new URL(location.href).searchParams.get('tkemu')==='1' }catch(e){}
+  if(live||inEmu) return;
+  const st=document.createElement('style');
+  st.textContent='.emu-bar{position:fixed;right:16px;bottom:16px;z-index:300;display:flex;gap:4px;padding:4px;border-radius:999px;background:#0a0a0a;box-shadow:0 4px 18px rgba(0,0,0,.25);font:500 11px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}'+
+   '.emu-bar button{all:unset;cursor:pointer;color:#fff;padding:10px 14px;border-radius:999px}.emu-bar button[aria-pressed="true"]{background:#fff;color:#0a0a0a}.emu-bar button:focus-visible{outline:2px solid #fff;outline-offset:2px}'+
+   '.emu-wrap{position:fixed;inset:0;z-index:250;background:#2a2a2a;display:flex;align-items:center;justify-content:center;overflow:hidden}'+
+   '.emu-dev{position:relative;flex:none;background:#fff;box-shadow:0 0 0 10px #111,0 20px 60px rgba(0,0,0,.5);border-radius:6px;overflow:hidden;transform-origin:center center}'+
+   '.emu-dev.ph{border-radius:36px}.emu-dev iframe{border:0;display:block;width:100%;height:100%}';
+  document.head.appendChild(st);
+  const bar=document.createElement('div'); bar.className='emu-bar'; bar.setAttribute('role','group'); bar.setAttribute('aria-label','Эмулятор');
+  const M=[['off','Сайт'],['pc','Компьютер'],['ph','Телефон']];
+  bar.innerHTML=M.map(m=>'<button type="button" data-m="'+m[0]+'">'+m[1]+'</button>').join('');
+  let wrap=null, mode='off';
+  function fit(){ if(!wrap) return; const d=wrap.firstChild, w=+d.dataset.w, h=+d.dataset.h, k=Math.min(1,(innerWidth-40)/(w+20),(innerHeight-90)/(h+20)); d.style.transform='scale('+k+')' }
+  function set(m){ mode=m; try{ localStorage.setItem('tk_emu',m) }catch(e){}
+    [...bar.children].forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
+    if(wrap){ wrap.remove(); wrap=null } document.documentElement.style.overflow='';
+    if(m==='off') return;
+    const w=m==='ph'?390:1440, h=m==='ph'?844:900;
+    let u; try{ u=new URL(location.href); u.searchParams.set('tkemu','1'); u.hash='' }catch(e){ u=location.pathname+'?tkemu=1' }
+    wrap=document.createElement('div'); wrap.className='emu-wrap';
+    wrap.innerHTML='<div class="emu-dev'+(m==='ph'?' ph':'')+'" data-w="'+w+'" data-h="'+h+'" style="width:'+w+'px;height:'+h+'px"><iframe title="'+(m==='ph'?'Телефон 390×844':'Компьютер 1440×900')+'" src="'+String(u)+'"></iframe></div>';
+    document.body.appendChild(wrap); document.documentElement.style.overflow='hidden'; fit() }
+  bar.addEventListener('click',e=>{ const b=e.target.closest('button'); if(b) set(b.dataset.m) });
+  addEventListener('resize',fit);
+  function add(){ if(bar.isConnected) return; document.body.appendChild(bar); let s='off'; try{ s=localStorage.getItem('tk_emu')||'off' }catch(e){} set(s) }
+  if(document.readyState==='loading') addEventListener('DOMContentLoaded',add); else add();
+})();
+</script>
+<style>
+/* computer, painting on the left: the text on the right flows as normal paragraphs */
+html.tk-split body .intro .launch:not(.ref) #lTag .tl1,html.tk-split body .intro .launch:not(.ref) #lTag .tl2,html.tk-split body .intro .launch:not(.ref) #lTag .ltag3,html.tk-split body .intro .launch:not(.ref) #lPhr .pl0,html.tk-split body .intro .launch:not(.ref) #lPhr .pl1,html.tk-split body .intro .launch:not(.ref) #lPhr .pl2{display:inline!important}
+html.tk-split body .intro .launch:not(.ref) #lTag .tl2::after{content:'. '}
+html.tk-split body .intro .launch:not(.ref) #lTag,html.tk-split body .intro .launch:not(.ref) #lPhr{text-align:center!important;text-align-last:center!important;text-wrap:balance!important;line-height:1.38!important}
+html.tk-split body .intro .launch #lPhr .pd{display:inline!important}
+html.tk-split body .intro .launch .jw{letter-spacing:normal!important}
+html.tk-split body .intro .launch:not(.ref) #lTag .ul,html.tk-split body .intro .launch:not(.ref) #lPhr u{white-space:nowrap}
+</style>
+<style>
+/* the page below the first screen appears softly while scrolling down, once (it never hides again) */
+.sr{opacity:0;translate:0 26px;filter:blur(4px);transition:opacity .9s ease,translate .9s cubic-bezier(.2,.7,.2,1),filter .9s ease;transition-delay:var(--srd,0s)}
+.sr.sr-in{opacity:1;translate:0 0;filter:none}
+@media (prefers-reduced-motion:reduce){.sr{opacity:1;translate:none;filter:none;transition:none}}
+</style>
+<script>
+(function(){
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function init(){
+    const items=[];
+    document.querySelectorAll('section.cw, .motto').forEach(sec=>{
+      let k=0; const add=e=>{ if(!e||e.classList.contains('sr')) return; e.classList.add('sr'); e.style.setProperty('--srd',(Math.min(k,6)*0.09)+'s'); k++; items.push(e) };
+      [...sec.children].forEach(ch=>{ if(ch.matches('.u-grid,.cw-full.u-grid')){ [...ch.children].forEach(add) } else add(ch) });
+    });
+    if(!('IntersectionObserver' in window)){ items.forEach(e=>e.classList.add('sr-in')); return }
+    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('sr-in'); io.unobserve(e.target) } }),{rootMargin:'0px 0px -8% 0px',threshold:0.01});
+    items.forEach(e=>{ const r=e.getBoundingClientRect(); if(r.bottom<0) e.classList.add('sr-in'); else io.observe(e) });
+  }
+  if(document.readyState==='loading') addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
+<style>
+/* last screen: the buttons fade exactly as the line above the painting appears (no extra delay on either) */
+html body .outro #oBd,html body .outro #oPhrase{transition:none!important}
+</style>
+<style>
+/* text stays justified, but words are never broken with a hyphen; lines are balanced so the last ones are not left short */
+html body .just,html body .cw-t p,html body .u p,html body .cw-dev .dbuy p,html body .intro #lTag,html body .intro #lTag *,html body .intro #lPhr,html body .intro #lPhr *{-webkit-hyphens:none!important;hyphens:none!important}
+html body .cw-t p,html body .u p,html body .cw-dev .dbuy p{text-wrap:pretty}
 </style>
 <style>.tk-cons{margin:0;font:400 11px/1.4 'Hanken Grotesk',sans-serif;color:#8b8b8b;text-align:center}.tk-cons a{color:inherit;text-decoration:underline}.tk-cons-float{position:absolute;left:0;right:0;top:calc(100% + 6px);opacity:0;pointer-events:none;transition:opacity .2s}.tk-cons-float.on{opacity:1;pointer-events:auto}.intro .tk-cons-float{color:rgba(255,255,255,.6)}</style><script>(function(){var T="By submitting, you agree to our <a href=\"privacy.html\" target=\"_blank\">privacy policy</a>";['rsvForm','pForm','tlForm','llReg'].forEach(function(id){var f=document.getElementById(id);if(!f)return;if(getComputedStyle(f).position==='static')f.style.position='relative';var p=document.createElement('p');p.className='tk-cons tk-cons-float';p.innerHTML=T;f.appendChild(p);f.addEventListener('focusin',function(){p.classList.add('on')})})})();</script></body></html>

@@ -1964,7 +1964,8 @@ em,i.em{font-style:normal!important}
     // zoom: px per day, log scale
     let span=(T1-T0)/DAY;
     let ppd=1, x0=0; // x0 = scroll offset in px
-    const minP=()=>Math.max(0.05,(view.clientWidth-2*PAD)/span), maxP=()=>view.clientWidth/130;
+    // phone: the years view shows three years at a time (big, readable photos); drag sideways for the others
+    const minP=()=>Math.max(0.05,(view.clientWidth-2*PAD)/(view.clientWidth<600?Math.min(span,3*365.25):span)), maxP=()=>view.clientWidth/130;
     function zFromSlider(v){ const a=Math.log(minP()), b=Math.log(maxP()); return Math.exp(a+(b-a)*v/100) }
     function sFromZ(p){ const a=Math.log(minP()), b=Math.log(maxP()); return (Math.log(p)-a)/(b-a)*100 }
     const PAD=40, X=t=>((t-T0)/DAY)*ppd+PAD;
@@ -2113,7 +2114,7 @@ em,i.em{font-style:normal!important}
     $('llClose').onclick=close; $('llBox').addEventListener('click',e=>{ if(e.target===$('llBox')) close() });
     addEventListener('keydown',e=>{ if($('llBox').hidden) return; if(e.key==='Escape') close(); if(e.key==='ArrowRight'){ boxI=(boxI+1)%4; drawBox() } if(e.key==='ArrowLeft'){ boxI=(boxI+3)%4; drawBox() } });
     // initial: show first ~14 months
-    function init(){ ppd=minP(); x0=0; render() }
+    function init(){ ppd=minP(); x0=view.clientWidth<600?1e9:0; render() }
     function animTo(p1,tLeft){ cancelAnimationFrame(anim); const big=Math.abs(Math.log(p1/ppd))>0.05; if(big) zFade(true); const p0=ppd, l0=(x0-PAD)/ppd, st=performance.now(); const step=n=>{ const k=Math.min(1,(n-st)/520), e=1-Math.pow(1-k,3); ppd=Math.exp(Math.log(p0)+(Math.log(p1)-Math.log(p0))*e); const l=l0+(tLeft-l0)*e; x0=l*ppd+PAD; render(); if(k<1) anim=requestAnimationFrame(step); else if(big) zFade(false) }; anim=requestAnimationFrame(step) }
     ticksEl.addEventListener('click',e=>{ const b=e.target.closest('.ll-ys'); if(!b||moved) return; const y=+b.dataset.y; const ta=Math.max(T0,Date.UTC(y,0,1)), tb=Math.min(T1,Date.UTC(y+1,0,1)); const days=(tb-ta)/DAY;
       animTo(monthsP(),(ta-T0)/DAY-PAD/monthsP()) }); // a year clicked opens the months level from that year's January
@@ -2122,7 +2123,7 @@ em,i.em{font-style:normal!important}
     // the years view is fitted again to the new width and the months view keeps showing one year from the same January
     { let lw=view.clientWidth, months=false; const fitW=()=>{ const w=view.clientWidth; if(!w||Math.abs(w-lw)<1) return;
         const wasM=months; lw=w; cancelAnimationFrame(anim); zFade(false);
-        if(wasM){ const t=(x0-PAD)/ppd; ppd=monthsP(); x0=t*ppd+PAD } else { ppd=minP(); x0=0 } render() };
+        if(wasM){ const t=(x0-PAD)/ppd; ppd=monthsP(); x0=t*ppd+PAD } else { ppd=minP(); x0=w<600?1e9:0 } render() };
       const track=()=>{ months=isMonths() }; view.addEventListener('pointerup',()=>setTimeout(track,700)); $('llIn').addEventListener('click',()=>setTimeout(track,700)); $('llOut').addEventListener('click',()=>setTimeout(track,700)); ticksEl.addEventListener('click',()=>setTimeout(track,700));
       if(window.ResizeObserver) new ResizeObserver(fitW).observe(view); addEventListener('resize',fitW); addEventListener('load',fitW); setTimeout(fitW,500); setTimeout(fitW,2000) }
     const exampleE=E.slice(), exT=[T0,T1,NOW];
@@ -2672,4 +2673,20 @@ em,i.em{font-style:normal!important}
   if(/[?&#]edit\b/.test(location.search+location.hash)) tog.hidden=false;
 })();
 </script>
+
+<style>
+/* one text system for the whole landing: the cards read at the same size as the rest of the text; small labels are never tiny */
+#uses .u p{font-size:clamp(15px,1.15vw,18px);line-height:1.6}
+.cw .cap,.cw .n,.cw .mono{font-size:11px}
+.tlc-l,.tlc-r,.tl-th figcaption{font-size:10.5px}
+.tlc-sw button{font-size:10px}
+.tk-cons{font-size:12px!important;line-height:1.45!important}
+@media (max-width:860px){
+  .tlc-sw button{font-size:9px}
+  /* phone: titles centered, text flush with both edges (like the first screen) */
+  .cw h2{text-align:center}
+  .cw-t p,.u p,.cw-dev .dbuy p{text-align:justify!important;text-align-last:left;-webkit-hyphens:auto;hyphens:auto}
+  #uses .u h3{text-align:center}
+}
+</style>
 <style>.tk-cons{margin:0;font:400 11px/1.4 'Hanken Grotesk',sans-serif;color:#8b8b8b;text-align:center}.tk-cons a{color:inherit;text-decoration:underline}.tk-cons-float{position:absolute;left:0;right:0;top:calc(100% + 6px);opacity:0;pointer-events:none;transition:opacity .2s}.tk-cons-float.on{opacity:1;pointer-events:auto}.intro .tk-cons-float{color:rgba(255,255,255,.6)}</style><script>(function(){var T="By submitting, you agree to our <a href=\"privacy.html\" target=\"_blank\">privacy policy</a>";['rsvForm','pForm','tlForm','llReg'].forEach(function(id){var f=document.getElementById(id);if(!f)return;if(getComputedStyle(f).position==='static')f.style.position='relative';var p=document.createElement('p');p.className='tk-cons tk-cons-float';p.innerHTML=T;f.appendChild(p);f.addEventListener('focusin',function(){p.classList.add('on')})})})();</script></body></html>

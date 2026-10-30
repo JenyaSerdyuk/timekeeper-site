@@ -14,6 +14,7 @@ leads=open('/home/claude/leads_url.txt').read().strip() if os.path.exists('/home
 head=('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
  '<meta name="description" content="Time Keeper — an art object that anchors your moment on the blockchain and counts every second of your time.">'
  '<meta property="og:title" content="Time · Time Keeper"><meta property="og:description" content="Your personal art object that will outlive you by hundreds of years."><meta property="og:image" content="img/w/scene.webp"><meta property="og:type" content="website">'
+ '<link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" type="image/png" sizes="32x32" href="fav32.png"><link rel="icon" type="image/png" sizes="192x192" href="fav192.png"><link rel="apple-touch-icon" href="fav180.png">'
  '<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0;background:#fff;color:#000}img{max-width:100%}[hidden]{display:none!important}</style>'
  '<script>window.TK_LEADS='+json.dumps(leads)+'</script></head><body>')
 out='site_en'

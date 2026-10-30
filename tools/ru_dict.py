@@ -183,6 +183,8 @@ H = {
 
 # exact single-quoted JS string contents
 J = {
+'Your time is finite.':'Твоё время конечно.',
+'But the memory of it can last forever':'Но память о нём останется навсегда',
 "May cause anxiety":"Может вызвать тревогу",
 "A family art relic for future generations":"Семейная арт-реликвия для будущих поколений",
 "Your personal art object, always with you":"Твой личный арт-объект, всегда с тобой",
@@ -270,3 +272,10 @@ J = {
 "Version":"Версия",
 "Saving…":"Сохраняем…",
 }
+H["The seconds start counting on the blockchain from the moment of purchase. You will receive the device soon after production ends, but your seconds will already be running"]="Счёт секунд в блокчейне начинается с момента покупки. Ты получишь устройство в ближайшее время после окончания производства, но секунды уже будут идти"
+H["Time is the only irreplaceable resource"]="Время — единственный невосполнимый ресурс"
+# 30 Oct: fewer "your" in the English top text; the Russian text stays the same
+H["A personal philosophical art object that will outlive you"]=H["Your personal philosophical art object that will outlive you"]
+H["A personal art object that will outlive you"]=H["Your personal art object that will outlive you"]
+H["and keep the memory of you alive for generations of your family tree"]=H["and keep your memory alive for the next generations of your family tree"]
+H["and keep the memory of you alive for generations of your family tree. And other philosophical meanings you will discover below"]=H["and keep your memory alive for the next generations of your family tree. And other philosophical meanings you will discover below"]

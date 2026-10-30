@@ -1,6 +1,6 @@
 <title>Time Keeper RU</title>
 <script>document.documentElement.lang='ru'</script>
-<style id="fwS">.intro .stick,.outro .stick{opacity:0!important}</style><script>(function(){var ok=false,done=function(){if(ok)return;ok=true;var e=document.getElementById('fwS');if(e)e.remove()};setTimeout(done,2500);if(!document.fonts){done();return}
+<script>/* every visit starts on the first scene, white TIME: the browser (or the page that shows the site) does not jump back to an old scroll spot after a reload. Until the visitor touches the page, the page is held at the very top, so nothing plays by itself */(function(){if(location.hash)return;try{history.scrollRestoration="manual"}catch(e){}var t0=Date.now(),user=false,H=3000;['wheel','touchstart','keydown','pointerdown'].forEach(function(ev){addEventListener(ev,function(){user=true},{passive:true,capture:true})});function top(){if(user||Date.now()-t0>H)return;if((window.scrollY||document.documentElement.scrollTop)!==0){if(window._lenis){try{window._lenis.scrollTo(0,{immediate:true,force:true})}catch(e){}}window.scrollTo(0,0)}}top();var id=setInterval(function(){top();if(user||Date.now()-t0>H)clearInterval(id)},16);addEventListener('DOMContentLoaded',top);addEventListener('load',top);addEventListener('pageshow',top);addEventListener('scroll',top,{passive:true})})()</script><style id="fwS">.intro .stick,.outro .stick{opacity:0!important}</style><script>(function(){var ok=false,done=function(){if(ok)return;ok=true;var e=document.getElementById('fwS');if(e)e.remove()};setTimeout(done,4000);if(!document.fonts){done();return}
 var F=['300 20px Jost','400 20px Jost','400 12px "JetBrains Mono"','400 16px "Onest"'],has=function(){var n=0;document.fonts.forEach(function(f){if(/Jost/.test(f.family))n++});return n>0};
 (function wait(){if(ok)return;if(!has()){setTimeout(wait,30);return}Promise.all(F.map(function(f){return document.fonts.load(f)})).then(function(){requestAnimationFrame(function(){requestAnimationFrame(done)})},done)})()})()</script>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -571,7 +571,7 @@ input.sent::placeholder{color:#0a0a0a;opacity:1;font-weight:500}
 .intro #lPhr .pdot{display:none}
 @media (max-width:860px){.intro #lPhr .pbr{display:none}.intro #lPhr .pdot{display:inline}}
 /* reference state (measured, never shown): the first screen as it always was */
-.intro .launch.ref #iModes{display:none}
+/* the modes stand on their own (absolute), so while the reference is measured they are only hidden, never taken out: taking them out would cut their smooth appearance short */ .intro .launch.ref #iModes{visibility:hidden}
 .intro .launch.ref #lPhr .pbr{display:none}
 .intro .launch.ref #lPhr .pdot{display:inline}
 /* computer: the first line of the text under the painting is justified edge to edge, so its first word starts exactly under the first word above the painting */
@@ -847,6 +847,18 @@ em,i.em{font-style:normal!important}
 
 /* Timeless intro: the ? hangs after the line, so the words themselves are centered; its circle sits on the middle of the capitals */
 #timeless .cw-t p .q{margin-right:-22px;vertical-align:.04em}
+/* the hanging ? (and its larger tap area) never widens the page on a narrow phone */
+#timeless{overflow-x:clip}
+.intro .launch #lPhr{min-height:var(--phrH,0px)}
+/* Hardcore phrase: its own centred, evenly split lines; the reserve sentence starts on the next line */
+.intro .launch #lPhr .pbk{display:block;text-align:center!important;text-align-last:center!important;text-wrap:balance}.intro .launch #lPhr .pbd{display:none}
+@media (max-width:860px){html body .intro .launch #lPhr .pbd{display:inline}html body .intro .launch:not(.ref) #lPhr .pl0:has(.pbk)::after{content:none}}
+/* phone: the Timeless lead reads as two centered lines, never stretched with wide gaps */
+@media (max-width:860px){#timeless .cw-t p{text-align:center!important;text-align-last:center!important}}
+/* the hint under the 3D view splits into two even lines when it does not fit, never one word alone */
+.xvh{text-wrap:balance;padding-inline:12px}
+/* ways to use on a computer: the two cards of a row share their lines, so the texts start on the same level even when one title takes two lines */
+@media (min-width:861px){#uses .u-grid{grid-auto-rows:auto}#uses .u-grid>.u{grid-row:span 3;display:grid;grid-template-rows:subgrid;align-content:start}}
 /* a question mark never stays alone on a line: it is kept with the word before it */
 .qnw{white-space:nowrap}.qnw .q{vertical-align:.04em}
 /* Your life line: title centered, text in one centered column as wide as the email field */
@@ -932,6 +944,8 @@ em,i.em{font-style:normal!important}
 .ptile.dev img{filter:brightness(.5)!important}
 .ptile .devb{position:absolute;left:0;right:0;top:16px;text-align:center;font-style:normal;font-family:var(--f-mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.5);pointer-events:none}
 .co-ps button.dev img{filter:brightness(.6)}
+/* rubles are longer: in the cart's add-tiles the old price goes on its own line, so nothing overlaps */
+.co-ps span{display:grid;justify-items:center}.co-ps span s{display:block;margin:0}
 </style>
 
 <nav class="nav" id="nav">
@@ -952,14 +966,14 @@ em,i.em{font-style:normal!important}
       <div class="tyt" id="tyt"><p>Береги своё <em>время</em></p></div>
       <div class="scene" id="scene" aria-hidden="true"><img id="sceneImg" src="img/w/scene.webp" alt=""><div class="scene-shade"></div></div><div class="scene-win" id="sceneWin"><svg id="sceneDigits" preserveAspectRatio="xMidYMid meet"></svg><span class="yours" id="yours">Твоё время с запуска</span></div>
       <div class="launch">
-        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new"><span class="tl1">Твой личный философский арт-объект, который переживёт тебя <span class="ul">на сотни лет</span></span> <span class="tl2">и сохранит память о тебе для следующих поколений твоего рода</span><span class="ltag3">А другие философские смыслы ты откроешь ниже</span></span><span class="lt-ref" aria-hidden="true">Твой личный арт-объект, который переживёт тебя <span class="ul">на сотни лет</span> и сохранит память о тебе для следующих поколений твоего рода. А другие философские смыслы ты откроешь ниже</span></p></div>
+        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new"><span class="tl1">Твой личный философский арт-объект, который переживёт тебя <span class="ul">на сотни лет</span></span> <span class="tl2">и сохранит память о тебе для следующих поколений твоего рода</span><span class="ltag3">А другие философские смыслы ты откроешь ниже</span></span><span class="lt-ref" aria-hidden="true">Твой личный арт-объект, который переживёт тебя <span class="ul">на сотни лет</span> и сохранит память о тебе для следующих поколений твоего рода. А другие философские смыслы ты откроешь ниже</span></p></div>
         <div class="bottom">
         <div class="sub">
           <div><span class="mono">Момент запущен</span><b class="num" id="startedAt">—</b></div>
           <div><span class="mono">С запуска</span><b class="num" id="sinceStart">0 s</b></div>
           <div><span class="mono">Обратный отсчёт (80 лет)</span><b class="num" id="cd">2,524,608,000</b></div>
         </div>
-        <p class="phrase" id="lPhr"><span class="pl0">Твоё время пошло. <span>С этого момента оно считается</span></span> <span class="pl1"><u class="to-rsv" role="link" tabindex="0">Забронируй своё время</u><span>, и оно будет считаться вечно</span></span> <span class="pl2">У первых объектов будет больше всего секунд</span></p>
+        <p class="phrase" id="lPhr"><span class="pl0">Твоё время пошло. <span>С этого момента оно считается</span></span> <span class="pl1"><u class="to-rsv" role="link" tabindex="0">Забронируй своё время</u><span>, и оно будет считаться вечно</span></span> <span class="pl2">У первых объектов будет больше всего секунд</span></p>
         <form class="rsv" id="rsvForm" novalidate>
           <div class="rsv-row"><span class="rsv-in" id="rsvIn"><input type="email" id="rsvEmail" placeholder="" autocomplete="email" aria-label="Забронируй свой старт: твой email"><label class="rsv-cta" for="rsvEmail">Забронируй свой старт</label></span><button class="btn" type="submit" id="rsvBtn">Забронировать</button></div>
           <p class="rsv-msg mono" id="rsvMsg"></p>
@@ -986,6 +1000,8 @@ em,i.em{font-style:normal!important}
 .motto{max-width:1176px;margin:0 auto;padding-block:clamp(28px,3.4vw,48px);text-align:center;font-family:'Onest',ui-sans-serif,system-ui,sans-serif;font-weight:400;font-size:clamp(20px,2.2vw,30px);line-height:1.3;letter-spacing:-.015em;color:#0a0a0a}.motto p{margin:0;color:#8b8b8b}.motto p+p{color:#0a0a0a}.motto+.cw{border-top:1px solid rgba(10,10,10,.08)}
 /* the motto sits exactly in the middle between the line above (end of the uses grid) and the line below */
 .motto{padding-top:0}
+/* the second quote: one line, in black, with a hairline above it like the first one has */
+.motto.motto-q{border-top:1px solid rgba(10,10,10,.08);padding-top:clamp(28px,3.4vw,48px)}.motto.motto-q p{color:#0a0a0a}
 </style>
 <section class="cw" id="explain">
   <h2>Что это</h2>
@@ -1007,26 +1023,32 @@ em,i.em{font-style:normal!important}
     </div>
     <div class="cw-full u-grid uses-l">
       <article class="u">
+        <span class="u-n">01</span>
         <h3>Передай его как <em>семейную реликвию</em></h3>
-        <p><b>Что ты оставишь своему семейному древу на сотни лет вперёд? Как раньше уже не будет. Теперь твои родственники будут знать о тебе даже через тысячи лет.</b> Даже через 300 лет твои наследники получат привет от необычного предка. Time Keeper создан, чтобы его передавали по наследству, как <u>то, что останется на сотни лет после тебя</u>. Функция бесконечного семейного альбома позволит увидеть всех предков, благодаря которым они появились, даже через сотни лет, и узнать о них больше</p>
+        <p><b>Что ты оставишь своему семейному древу на сотни лет вперёд? Как раньше уже не будет. Теперь твои родственники будут знать о тебе даже через тысячи лет.</b> Даже через 300 лет твои наследники получат привет от необычного предка. Time Keeper создан, чтобы его передавали по наследству, как <u>то, что останется на сотни лет после тебя</u></p>
       </article>
       <article class="u">
+        <span class="u-n">02</span>
         <h3>Подари как <em>глубокий философский подарок</em></h3>
         <p><b>Если не знаешь, что подарить человеку, у которого всё есть, подари ему время.</b> Близкому человеку как <u>напоминание о том, как важна жизнь</u>. Ты даришь не вещь, <u>ты даришь момент</u>, который всегда будет напоминать о тебе. Отсчёт начинается в ту секунду, когда человек его запускает, и остаётся его на всю жизнь</p>
       </article>
       <article class="u">
+        <span class="u-n">03</span>
         <h3>ТЫ + ИСКУССТВО + ФИЛОСОФИЯ + ТЕХНОЛОГИИ</h3>
         <p><b>Твой собственный философский арт-объект</b> для саморефлексии, который постоянно напоминает о прекрасной и дикой реке под названием <u>жизнь</u></p>
       </article>
       <article class="u">
+        <span class="u-n">04</span>
         <h3>Помни: время <em>конечно</em></h3>
         <p><b>Твои секунды слишком важны, чтобы относиться к ним как к должному.</b> Обратный отсчёт от 2,5 миллиарда показывает, сколько может остаться от средней жизни. Когда видишь это каждый день, начинаешь по-другому тратить время. Повод остановиться и подумать, <u>объект для саморефлексии и самосовершенствования</u><button type="button" class="q" data-q="Отсчёт начинается с 2 524 608 000 секунд, это 80 лет жизни." aria-label="Подробнее" aria-expanded="false">?</button></p>
       </article>
       <article class="u">
+        <span class="u-n">05</span>
         <h3>Отметь важный <em>старт</em></h3>
         <p><b>Используй как символическое напоминание о самом важном событии в твоей жизни, которое останется с тобой до конца.</b> Рождение ребёнка, твоя свадьба или свадьба друзей, запуск бизнеса или новый этап жизни. Это поворотные моменты, которые можно отметить символическим подарком</p>
       </article>
       <article class="u">
+        <span class="u-n">06</span>
         <h3>Брось вредную <em>привычку</em></h3>
         <p><b>Используй как поддержку, которая поможет тебе находить в себе силы не сдаваться в тяжёлой борьбе.</b> Запусти его в первый день без разрушительной привычки, <u>чтобы никогда к ней не вернуться</u>. После нескольких миллионов секунд никто не хочет начинать с нуля</p>
       </article>
@@ -1034,6 +1056,17 @@ em,i.em{font-style:normal!important}
   <div hidden>
   </div>
 </section>
+<style>
+/* ways to use: more air, hairline dividers, a thin number over each card */
+#uses .u-grid{border-top-width:.5px}
+#uses .u{border-bottom-width:.5px!important;padding-block:clamp(30px,3.4vw,48px)!important;row-gap:10px!important}
+#uses .u:nth-child(odd){border-right-width:.5px}
+#uses .u>.u-n{grid-column:1/-1;grid-row:1;justify-self:center;font-family:'Onest',ui-sans-serif,system-ui,sans-serif;font-weight:400;font-size:clamp(28px,2.6vw,38px);line-height:1;letter-spacing:.04em;color:#b5b5b5;font-variant-numeric:tabular-nums}
+#uses .u>h3{grid-column:1/-1!important;grid-row:2!important;justify-self:stretch;text-align:center!important}
+#uses .u>p{grid-column:1/-1!important;grid-row:3!important}
+@media (min-width:861px){#uses .u:nth-child(odd){padding-right:56px!important}#uses .u:nth-child(even){padding-left:56px!important}}
+</style>
+
 
 <div class="motto"><p>Что-то трудно запомнить</p><p>А что-то ты не забудешь никогда</p></div>
 <section class="cw cw-dev" id="device">
@@ -1057,6 +1090,7 @@ em,i.em{font-style:normal!important}
       <div class="dbuy">
         <div class="dtitle"><h3 id="pName">Брелок</h3><span class="p-price" id="pPrice"></span></div>
         <p id="pText"></p>
+        <p id="pDevN" hidden>Счёт секунд в блокчейне начинается с момента покупки. Ты получишь устройство в ближайшее время после окончания производства, но секунды уже будут идти</p>
         <div class="ue" id="pExtra" hidden></div>
         <div class="eds" id="pEds" role="group" aria-label="Издание" hidden></div>
         <div class="p-acts"><button type="button" class="btn p-buy" id="pBuy">Купить</button><button type="button" class="btn p-add" id="pAdd">В корзину</button><div class="btn p-add p-step" id="pStep" hidden><button type="button" id="pMi" aria-label="Убрать одну"><span class="pm"></span></button><output id="pQ" aria-live="polite">1</output><button type="button" id="pPl" aria-label="Добавить одну"><span class="pm pl"></span></button></div></div>
@@ -1198,6 +1232,7 @@ em,i.em{font-style:normal!important}
   <div class="cw-t"><p>Всё сохранено в блокчейне. Ты сможешь снова получить доступ к своему времени, заплатив штраф, потому что время нужно <span class="qnw">ценить<button type="button" class="q" data-q="Твой момент и линия жизни хранятся в блокчейне и на наших серверах, поэтому они никогда не теряются. После оплаты ты снова получаешь доступ к тому же моменту и той же линии жизни." aria-label="Подробнее" aria-expanded="false">?</button></span></p></div>
 </section>
 
+<div class="motto motto-q"><p>Время — единственный невосполнимый ресурс</p></div>
 <section class="cw" id="heirloom">
   <h2>Наследие, которое растёт в цене</h2>
   <div class="cw-t">
@@ -1439,13 +1474,19 @@ em,i.em{font-style:normal!important}
     ns.forEach(n=>{ const parts=n.data.split(/(\s+)/); if(parts.length<2&&!parts[0]) return; const f=document.createDocumentFragment(); parts.forEach(t=>{ if(!t) return; if(/^\s+$/.test(t)) f.appendChild(document.createTextNode(t)); else { const s=document.createElement('span'); s.className='jw'; s.textContent=t; f.appendChild(s) } }); n.parentNode.replaceChild(f,n) }) }) }
   function justFix(){ const ts=[...document.querySelectorAll('#lTag .lt-new .jw,#lPhr .jw')]; ts.forEach(t=>t.style.letterSpacing=''); const L=document.querySelector('.intro .launch');
     if(innerWidth>860||!L||L.classList.contains('ref')) return; const G=new Map();
-    ts.forEach(t=>{ const b=t.closest('.pl0,.pl1,.pl2,.tl1,.tl2,.ltag3')||t.closest('#lTag,#lPhr'); if(b.matches('.ltag3')) return; const r=t.getClientRects(); if(r.length!==1) return; if(!G.has(b)) G.set(b,new Map()); const m=G.get(b), k=Math.round(r[0].top); if(!m.has(k)) m.set(k,[]); m.get(k).push({t,r:r[0]}) });
+    ts.forEach(t=>{ const b=t.closest('#lTag,#lPhr'); const r=t.getClientRects(); if(r.length!==1) return; if(!G.has(b)) G.set(b,new Map()); const m=G.get(b), k=Math.round(r[0].top); if(!m.has(k)) m.set(k,[]); m.get(k).push({t,r:r[0]}) });
     const cv=justFix.c||(justFix.c=document.createElement('canvas').getContext('2d'));
     G.forEach((m,b)=>{ const cs=getComputedStyle(b), fs=parseFloat(cs.fontSize); cv.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily; const sp=cv.measureText(' ').width, W=b.getBoundingClientRect().width;
       const keys=[...m.keys()].sort((x,y)=>x-y); keys.pop();
       keys.forEach(k=>{ const l=m.get(k); if(l.length<2) return; let sum=0,gaps=0,ch=0; l.forEach((o,i)=>{ sum+=o.r.width; ch+=o.t.textContent.replace(/­/g,'').length; if(i&&o.r.left-l[i-1].r.right>2) gaps++ }); if(!gaps) return;
         const def=W-(sum+gaps*sp), ok=gaps*0.22*fs; if(def<=ok) return; const ls=Math.min(0.08*fs,(def-ok)/ch); l.forEach(o=>o.t.style.letterSpacing=ls.toFixed(2)+'px') }) }) }
-  function sceneLayout(){ if(!sceneLayout.hy){ sceneLayout.hy=1; try{ applyHy(); wrapWords() }catch(e){} } sceneLayout0(); try{ justFix() }catch(e){} if(window.__leReapply) try{ window.__leReapply() }catch(e){} }
+  function sceneLayout(){ if(!sceneLayout.hy){ sceneLayout.hy=1; try{ applyHy(); wrapWords() }catch(e){} } sceneLayout0(); try{ phrFit() }catch(e){} try{ justFix() }catch(e){} if(window.__leReapply) try{ window.__leReapply() }catch(e){} }
+  // the phrase under the painting keeps the height of its longest version (Hardcore has its own words), so switching modes never moves anything
+  function phrFit(){ const P=window.__PH0, ph=$('lPhr'), p=ph&&ph.querySelector('.pl0'); if(!P||P.def==null||!p) return;
+    const root=document.documentElement, was=root.style.getPropertyValue('--phrH'); root.style.setProperty('--phrH','0px');
+    const cur=p.innerHTML, alt=[P.def, P.bh()]; let h=0;
+    alt.forEach(t=>{ p.innerHTML=t; try{ justFix() }catch(e){} h=Math.max(h,ph.getBoundingClientRect().height) }); p.innerHTML=cur;
+    const v=Math.ceil(h)+'px'; root.style.setProperty('--phrH',v); if(v!==was) sceneLayout0() }
   function sceneLayout0(){
     if(!sceneLayout.busy){ sceneLayout.busy=1; sceneLayout.ref=refBand(); applyRef(sceneLayout.ref); sceneLayout.busy=0 }
     const S=SCENES[scKey], st=document.querySelector('.intro .stick'); const W=st.clientWidth, H=st.clientHeight;
@@ -1567,7 +1608,7 @@ em,i.em{font-style:normal!important}
      imgs:[[I('pendant-trio'),'Три отделки'],[I('pendant-worn'),'На шее']],
      spec:[['Размер','40 × 40 × 10 mm'],['Отделка','Серебро, матовый чёрный'],['Дисплей','Красный сегментный дисплей, стекло'],['Зарядка','USB-C или магнитная'],['Батарея','Li-Po']]},
     {k:'Watch',p:'28 888 ₽',t:'Нам сказали, что такие часы будут никому не нужны. Посмотрим',dev:true,
-     imgs:[[I('watch-calc3'),'Калькулятор'],[I('watch-analog4'),'Аналоговые'],[I('watch-clear'),'Прозрачные'],[I('watch-wrist'),'Калькулятор на руке'],[I('watch-analog4-gold'),'Timeless · Золото, analog']],
+     imgs:[[I('watch-calc3'),'Калькулятор'],[I('watch-analog4'),'Аналоговые'],[I('watch-clear'),'Прозрачные'],[I('watch-wrist'),'Калькулятор на руке']],
      
      spec:[['Ношение','На руке, стальной браслет'],['Корпус','Шлифованная сталь, четыре винта'],['Клавиатура','20 клавиш'],['Дисплеи','ЖК-время и красный 10-разрядный счётчик']],
      vars:[{n:'Калькулятор',key:'watch',img:0,spec:[['Ношение','На руке, стальной браслет'],['Корпус','Шлифованная сталь, четыре винта'],['Клавиатура','20 клавиш'],['Дисплеи','ЖК-время и красный 10-разрядный счётчик']]},
@@ -1581,7 +1622,11 @@ em,i.em{font-style:normal!important}
   let birth=null, oMode='now';
   const OM={now:['&nbsp;','Твоё время с запуска'],life:['<span class="one">Каждая секунда твоей жизни, с рождения до сейчас. Укажи дату рождения</span>','Твоё время с рождения'],back:['&nbsp;','Осталось секунд']};
   const YN='Может вызвать тревогу';
-  function setOMode(m){ oMode=m; document.querySelectorAll('.omodes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m)); $('oHint').innerHTML=OM[m][0]; if($('iHint')){ $('iHint').innerHTML=OM[m][0]; $('iHint').style.visibility=(m==='life'||m==='back')?'hidden':'' } $('oYours').textContent=OM[m][1]; $('oBdate').hidden=!(m==='life'||m==='back'); if($('iBdate')) $('iBdate').hidden=!(m==='life'||m==='back'); if($('yours')){ $('yours').textContent=OM[m][1]; if(m==='back'){ const n=document.createElement('span'); n.className='yn'; n.textContent=YN; $('yours').appendChild(n) } } oLayout(); if(typeof sceneLayout==='function'){ try{ sceneLayout() }catch(e){} requestAnimationFrame(()=>{ try{ sceneLayout() }catch(e){} }); setTimeout(()=>{ try{ sceneLayout() }catch(e){} },120) } }
+  // the phrase under the painting on the first screen: in Hardcore mode it speaks about time running out, in the other modes about time that has started
+  const PH0=window.__PH0={def:null,back:['Твоё время конечно.','Но память о нём останется навсегда'],bh:()=>'<span class="pbk">'+PH0.back[0]+' '+PH0.back[1]+'<i class="pbd">.</i></span>'};
+  function setPhrase(m){ const p=document.querySelector('#lPhr .pl0'); if(!p) return; if(PH0.def==null) PH0.def=p.innerHTML;
+    p.innerHTML=m==='back'?PH0.bh():PH0.def }
+  function setOMode(m){ oMode=m; try{ setPhrase(m) }catch(e){} document.querySelectorAll('.omodes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m)); $('oHint').innerHTML=OM[m][0]; if($('iHint')){ $('iHint').innerHTML=OM[m][0]; $('iHint').style.visibility=(m==='life'||m==='back')?'hidden':'' } $('oYours').textContent=OM[m][1]; $('oBdate').hidden=!(m==='life'||m==='back'); if($('iBdate')) $('iBdate').hidden=!(m==='life'||m==='back'); if($('yours')){ $('yours').textContent=OM[m][1]; if(m==='back'){ const n=document.createElement('span'); n.className='yn'; n.textContent=YN; $('yours').appendChild(n) } } oLayout(); if(typeof sceneLayout==='function'){ try{ sceneLayout() }catch(e){} requestAnimationFrame(()=>{ try{ sceneLayout() }catch(e){} }); setTimeout(()=>{ try{ sceneLayout() }catch(e){} },120) } }
   document.querySelectorAll('.omodes button').forEach(b=>b.addEventListener('click',()=>setOMode(b.dataset.m)));
   // birth date: the same pickers on the first and the last screen, kept in sync
   (()=>{ const sets=[['obD','obM','obY'],['ibD','ibM','ibY']].map(a=>a.map(id=>$(id))).filter(a=>a.every(Boolean)), yr=new Date().getFullYear();
@@ -1590,8 +1635,11 @@ em,i.em{font-style:normal!important}
       for(let y=yr;y>=yr-110;y--) Y.add(new Option(y,y)) });
     const upd=src=>{ const [D,M,Y]=src; if(D.value!==''&&M.value!==''&&Y.value!==''){ const dt=new Date(+Y.value,+M.value,+D.value); if(dt.getMonth()!==+M.value){ D.value=String(new Date(+Y.value,+M.value+1,0).getDate()); return upd(src) } birth=dt.getTime()<Date.now()?dt.getTime():null } else birth=null;
       sets.forEach(o=>{ if(o!==src){ o[0].value=D.value; o[1].value=M.value; o[2].value=Y.value } }) };
-    sets.forEach(set=>set.forEach(el=>el.addEventListener('change',()=>upd(set)))) })();
-  setOMode('now');
+    sets.forEach(set=>set.forEach(el=>el.addEventListener('change',()=>upd(set))));
+    // demo for the investor: the birth date is already filled in (5 November 1981)
+    if(sets.length){ const [D,M,Y]=sets[0]; D.value='5'; M.value='10'; Y.value='1981'; upd(sets[0]) } })();
+  // demo for the investor: the counting starts in From 0 to now mode (birth date already filled in)
+  setOMode('life');
   const uses=[];
 
   // ---------- side panel ----------
@@ -1616,7 +1664,7 @@ em,i.em{font-style:normal!important}
     [...$('dThumbs').children].forEach((t,k)=>t.onclick=()=>setDImg(k));
     $('dThumbs').hidden=f.imgs.length<2;
     setDImg(0);
-    $('pName').textContent=NK[f.k]; $('pPrice').innerHTML=PR(f.p); $('pText').innerHTML=f.t.replace(/\.$/,''); $('pText').hidden=!f.t; $('pExtra').innerHTML=f.extra||''; $('pExtra').hidden=!f.extra;
+    $('pName').textContent=NK[f.k]; $('pPrice').innerHTML=PR(f.p); $('pText').innerHTML=f.t.replace(/\.$/,''); $('pText').hidden=!f.t; $('pDevN').hidden=!f.dev; $('pExtra').innerHTML=f.extra||''; $('pExtra').hidden=!f.extra;
     $('pBtn').textContent='Забронировать '+NKA[f.k]; $('pBuy').textContent=(f.dev?'Предзаказ':'Купить '+NKA[f.k]); $('pOk').hidden=true; drawEds(); drawNote(); if(window._syncAdd) window._syncAdd();
     const vt=$('vtabs'); vt.hidden=!f.vars;
     if(window.XV) XV.tab(f.k);
@@ -1854,9 +1902,9 @@ em,i.em{font-style:normal!important}
   // ---------- keychain: exploded view inside the Keychain tab ----------
   window.XV=(function(){
     const box=$('xvB'), img=$('xvImg'), sp=$('xvSp'), lb=$('xvLb'), hint=box.querySelector('.xvh');
-    const DIRS={Keychain:'img/xv/','Keychain|gold':'img/xvg/',Pendant:'img/xvp/','Pendant|gold':'img/xvpg/',Painting:'img/xva/','Watch:watch':'img/xvw/','Watch:watch2':'img/xvw2/'}, CACHE={}; let curK='', fin='silver';
+    const DIRS={Keychain:'img/xv/','Keychain|gold':'img/xvg/',Pendant:'img/xvp/',Painting:'img/xva/','Watch:watch':'img/xvw/','Watch:watch2':'img/xvw2/'}, CACHE={}; let curK='', fin='silver';
     let C=null, els={}, on=false, raf=0, lt=0, shown='', mode='A', ang=0, da=0, vel=0, tv=0, tw=null, rot=null, opened=false, wait=0, drag=null;
-    const sstep=x=>x*x*(3-2*x), V='?v=14';
+    const sstep=x=>x*x*(3-2*x), V='?v=15';
     // frames load only when the visitor gets close to this section, and only for the open tab
     let armed=false;
     function pre(c,set,n,spr){ const o=c.S[set]; o.n=n; if(spr){ o.sp=spr; for(let i=0;i<spr.chunks;i++){ const im=new Image(); im.src=c.dir+set+'s'+i+'.jpg'+V; o.f.push(im) } return } for(let i=0;i<n;i++){ const im=new Image(); im.decoding='async'; im.src=c.dir+set+String(i).padStart(2,'0')+'.jpg'+V; o.f.push(im) } }
@@ -1873,7 +1921,7 @@ em,i.em{font-style:normal!important}
         const u='url("'+im.src+'")'; if(sp.dataset.u!==im.src){ sp.style.backgroundImage=u; sp.dataset.u=im.src; sp.style.backgroundSize=(q.cols*100)+'% '+(q.rows*100)+'%' }
         sp.style.backgroundPosition=((j%q.cols)/(q.cols-1)*100)+'% '+(Math.floor(j/q.cols)/(q.rows-1)*100)+'%'; sp.style.display='block'; img.style.visibility='hidden'; shown=key; return }
       const im=o.f[i]; if(im.complete && im.naturalWidth){ img.src=im.src; img.style.visibility=''; sp.style.display='none'; shown=key } }
-    function setHint(){ hint.textContent=(C&&C.noex)?'Потяни, чтобы повернуть · 360°':mode==='A'?'Потяни, чтобы повернуть · нажми, чтобы разобрать':'Потяни, чтобы повернуть · нажми, чтобы собрать' }
+    function setHint(){ hint.textContent=((C&&C.noex)?'Потяни, чтобы повернуть · 360°':mode==='A'?'Потяни, чтобы повернуть · нажми, чтобы разобрать':'Потяни, чтобы повернуть · нажми, чтобы собрать').replace(' · ','\u00a0· ') }
     function lab(meta,f,vis){ const n=meta.length; if(!n) return; const a=Math.floor(f), b=Math.min(n-1,a+1), u=f-a, W=lb.clientWidth, Hh=lb.clientHeight, narrow=innerWidth<=860, col=narrow?Math.min(C.col,0.72):C.col, G=narrow?15:21, L=[];
       for(const k in els){ const A=meta[((a%n)+n)%n][k], B=meta[((b%n)+n)%n][k]; if(!A||!B) continue; L.push({k,x:A[0]+(B[0]-A[0])*u,y:(A[1]+(B[1]-A[1])*u+(k==='button'?0.012:0))*Hh}) }
       L.sort((p,q)=>p.y-q.y); for(let i=1;i<L.length;i++) if(L[i].y-L[i-1].y<G) L[i].y=L[i-1].y+G;
@@ -1965,7 +2013,8 @@ em,i.em{font-style:normal!important}
     // zoom: px per day, log scale
     let span=(T1-T0)/DAY;
     let ppd=1, x0=0; // x0 = scroll offset in px
-    const minP=()=>Math.max(0.05,(view.clientWidth-2*PAD)/span), maxP=()=>view.clientWidth/130;
+    // phone: the years view shows three years at a time (big, readable photos); drag sideways for the others
+    const minP=()=>Math.max(0.05,(view.clientWidth-2*PAD)/(view.clientWidth<600?Math.min(span,3*365.25):span)), maxP=()=>view.clientWidth/130;
     function zFromSlider(v){ const a=Math.log(minP()), b=Math.log(maxP()); return Math.exp(a+(b-a)*v/100) }
     function sFromZ(p){ const a=Math.log(minP()), b=Math.log(maxP()); return (Math.log(p)-a)/(b-a)*100 }
     const PAD=40, X=t=>((t-T0)/DAY)*ppd+PAD;
@@ -2114,7 +2163,7 @@ em,i.em{font-style:normal!important}
     $('llClose').onclick=close; $('llBox').addEventListener('click',e=>{ if(e.target===$('llBox')) close() });
     addEventListener('keydown',e=>{ if($('llBox').hidden) return; if(e.key==='Escape') close(); if(e.key==='ArrowRight'){ boxI=(boxI+1)%4; drawBox() } if(e.key==='ArrowLeft'){ boxI=(boxI+3)%4; drawBox() } });
     // initial: show first ~14 months
-    function init(){ ppd=minP(); x0=0; render() }
+    function init(){ ppd=minP(); x0=view.clientWidth<600?1e9:0; render() }
     function animTo(p1,tLeft){ cancelAnimationFrame(anim); const big=Math.abs(Math.log(p1/ppd))>0.05; if(big) zFade(true); const p0=ppd, l0=(x0-PAD)/ppd, st=performance.now(); const step=n=>{ const k=Math.min(1,(n-st)/520), e=1-Math.pow(1-k,3); ppd=Math.exp(Math.log(p0)+(Math.log(p1)-Math.log(p0))*e); const l=l0+(tLeft-l0)*e; x0=l*ppd+PAD; render(); if(k<1) anim=requestAnimationFrame(step); else if(big) zFade(false) }; anim=requestAnimationFrame(step) }
     ticksEl.addEventListener('click',e=>{ const b=e.target.closest('.ll-ys'); if(!b||moved) return; const y=+b.dataset.y; const ta=Math.max(T0,Date.UTC(y,0,1)), tb=Math.min(T1,Date.UTC(y+1,0,1)); const days=(tb-ta)/DAY;
       animTo(monthsP(),(ta-T0)/DAY-PAD/monthsP()) }); // a year clicked opens the months level from that year's January
@@ -2123,7 +2172,7 @@ em,i.em{font-style:normal!important}
     // the years view is fitted again to the new width and the months view keeps showing one year from the same January
     { let lw=view.clientWidth, months=false; const fitW=()=>{ const w=view.clientWidth; if(!w||Math.abs(w-lw)<1) return;
         const wasM=months; lw=w; cancelAnimationFrame(anim); zFade(false);
-        if(wasM){ const t=(x0-PAD)/ppd; ppd=monthsP(); x0=t*ppd+PAD } else { ppd=minP(); x0=0 } render() };
+        if(wasM){ const t=(x0-PAD)/ppd; ppd=monthsP(); x0=t*ppd+PAD } else { ppd=minP(); x0=w<600?1e9:0 } render() };
       const track=()=>{ months=isMonths() }; view.addEventListener('pointerup',()=>setTimeout(track,700)); $('llIn').addEventListener('click',()=>setTimeout(track,700)); $('llOut').addEventListener('click',()=>setTimeout(track,700)); ticksEl.addEventListener('click',()=>setTimeout(track,700));
       if(window.ResizeObserver) new ResizeObserver(fitW).observe(view); addEventListener('resize',fitW); addEventListener('load',fitW); setTimeout(fitW,500); setTimeout(fitW,2000) }
     const exampleE=E.slice(), exT=[T0,T1,NOW];
@@ -2295,7 +2344,7 @@ em,i.em{font-style:normal!important}
     if(IS.a||!z||IS.ga) return; const v=prog(GI.el), idle=now-Math.max(lastIn,IS.arr);
     // never left between two scenes (e.g. after a reload or a finger drag): settle on the nearest one
     if(idle>300&&v<0.995&&Math.abs(v)>0.004&&Math.abs(v-0.46)>0.004){ const t=v<0.23?0:(v<0.73?0.46:1); iTo(secY(GI,t),900) } }
-  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const fresh=n-IS.lastW>180||(a>=10&&a>IS.lastAbs*1.5+5); IS.lastW=n; IS.lastAbs=a;
+  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const sg=Math.sign(e.deltaY), fresh=n-IS.lastW>180||(a>=3&&a>IS.lastAbs*1.25+1)||(sg&&IS.sg&&sg!==IS.sg); IS.lastW=n; IS.lastAbs=a; if(sg) IS.sg=sg;
     if(e.ctrlKey) return; const atP=Math.abs(scrollY-secY(GI,1))<=3;
     // standing on the painting: up = the painting goes back (a scene), down = the page simply scrolls on
     if(fresh&&!IS.a&&atP&&e.deltaY<0){ IS.ga=false; IS.z=true; lockOn(); iGo(-1); return }
@@ -2304,7 +2353,7 @@ em,i.em{font-style:normal!important}
       if(fresh&&!IS.a&&inR&&e.deltaY>0&&scrollY<yN-3){ IS.ga=false; IS.z=true; lockOn(); iTo(yN,1500); return }
       if(fresh&&!IS.a&&inR&&e.deltaY<0&&scrollY>P1+3){ IS.ga=false; IS.z=true; lockOn(); iTo(P1,1500); return } }
     if(fresh&&IS.ga&&!IS.a){ IS.ga=false; if(!(scrollY<secY(GI,1)-1)){ IS.z=false; lockOff(); if(lenis&&e.deltaY>0) lenis.scrollTo(scrollY+e.deltaY); return } }
-    if(!IS.z) return; if(fresh&&a>1&&!IS.a) iGo(e.deltaY>0?1:-1) },{passive:true});
+    if(!IS.z) return; if(fresh&&a>0&&!IS.a) iGo(e.deltaY>0?1:-1) },{passive:true});
   addEventListener('touchstart',e=>{ IS.ty0=e.touches[0]?e.touches[0].clientY:null; IS.td=false },{passive:true});
   addEventListener('touchmove',e=>{ if(IS.td||IS.ty0==null||!e.touches[0]) return; const d=IS.ty0-e.touches[0].clientY; if(!IS.z){ if(IS.a||Math.abs(d)<=14) return; const P1=secY(GI,1), yN=iNext(), atP=Math.abs(scrollY-P1)<=3, inR=scrollY>=P1-3&&scrollY<=yN+3;
       if(atP&&d<0){ IS.td=true; IS.z=true; lockOn(); iGo(-1) } else if(inR&&d>0&&scrollY<yN-3){ IS.td=true; IS.z=true; lockOn(); iTo(yN,1500) } else if(inR&&d<0&&scrollY>P1+3){ IS.td=true; IS.z=true; lockOn(); iTo(P1,1500) } return } if(Math.abs(d)>14){ IS.td=true; if(!IS.a) iGo(d>0?1:-1) } },{passive:true});
@@ -2323,14 +2372,16 @@ em,i.em{font-style:normal!important}
   function oTo(y1,dur){ window._navJump=true; OS.a={t0:performance.now(),dur,y0:scrollY,y1} }
   function oStep(dir){ if(OS.a){ if(performance.now()-OS.a.t0>350) OS.q=dir; return } OS.q=0; const q=prog(GO.el); if(q<OH-0.006) return;
     if(dir>0){ if(q<0.3) oTo(secY(GO,0.6),2200); else if(q<0.985) oTo(secY(GO,1),2000) }
-    else { if(q>0.8) oTo(secY(GO,0.6),2000); else if(q>0.3) oTo(secY(GO,OH),2200); else { OS.out=true; oTo(Math.max(0,GO.el.offsetTop-innerHeight*0.7),1600) } } }
+    else { if(q>0.8) oTo(secY(GO,0.6),2000); else if(q>0.3) oTo(secY(GO,OH),2200); else { OS.rel=performance.now(); OS.z=false; if(!IS.z) lockOff(); if(lenis) lenis.scrollTo(Math.max(0,scrollY-120)) } } }
+  // the white screen right before the last scene: the block above fills the whole screen, nothing of the dark scene shows
+  const oW=()=>Math.max(0,GO.el.offsetTop-innerHeight);
   function oZone(){ if(OS.rel&&performance.now()-OS.rel<900) return false; const q=prog(GO.el); return q>=OH-0.004 && scrollY<=secY(GO,1)+2 }
-  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const fresh=n-OS.lastW>200||(a>=12&&a>OS.lastAbs*1.6+6); OS.lastW=n; OS.lastAbs=a; if(fresh) OS.ga=false; if(!OS.z||e.ctrlKey) return; if(fresh&&a>1) oStep(e.deltaY>0?1:-1) },{passive:true});
+  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const sg=Math.sign(e.deltaY), fresh=n-OS.lastW>180||(a>=3&&a>OS.lastAbs*1.25+1)||(sg&&OS.sg&&sg!==OS.sg); OS.lastW=n; OS.lastAbs=a; if(sg) OS.sg=sg; if(fresh) OS.ga=false; if(!OS.z||e.ctrlKey) return; if(fresh&&a>0) oStep(e.deltaY>0?1:-1) },{passive:true});
   addEventListener('touchstart',e=>{ OS.ty0=e.touches[0]?e.touches[0].clientY:null; OS.td=false },{passive:true});
   addEventListener('touchmove',e=>{ if(!OS.z||OS.td||OS.ty0==null||!e.touches[0]) return; const d=OS.ty0-e.touches[0].clientY; if(Math.abs(d)>14){ OS.td=true; oStep(d>0?1:-1) } },{passive:true});
   addEventListener('keydown',e=>{ if(!OS.z||OS.a||isField(e.target)) return; if(['ArrowDown','PageDown',' '].includes(e.key)) oStep(1); else if(['ArrowUp','PageUp'].includes(e.key)) oStep(-1) });
   function outroHold(now){
-    if(OS.a){ const k=Math.min(1,(now-OS.a.t0)/OS.a.dur); jumpTo(OS.a.y0+(OS.a.y1-OS.a.y0)*sm(k)); if(k>=1){ OS.a=null; if(OS.out){ OS.out=false; OS.q=0 } else OS.ga=true; if(OS.q){ const d=OS.q; OS.q=0; oStep(d) } else setTimeout(()=>{ if(!OS.a) window._navJump=false },60) } }
+    if(OS.a){ const k=Math.min(1,(now-OS.a.t0)/OS.a.dur); jumpTo(OS.a.y0+(OS.a.y1-OS.a.y0)*sm(k)); if(k>=1){ OS.a=null; if(OS.out){ OS.out=false; OS.q=0 } OS.ga=true; if(OS.q){ const d=OS.q; OS.q=0; oStep(d) } else setTimeout(()=>{ if(!OS.a) window._navJump=false },60) } }
     if(OS.ga&&now-(OS.lastW||0)>200) OS.ga=false;
     const z=!!OS.a||OS.ga||(!window._navJump&&oZone());
     if(z!==OS.z){ OS.z=z; if(z) lockOn(); else if(!IS.z) lockOff() } else if(z&&lenis&&!lenis.isStopped) lenis.stop();
@@ -2669,3 +2720,32 @@ em,i.em{font-style:normal!important}
   if(/[?&#]edit\b/.test(location.search+location.hash)) tog.hidden=false;
 })();
 </script>
+
+<style>
+/* one text system for the whole landing: the cards read at the same size as the rest of the text; small labels are never tiny */
+#uses .u p{font-size:clamp(15px,1.15vw,18px);line-height:1.6}
+.cw .cap,.cw .n,.cw .mono{font-size:11px}
+.tlc-l,.tlc-r,.tl-th figcaption{font-size:10.5px}
+.tlc-sw button{font-size:10px}
+.tk-cons{font-size:12px!important;line-height:1.45!important}
+@media (max-width:860px){
+  .tlc-sw button{font-size:9px}
+  /* phone: titles centered, text flush with both edges (like the first screen) */
+  .cw h2{text-align:center}
+  .cw-t p,.u p,.cw-dev .dbuy p{text-align:justify!important;text-align-last:left;-webkit-hyphens:auto;hyphens:auto}
+  #uses .u h3{text-align:center}
+}
+</style>
+
+<style>
+/* phone: the first text flows as one even paragraph (its two parts are not forced onto separate lines on a narrow screen) */
+@media (max-width:860px){html body .intro .launch:not(.ref) #lTag .tl1,html body .intro .launch:not(.ref) #lTag .tl2{display:inline!important}}
+/* phone: the last sentence continues the same paragraph after a full stop, so the whole text is one even block */
+@media (max-width:860px){html body .intro .launch:not(.ref) #lTag .ltag3{display:inline!important;text-align:inherit!important;text-align-last:inherit!important}html body .intro .launch:not(.ref) #lTag .tl2::after{content:'. '}}
+</style>
+
+<style>
+/* phone: the text under the painting flows as one even paragraph too */
+@media (max-width:860px){html body .intro .launch:not(.ref) #lPhr .pl0,html body .intro .launch:not(.ref) #lPhr .pl1,html body .intro .launch:not(.ref) #lPhr .pl2{display:inline!important}html body .intro .launch:not(.ref) #lPhr .pl0::after,html body .intro .launch:not(.ref) #lPhr .pl1::after{content:'.'}}
+</style>
+

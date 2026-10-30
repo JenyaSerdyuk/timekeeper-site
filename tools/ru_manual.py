@@ -80,3 +80,35 @@ s=s.replace("(j<3?'Photo '+(j+1):'Video')","(j<3?'Фото '+(j+1):'Видео')
 R("<title>Time Keeper</title>","<title>Time Keeper RU</title>\n<script>document.documentElement.lang='ru'</script>")
 open('timekeeper_ru.html','w').write(s)
 print('ok')
+s=open('timekeeper_ru.html').read()
+assert s.count("document.documentElement.lang='en'")==1
+s=s.replace("<script>document.documentElement.lang='en'</script>","")
+open('timekeeper_ru.html','w').write(s)
+s=open('timekeeper_ru.html').read()
+a=".co-ps button.dev img{filter:brightness(.6)}"
+assert s.count(a)==1
+s=s.replace(a,a+"\n/* rubles are longer: in the cart's add-tiles the old price goes on its own line, so nothing overlaps */\n.co-ps span{display:grid;justify-items:center}.co-ps span s{display:block;margin:0}")
+open('timekeeper_ru.html','w').write(s)
+s=open('timekeeper_ru.html').read()
+# Russian typography on the first screen: a one-letter word never stays at the end of a line
+for a,b in [('<span class="ltag3">А другие','<span class="ltag3">А другие'),('<span>С этого момента оно считается</span>','<span>С этого момента оно считается</span>'),('<span>, и оно будет считаться вечно</span>','<span>, и оно будет считаться вечно</span>'),('<span class="pl2">У первых','<span class="pl2">У первых'),('сохранит память о тебе','сохранит память о тебе')]:
+    n=s.count(a); assert n>=1,(a,n); s=s.replace(a,b)
+open('timekeeper_ru.html','w').write(s)
+s=open('timekeeper_ru.html').read()
+# RU phone: Russian words are long, so a justified line could open wide gaps; the line gets a hair of letter spacing instead
+# (measured across the whole paragraph, because on a phone each text is one paragraph)
+a="ts.forEach(t=>{ const b=t.closest('.pl0,.pl1,.pl2,.tl1,.tl2,.ltag3')||t.closest('#lTag,#lPhr'); if(b.matches('.ltag3')) return;"
+assert s.count(a)==1
+s=s.replace(a,"ts.forEach(t=>{ const b=t.closest('#lTag,#lPhr');")
+a="const ts=[...document.querySelectorAll('#lTag .lt-new .jw,#lPhr .jw')]"
+assert s.count(a)==1
+a="sceneLayout0(); try{ phrFit() }catch(e){} if(window.__leReapply)"
+assert s.count(a)==1
+s=s.replace(a,"sceneLayout0(); try{ phrFit() }catch(e){} try{ justFix() }catch(e){} if(window.__leReapply)")
+open('timekeeper_ru.html','w').write(s)
+s=open('timekeeper_ru.html').read()
+# RU phone: lines get a hair of letter spacing (justFix), so each version of the phrase is measured with it applied
+a="alt.forEach(t=>{ p.innerHTML=t; h=Math.max"
+assert s.count(a)==1
+s=s.replace(a,"alt.forEach(t=>{ p.innerHTML=t; try{ justFix() }catch(e){} h=Math.max")
+open('timekeeper_ru.html','w').write(s)

@@ -2295,7 +2295,7 @@ em,i.em{font-style:normal!important}
     if(IS.a||!z||IS.ga) return; const v=prog(GI.el), idle=now-Math.max(lastIn,IS.arr);
     // never left between two scenes (e.g. after a reload or a finger drag): settle on the nearest one
     if(idle>300&&v<0.995&&Math.abs(v)>0.004&&Math.abs(v-0.46)>0.004){ const t=v<0.23?0:(v<0.73?0.46:1); iTo(secY(GI,t),900) } }
-  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const fresh=n-IS.lastW>180||(a>=10&&a>IS.lastAbs*1.5+5); IS.lastW=n; IS.lastAbs=a;
+  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const sg=Math.sign(e.deltaY), fresh=n-IS.lastW>180||(a>=3&&a>IS.lastAbs*1.25+1)||(sg&&IS.sg&&sg!==IS.sg); IS.lastW=n; IS.lastAbs=a; if(sg) IS.sg=sg;
     if(e.ctrlKey) return; const atP=Math.abs(scrollY-secY(GI,1))<=3;
     // standing on the painting: up = the painting goes back (a scene), down = the page simply scrolls on
     if(fresh&&!IS.a&&atP&&e.deltaY<0){ IS.ga=false; IS.z=true; lockOn(); iGo(-1); return }
@@ -2304,7 +2304,7 @@ em,i.em{font-style:normal!important}
       if(fresh&&!IS.a&&inR&&e.deltaY>0&&scrollY<yN-3){ IS.ga=false; IS.z=true; lockOn(); iTo(yN,1500); return }
       if(fresh&&!IS.a&&inR&&e.deltaY<0&&scrollY>P1+3){ IS.ga=false; IS.z=true; lockOn(); iTo(P1,1500); return } }
     if(fresh&&IS.ga&&!IS.a){ IS.ga=false; if(!(scrollY<secY(GI,1)-1)){ IS.z=false; lockOff(); if(lenis&&e.deltaY>0) lenis.scrollTo(scrollY+e.deltaY); return } }
-    if(!IS.z) return; if(fresh&&a>1&&!IS.a) iGo(e.deltaY>0?1:-1) },{passive:true});
+    if(!IS.z) return; if(fresh&&a>0&&!IS.a) iGo(e.deltaY>0?1:-1) },{passive:true});
   addEventListener('touchstart',e=>{ IS.ty0=e.touches[0]?e.touches[0].clientY:null; IS.td=false },{passive:true});
   addEventListener('touchmove',e=>{ if(IS.td||IS.ty0==null||!e.touches[0]) return; const d=IS.ty0-e.touches[0].clientY; if(!IS.z){ if(IS.a||Math.abs(d)<=14) return; const P1=secY(GI,1), yN=iNext(), atP=Math.abs(scrollY-P1)<=3, inR=scrollY>=P1-3&&scrollY<=yN+3;
       if(atP&&d<0){ IS.td=true; IS.z=true; lockOn(); iGo(-1) } else if(inR&&d>0&&scrollY<yN-3){ IS.td=true; IS.z=true; lockOn(); iTo(yN,1500) } else if(inR&&d<0&&scrollY>P1+3){ IS.td=true; IS.z=true; lockOn(); iTo(P1,1500) } return } if(Math.abs(d)>14){ IS.td=true; if(!IS.a) iGo(d>0?1:-1) } },{passive:true});
@@ -2327,7 +2327,7 @@ em,i.em{font-style:normal!important}
   // the white screen right before the last scene: the block above fills the whole screen, nothing of the dark scene shows
   const oW=()=>Math.max(0,GO.el.offsetTop-innerHeight);
   function oZone(){ if(OS.rel&&performance.now()-OS.rel<900) return false; const q=prog(GO.el); return q>=OH-0.004 && scrollY<=secY(GO,1)+2 }
-  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const fresh=n-OS.lastW>200||(a>=12&&a>OS.lastAbs*1.6+6); OS.lastW=n; OS.lastAbs=a; if(fresh) OS.ga=false; if(!OS.z||e.ctrlKey) return; if(fresh&&a>1) oStep(e.deltaY>0?1:-1) },{passive:true});
+  addEventListener('wheel',e=>{ const n=performance.now(), a=Math.abs(e.deltaY); const sg=Math.sign(e.deltaY), fresh=n-OS.lastW>180||(a>=3&&a>OS.lastAbs*1.25+1)||(sg&&OS.sg&&sg!==OS.sg); OS.lastW=n; OS.lastAbs=a; if(sg) OS.sg=sg; if(fresh) OS.ga=false; if(!OS.z||e.ctrlKey) return; if(fresh&&a>0) oStep(e.deltaY>0?1:-1) },{passive:true});
   addEventListener('touchstart',e=>{ OS.ty0=e.touches[0]?e.touches[0].clientY:null; OS.td=false },{passive:true});
   addEventListener('touchmove',e=>{ if(!OS.z||OS.td||OS.ty0==null||!e.touches[0]) return; const d=OS.ty0-e.touches[0].clientY; if(Math.abs(d)>14){ OS.td=true; oStep(d>0?1:-1) } },{passive:true});
   addEventListener('keydown',e=>{ if(!OS.z||OS.a||isField(e.target)) return; if(['ArrowDown','PageDown',' '].includes(e.key)) oStep(1); else if(['ArrowUp','PageUp'].includes(e.key)) oStep(-1) });

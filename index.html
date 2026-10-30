@@ -2323,7 +2323,7 @@ em,i.em{font-style:normal!important}
   function oTo(y1,dur){ window._navJump=true; OS.a={t0:performance.now(),dur,y0:scrollY,y1} }
   function oStep(dir){ if(OS.a){ if(performance.now()-OS.a.t0>350) OS.q=dir; return } OS.q=0; const q=prog(GO.el); if(q<OH-0.006) return;
     if(dir>0){ if(q<0.3) oTo(secY(GO,0.6),2200); else if(q<0.985) oTo(secY(GO,1),2000) }
-    else { if(q>0.8) oTo(secY(GO,0.6),2000); else if(q>0.3) oTo(secY(GO,OH),2200); else { OS.out=true; oTo(oW(),1500) } } }
+    else { if(q>0.8) oTo(secY(GO,0.6),2000); else if(q>0.3) oTo(secY(GO,OH),2200); else { OS.rel=performance.now(); OS.z=false; if(!IS.z) lockOff(); if(lenis) lenis.scrollTo(Math.max(0,scrollY-120)) } } }
   // the white screen right before the last scene: the block above fills the whole screen, nothing of the dark scene shows
   const oW=()=>Math.max(0,GO.el.offsetTop-innerHeight);
   function oZone(){ if(OS.rel&&performance.now()-OS.rel<900) return false; const q=prog(GO.el); return q>=OH-0.004 && scrollY<=secY(GO,1)+2 }

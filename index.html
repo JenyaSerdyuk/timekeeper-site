@@ -1007,7 +1007,7 @@ em,i.em{font-style:normal!important}
     <div class="cw-full u-grid uses-l">
       <article class="u">
         <h3>Pass it down as a <em>family relic</em></h3>
-        <p><b>What will you leave to your family tree for hundreds of years ahead? It will never be like it used to be. Now your relatives will know about you even thousands of years from now.</b> Even 300 years from now, your heirs will get a hello from an unusual ancestor. Time Keeper is made to be handed down, as <u>something that will remain for hundreds of years after you</u>. The infinite family album feature will let them see all the ancestors thanks to whom they were born, even hundreds of years later, and learn more about them</p>
+        <p><b>What will you leave to your family tree for hundreds of years ahead? It will never be like it used to be. Now your relatives will know about you even thousands of years from now.</b> Even 300 years from now, your heirs will get a hello from an unusual ancestor. Time Keeper is made to be handed down, as <u>something that will remain for hundreds of years after you</u></p>
       </article>
       <article class="u">
         <h3>Use it as a <em>deep philosophical gift</em></h3>
@@ -1565,7 +1565,7 @@ em,i.em{font-style:normal!important}
      imgs:[[I('pendant-trio'),'Three finishes'],[I('pendant-worn'),'On neck']],
      spec:[['Size','40 × 40 × 10 mm'],['Finish','Silver, matte black'],['Display','Red segment display, glass'],['Charging','USB-C or magnetic'],['Battery','Li-Po']]},
     {k:'Watch',p:'$345',t:'We were told nobody would need a watch like this. We’ll see',dev:true,
-     imgs:[[I('watch-calc3'),'Calculator'],[I('watch-analog4'),'Analog'],[I('watch-clear'),'Transparent'],[I('watch-wrist'),'Calculator on wrist'],[I('watch-analog4-gold'),'Timeless · Gold, analog']],
+     imgs:[[I('watch-calc3'),'Calculator'],[I('watch-analog4'),'Analog'],[I('watch-clear'),'Transparent'],[I('watch-wrist'),'Calculator on wrist']],
      
      spec:[['Wear','On the wrist, steel bracelet'],['Case','Brushed steel, four screws'],['Keypad','20 keys'],['Displays','Time LCD and red 10-digit counter']],
      vars:[{n:'Calculator',key:'watch',img:0,spec:[['Wear','On the wrist, steel bracelet'],['Case','Brushed steel, four screws'],['Keypad','20 keys'],['Displays','Time LCD and red 10-digit counter']]},
@@ -2691,5 +2691,10 @@ em,i.em{font-style:normal!important}
 <style>
 /* phone: the first text flows as one even paragraph (its two parts are not forced onto separate lines on a narrow screen) */
 @media (max-width:860px){html body .intro .launch:not(.ref) #lTag .tl1,html body .intro .launch:not(.ref) #lTag .tl2{display:inline!important}}
+</style>
+
+<style>
+/* phone: the text under the painting flows as one even paragraph too */
+@media (max-width:860px){html body .intro .launch:not(.ref) #lPhr .pl0,html body .intro .launch:not(.ref) #lPhr .pl1,html body .intro .launch:not(.ref) #lPhr .pl2{display:inline!important}html body .intro .launch:not(.ref) #lPhr .pl0::after,html body .intro .launch:not(.ref) #lPhr .pl1::after{content:'.'}}
 </style>
 <style>.tk-cons{margin:0;font:400 11px/1.4 'Hanken Grotesk',sans-serif;color:#8b8b8b;text-align:center}.tk-cons a{color:inherit;text-decoration:underline}.tk-cons-float{position:absolute;left:0;right:0;top:calc(100% + 6px);opacity:0;pointer-events:none;transition:opacity .2s}.tk-cons-float.on{opacity:1;pointer-events:auto}.intro .tk-cons-float{color:rgba(255,255,255,.6)}</style><script>(function(){var T="By submitting, you agree to our <a href=\"privacy.html\" target=\"_blank\">privacy policy</a>";['rsvForm','pForm','tlForm','llReg'].forEach(function(id){var f=document.getElementById(id);if(!f)return;if(getComputedStyle(f).position==='static')f.style.position='relative';var p=document.createElement('p');p.className='tk-cons tk-cons-float';p.innerHTML=T;f.appendChild(p);f.addEventListener('focusin',function(){p.classList.add('on')})})})();</script></body></html>

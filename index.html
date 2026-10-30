@@ -1621,8 +1621,8 @@ em,i.em{font-style:normal!important}
     sets.forEach(set=>set.forEach(el=>el.addEventListener('change',()=>upd(set))));
     // demo for the investor: the birth date is already filled in (5 November 1981)
     if(sets.length){ const [D,M,Y]=sets[0]; D.value='5'; M.value='10'; Y.value='1981'; upd(sets[0]) } })();
-  // demo for the investor: the counting starts in Hardcore backwards mode
-  setOMode('back');
+  // demo for the investor: the counting starts in From 0 to now mode (birth date already filled in)
+  setOMode('life');
   const uses=[];
 
   // ---------- side panel ----------

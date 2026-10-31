@@ -982,7 +982,7 @@ html body .intro #rsvEmail{text-align:center!important}
           <div><span class="mono">Since start</span><b class="num" id="sinceStart">0 s</b></div>
           <div><span class="mono">Countdown (80 years)</span><b class="num" id="cd">2,524,608,000</b></div>
         </div>
-        <p class="phrase" id="lPhr"><span class="pl0">Your time has started.</span> <span class="pl1"><u class="to-rsv" role="link" tabindex="0">Reserve your time</u><span>, and it will be counted forever<span class="pd">.</span></span></span> <span class="pl2">First objects will have the most seconds of all</span></p>
+        <p class="phrase" id="lPhr"><span class="pl0">Your time has started.</span> <span class="pl1"><u class="to-rsv" role="link" tabindex="0">Reserve your time</u><span>, and it will be counted forever<span class="pd">.</span></span></span> <span class="pl2">First art object owners will have the most seconds of all</span></p>
         <form class="rsv" id="rsvForm" novalidate>
           <div class="rsv-row"><span class="rsv-in" id="rsvIn"><input type="email" id="rsvEmail" placeholder="your@email" autocomplete="email" aria-label="Reserve your start now: your email"><label class="rsv-cta" for="rsvEmail">Reserve your start now</label></span><button class="btn" type="submit" id="rsvBtn">Reserve</button></div>
           <p class="rsv-msg mono" id="rsvMsg"></p>
@@ -2990,17 +2990,17 @@ html body .obsel select option{background:#0a0a0a;color:#fff}
 html body .splitsec .tk-dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
 </style>
 <script>
-/* the tagline on the first screen: one space width on every line, each full line reaches both edges.
+/* the two texts on the first screen (tagline and the phrase above the email field): one space width on every line, each full line reaches both edges.
    Line breaks are chosen so that this works (fewest lines, then the tightest spaces); each line's letters move only a hair */
 (function(){
   const $=id=>document.getElementById(id);
-  function words(el){ return [...el.querySelectorAll('.jw')].filter(w=>!w.closest('.lt-ref')&&w.offsetParent) }
-  function reset(){ const el=$('lTag'); if(!el) return; el.querySelectorAll('br.tk-br').forEach(b=>b.remove()); if(el.classList.contains('tk-even')){ el.classList.remove('tk-even'); ['word-spacing','text-align','text-align-last','white-space'].forEach(p=>el.style.removeProperty(p)); el.querySelectorAll('.lt-new,.lt-new *').forEach(x=>x.style.removeProperty('white-space')); el.querySelectorAll('.jw').forEach(w=>w.style.removeProperty('letter-spacing')) } }
-  function nowrap(el,on){ [el,...el.querySelectorAll('.lt-new,.lt-new *')].forEach(x=>on?x.style.setProperty('white-space','nowrap','important'):x.style.removeProperty('white-space')) }
+  function words(el){ return [...el.querySelectorAll('.jw')].filter(w=>!w.closest('.lt-ref')&&w.offsetParent&&!(w.closest('.pl0')&&getComputedStyle(w.closest('.pl0')).display==='block')) }
+  function reset(id){ const el=$(id||'lTag'); if(!el) return; el.querySelectorAll('br.tk-br').forEach(b=>b.remove()); if(el.classList.contains('tk-even')){ el.classList.remove('tk-even'); ['word-spacing','text-align','text-align-last','white-space'].forEach(p=>el.style.removeProperty(p)); el.querySelectorAll('*').forEach(x=>x.style.removeProperty('white-space')); el.querySelectorAll('.jw').forEach(w=>w.style.removeProperty('letter-spacing')) } }
+  function nowrap(el,on){ [el,...el.querySelectorAll('*')].forEach(x=>on?x.style.setProperty('white-space','nowrap','important'):x.style.removeProperty('white-space')) }
   function rows(el,ws){ const fs=parseFloat(getComputedStyle(el).fontSize)||16, out=[]; let cur=null, top=-1e9; ws.forEach(w=>{ const r=w.getBoundingClientRect(); if(r.top>top+fs*0.6){ cur=[]; out.push(cur); top=r.top } cur.push({w,r}) }); return out }
-  function brAfter(w){ let n=w; while(n.parentElement&&n.parentElement.id!=='lTag'&&!n.parentElement.classList.contains('lt-new')&&n.parentElement.lastElementChild===n&&!(n.nextSibling&&n.nextSibling.nodeType===3&&n.nextSibling.data.trim())) n=n.parentElement; const b=document.createElement('br'); b.className='tk-br'; n.after(b) }
-  function even(){ const el=$('lTag'); if(!el||!el.offsetParent||/^ru/.test(document.documentElement.lang||'')) return; const L=document.querySelector('.intro .launch'); if(L&&L.classList.contains('ref')) return;
-    reset(); const ws=words(el), N=ws.length; if(N<4) return;
+  function brAfter(w,el){ let n=w; while(n.parentElement&&n.parentElement!==el&&!n.parentElement.classList.contains('lt-new')&&n.parentElement.lastElementChild===n&&!(n.nextSibling&&n.nextSibling.nodeType===3&&n.nextSibling.data.trim())) n=n.parentElement; const b=document.createElement('br'); b.className='tk-br'; n.after(b) }
+  function even(id){ const el=$(id); if(!el||!el.offsetParent||/^ru/.test(document.documentElement.lang||'')) return; const L=document.querySelector('.intro .launch'); if(L&&L.classList.contains('ref')) return;
+    reset(id); const ws=words(el), N=ws.length; if(N<4) return;
     const cs0=getComputedStyle(el), ta0=cs0.textAlignLast, fs=parseFloat(cs0.fontSize), er=el.getBoundingClientRect(), x0=er.left+parseFloat(cs0.paddingLeft), W=er.width-parseFloat(cs0.paddingLeft)-parseFloat(cs0.paddingRight)-0.6;
     // natural widths: everything on one line, left aligned
     el.style.setProperty('text-align','left','important'); el.style.setProperty('text-align-last','left','important'); nowrap(el,true);
@@ -3017,17 +3017,17 @@ html body .splitsec .tk-dim{position:absolute;inset:0;background:#000;opacity:0;
           let ok, w; if(last){ ok=o.n>=1&&o.s+g*o.n+o.E<=W; w=0 } else { ok=o.n>=1&&Math.abs(o.ls)<=lim; w=Math.abs(o.ls) } if(!ok) continue;
           const c={lines:best[i].lines+1,worst:Math.max(best[i].worst,w),prev:i}; const b=best[j+1]; if(!b||c.lines<b.lines||(c.lines===b.lines&&c.worst<b.worst)) best[j+1]=c } }
       if(!best[N]) return null; const br=[]; let j=N; while(j>0){ const i=best[j].prev; br.unshift([i,j-1]); j=i } return {lines:best[N].lines,worst:best[N].worst,br} }
-    let pick=null; for(const [lm,gm] of [[0.05,2.6],[0.065,3.4]]){ lim=lm*fs; for(let g=sp*0.9; g<=sp*gm; g+=0.1){ const s=solve(g); if(!s) continue; const sc=s.lines+2*Math.max(0,g/sp-1.3)+1.2*s.worst/(0.05*fs)+0.3*Math.abs(g/sp-1); if(!pick||sc<pick.sc-1e-9) pick={g,s,sc} } if(pick) break }
+    let pick=null; for(const [lm,gm] of (id==='lTag'?[[0.05,2.6],[0.065,3.4]]:[[0.05,2.2]])){ lim=lm*fs; for(let g=sp*0.9; g<=sp*gm; g+=0.1){ const s=solve(g); if(!s) continue; const sc=s.lines+2*Math.max(0,g/sp-1.3)+1.2*s.worst/(0.05*fs)+0.3*Math.abs(g/sp-1); if(!pick||sc<pick.sc-1e-9) pick={g,s,sc} } if(pick) break }
     if(!pick) return; const g=pick.g, br=pick.s.br;
     el.classList.add('tk-even'); const al=ta0==='center'?'center':'left'; el.style.setProperty('text-align',al,'important'); el.style.setProperty('text-align-last',al,'important'); el.style.setProperty('word-spacing',(g-sp).toFixed(2)+'px','important'); nowrap(el,true);
     const lsv=br.map(([i,j],k)=>k<br.length-1?line(i,j,g).ls:0); const avg=lsv.length>1?lsv.slice(0,-1).reduce((a,b)=>a+b,0)/(lsv.length-1):0; lsv[lsv.length-1]=Math.max(-lim,Math.min(lim,avg));
-    br.forEach(([i,j],k)=>{ for(let m=i;m<=j;m++) ws[m].style.setProperty('letter-spacing',lsv[k].toFixed(3)+'px','important'); if(k<br.length-1) brAfter(ws[j]) });
+    br.forEach(([i,j],k)=>{ for(let m=i;m<=j;m++) ws[m].style.setProperty('letter-spacing',lsv[k].toFixed(3)+'px','important'); if(k<br.length-1) brAfter(ws[j],el) });
     // correction: every full line ends exactly on the right edge
-    for(let pass=0; pass<3; pass++){ const now=rows(el,ws); if(now.length!==br.length){ reset(); return }
+    for(let pass=0; pass<3; pass++){ const now=rows(el,ws); if(now.length!==br.length){ reset(id); return }
       now.slice(0,-1).forEach((l,k)=>{ const right=l[l.length-1].r.right-x0, c=PC[br[k][1]+1]-PC[br[k][0]]; lsv[k]=Math.max(-lim*1.5,Math.min(lim*1.5,lsv[k]+(W+0.3-right)/c)); l.forEach(o=>o.w.style.setProperty('letter-spacing',lsv[k].toFixed(3)+'px','important')) }) }
   }
-  window.tagEven=even; window.tagEvenReset=reset;
-  let t; const later=()=>{ clearTimeout(t); t=setTimeout(()=>{ try{ even() }catch(e){} },60) }; addEventListener('load',later); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later);
+  window.tagEven=()=>{ even('lTag'); even('lPhr') }; window.tagEvenReset=()=>{ reset('lTag'); reset('lPhr') };
+  let t; const later=()=>{ clearTimeout(t); t=setTimeout(()=>{ try{ window.tagEven() }catch(e){} },60) }; addEventListener('load',later); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later);
 })();
 </script>
 <script>

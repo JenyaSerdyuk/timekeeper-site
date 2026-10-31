@@ -978,7 +978,7 @@ html body .intro #rsvEmail{text-align:center!important}
       <div class="tyt" id="tyt"><p>Береги своё <em>время</em></p></div>
       <div class="scene" id="scene" aria-hidden="true"><img id="sceneImg" src="img/w/scene.webp" alt=""><div class="scene-shade"></div></div><div class="scene-win" id="sceneWin"><svg id="sceneDigits" preserveAspectRatio="xMidYMid meet"></svg><span class="yours" id="yours">Твоё время</span></div>
       <div class="launch">
-        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new"><span class="tl1">Твой личный философский арт-объект для саморефлексии, который переживёт тебя <span class="ul">на сотни лет</span>.</span> <span class="tl2">Он сохранит память о тебе для будущих поколений твоего рода</span><span class="ltag3">А другие философские смыслы ты откроешь для себя ниже</span></span><span class="lt-ref" aria-hidden="true">Твой личный философский арт-объект для саморефлексии, который переживёт тебя <span class="ul">на сотни лет</span>. It will keep the memory of you alive for future generations of your family tree. And other philosophical meanings you will discover below</span></p></div>
+        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new"><span class="tl1">Философский арт-объект для саморефлексии</span> <span class="tl2">Он хранит в себе всё время твоей жизни и переживёт тебя <span class="ul">на сотни лет</span>. Семейная реликвия, которая передаётся из поколения в поколение для будущих потомков.</span><span class="ltag3">А другие философские смыслы ты откроешь для себя ниже</span></span><span class="lt-ref" aria-hidden="true">Философский арт-объект для саморефлексии. Он хранит в себе всё время твоей жизни и переживёт тебя <span class="ul">на сотни лет</span>. Семейная реликвия, которая передаётся из поколения в поколение для будущих потомков. А другие философские смыслы ты откроешь для себя ниже</span></p></div>
         <div class="bottom">
         <div class="sub">
           <div><span class="mono">Момент запущен</span><b class="num" id="startedAt">—</b></div>
@@ -1536,8 +1536,9 @@ html body .intro #rsvEmail{text-align:center!important}
     const at=(e,x,y)=>{ e.style.position='absolute'; e.style.margin='0'; e.style.translate='none'; const op=(e.offsetParent||st).getBoundingClientRect(); e.style.left=Math.round(sr.left+x-op.left)+'px'; e.style.top=Math.round(sr.top+y-op.top)+'px' };
     lt.style.width=rw+'px'; lt.style.maxWidth=rw+'px';
     const Hh=e=>{ const k=e.style.transform; e.style.transform='none'; const h=e.getBoundingClientRect().height; e.style.transform=k; return h };
-    const a=Hh(lt), b=Hh(ph), c=Hh(fm), G=Math.round(fz*1.5); let y=Math.round(py+P/2-(a+b+c+2*G)/2);
-    at(lt,rx,y); y+=a+G; at(ph,rx,y); y+=b+G; at(fm,rx,y);
+    // the text starts on the painting's top edge and the email field ends on its bottom edge; every space between paragraphs is the same
+    tg.style.setProperty('--tk-pg','0px'); const a0=Hh(lt), b=Hh(ph), c=Hh(fm); let G=(P-a0-b-c)/4; if(G<fz*0.9) G=fz*0.9; G=Math.min(G,fz*2.4); tg.style.setProperty('--tk-pg',G.toFixed(1)+'px'); tg.dataset.pgFixed='1'; const a=Hh(lt); let y=Math.round(py+P/2-(a+b+c+2*G)/2);
+    at(lt,rx,Math.round(y)); y+=a+G; at(ph,rx,Math.round(y)); y+=b+G; at(fm,rx,Math.round(y));
     sceneLayout.geo={sc,left,top,W,H}; if(typeof oLayout==='function') try{ oLayout() }catch(e){} }
   // short screens (a laptop with the browser bars, a small phone): if the group would not fit, the painting gets just as much smaller
   // as needed, so the field at the bottom never runs into the next block. On normal screens nothing changes
@@ -2997,46 +2998,53 @@ html body .obsel select option{background:#0a0a0a;color:#fff}
 html body .splitsec .tk-dim{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
 </style>
 <script>
-/* the two texts on the first screen (tagline and the phrase above the email field): one space width on every line, each full line reaches both edges.
-   Line breaks are chosen so that this works (fewest lines, then the tightest spaces); each line's letters move only a hair */
+/* first-screen texts: in every paragraph all spaces are the same width and full lines reach both edges.
+   Line breaks are chosen so this works (letters move by a hair at most). If a paragraph cannot be made straight
+   without visibly different spaces, it is set with normal equal spaces instead (left on a computer, centred on a phone) */
 (function(){
-  const $=id=>document.getElementById(id);
-  function words(el){ return [...el.querySelectorAll('.jw')].filter(w=>!w.closest('.lt-ref')&&w.offsetParent&&!(w.closest('.pl0')&&getComputedStyle(w.closest('.pl0')).display==='block')) }
-  function reset(id){ const el=$(id||'lTag'); if(!el) return; el.querySelectorAll('br.tk-br').forEach(b=>b.remove()); if(el.classList.contains('tk-even')){ el.classList.remove('tk-even'); ['word-spacing','text-align','text-align-last','white-space'].forEach(p=>el.style.removeProperty(p)); el.querySelectorAll('*').forEach(x=>x.style.removeProperty('white-space')); el.querySelectorAll('.jw').forEach(w=>w.style.removeProperty('letter-spacing')) } }
+  const PARAS=()=>[...document.querySelectorAll('#lTag .tl1,#lTag .tl2,#lTag .ltag3,#lPhr')];
+  const words=el=>[...el.querySelectorAll('.jw')].filter(w=>w.offsetParent&&!w.closest('.lt-ref')&&!(w.closest('.pl0')&&el.id==='lPhr'&&getComputedStyle(w.closest('.pl0')).display==='block'));
+  const PROPS=['word-spacing','text-align','text-align-last','white-space'];
+  function reset(el){ el.querySelectorAll('br.tk-br').forEach(b=>b.remove()); PROPS.forEach(p=>el.style.removeProperty(p)); el.querySelectorAll('*').forEach(x=>{ x.style.removeProperty('white-space') }); el.querySelectorAll('.jw').forEach(w=>w.style.removeProperty('letter-spacing')); el.classList.remove('tk-even','tk-plain') }
   function nowrap(el,on){ [el,...el.querySelectorAll('*')].forEach(x=>on?x.style.setProperty('white-space','nowrap','important'):x.style.removeProperty('white-space')) }
-  function rows(el,ws){ const fs=parseFloat(getComputedStyle(el).fontSize)||16, out=[]; let cur=null, top=-1e9; ws.forEach(w=>{ const r=w.getBoundingClientRect(); if(r.top>top+fs*0.6){ cur=[]; out.push(cur); top=r.top } cur.push({w,r}) }); return out }
-  function brAfter(w,el){ let n=w; while(n.parentElement&&n.parentElement!==el&&!n.parentElement.classList.contains('lt-new')&&n.parentElement.lastElementChild===n&&!(n.nextSibling&&n.nextSibling.nodeType===3&&n.nextSibling.data.trim())) n=n.parentElement; const b=document.createElement('br'); b.className='tk-br'; n.after(b) }
-  function even(id){ const el=$(id); if(!el||!el.offsetParent||/^ru/.test(document.documentElement.lang||'')) return; const L=document.querySelector('.intro .launch'); if(L&&L.classList.contains('ref')) return;
-    reset(id); const ws=words(el), N=ws.length; if(N<4) return;
-    const cs0=getComputedStyle(el), ta0=cs0.textAlignLast, fs=parseFloat(cs0.fontSize), er=el.getBoundingClientRect(), x0=er.left+parseFloat(cs0.paddingLeft), W=er.width-parseFloat(cs0.paddingLeft)-parseFloat(cs0.paddingRight)-0.6;
-    // natural widths: everything on one line, left aligned
+  function rows(ws,fs){ const out=[]; let cur=null, top=-1e9; ws.forEach(w=>{ const r=w.getBoundingClientRect(); if(r.top>top+fs*0.6){ cur=[]; out.push(cur); top=r.top } cur.push({w,r}) }); return out }
+  function brAfter(w,el){ let n=w; while(n.parentElement&&n.parentElement!==el&&n.parentElement.lastElementChild===n&&!(n.nextSibling&&n.nextSibling.nodeType===3&&n.nextSibling.data.trim())) n=n.parentElement; const b=document.createElement('br'); b.className='tk-br'; n.after(b) }
+  function plain(el){ const phone=innerWidth<=860; el.classList.add('tk-plain'); const a=phone?'center':'left'; el.style.setProperty('text-align',a,'important'); el.style.setProperty('text-align-last',a,'important') }
+  function even(el){ reset(el); const ws=words(el), N=ws.length; if(N<2) return;
+    const cs=getComputedStyle(el), fs=parseFloat(cs.fontSize)||16, er=el.getBoundingClientRect(), W=er.width-0.6, phone=innerWidth<=860;
+    // one line only: nothing to straighten
+    { const rs=rows(ws,fs); if(rs.length<2){ plain(el); return } }
     el.style.setProperty('text-align','left','important'); el.style.setProperty('text-align-last','left','important'); nowrap(el,true);
-    const R=ws.map(w=>w.getBoundingClientRect()), wd=R.map(r=>r.width), ch=ws.map(w=>w.textContent.length), gp=[]; for(let k=0;k<N-1;k++) gp.push(R[k+1].left-R[k].right);
+    const R=ws.map(w=>w.getBoundingClientRect()), wd=R.map(r=>r.width), ch=ws.map(w=>w.textContent.length), gp=[];
+    for(let k=0;k<N-1;k++) gp.push(R[k+1].left-R[k].right);
     nowrap(el,false); el.style.removeProperty('text-align'); el.style.removeProperty('text-align-last');
-    if(R.some((r,k)=>k&&Math.abs(r.top-R[0].top)>2)) return;
+    if(R.some((r,k)=>k&&Math.abs(r.top-R[0].top)>2)){ plain(el); return }
     const nb=[]; for(let k=0;k<N-1;k++){ const r=document.createRange(); r.setStartAfter(ws[k]); r.setEndBefore(ws[k+1]); nb.push(!/[ \n\t]/.test(r.toString())) }
-    const srt=[...gp].sort((a,b)=>a-b), sp=srt[Math.floor(srt.length/2)], ex=gp.map(g=>Math.max(0,g-sp));
-    let lim=0.05*fs; const PW=[0], PC=[0], PE=[0]; for(let k=0;k<N;k++){ PW.push(PW[k]+wd[k]); PC.push(PC[k]+ch[k]); PE.push(PE[k]+(k<N-1?ex[k]:0)) }
-    const line=(i,j,g)=>{ const n=j-i, s=PW[j+1]-PW[i], c=PC[j+1]-PC[i], E=PE[j]-PE[i], tr=j<N-1?ex[j]*0.5:0; return {n,s,c,E,tr,ls:(W-s-g*n-E-tr)/c} };
-    function solve(g){ // fewest lines, then smallest worst letter shift
-      const best=new Array(N+1).fill(null); best[0]={lines:0,worst:0,prev:-1};
-      for(let j=0;j<N;j++){ if(j<N-1&&nb[j]) continue; for(let i=0;i<=j;i++){ if(!best[i]) continue; const o=line(i,j,g), last=j===N-1;
-          let ok, w; if(last){ ok=o.n>=1&&o.s+g*o.n+o.E<=W; w=0 } else { ok=o.n>=1&&Math.abs(o.ls)<=lim; w=Math.abs(o.ls) } if(!ok) continue;
-          const c={lines:best[i].lines+1,worst:Math.max(best[i].worst,w),prev:i}; const b=best[j+1]; if(!b||c.lines<b.lines||(c.lines===b.lines&&c.worst<b.worst)) best[j+1]=c } }
+    const sp0=[...gp].filter((g,k)=>!nb[k]).sort((a,b)=>a-b), sp=sp0.length?sp0[Math.floor(sp0.length/2)]:fs*0.28, ex=gp.map((g,k)=>nb[k]?g:Math.max(0,g-sp));
+    const lim=0.018*fs, PW=[0], PC=[0], PE=[0]; for(let k=0;k<N;k++){ PW.push(PW[k]+wd[k]); PC.push(PC[k]+ch[k]); PE.push(PE[k]+(k<N-1?ex[k]:0)) }
+    const line=(i,j,g)=>{ let n=0; for(let k=i;k<j;k++) if(!nb[k]) n++; const s=PW[j+1]-PW[i], c=PC[j+1]-PC[i], E=PE[j]-PE[i]; return {n,s,c,E,ls:(W-s-g*n-E)/c} };
+    function solve(g){ const best=new Array(N+1).fill(null); best[0]={lines:0,worst:0,prev:-1};
+      for(let j=0;j<N;j++){ if(j<N-1&&nb[j]) continue; for(let i=0;i<=j;i++){ if(!best[i]) continue; const o=line(i,j,g), last=j===N-1; let ok,w;
+          if(last){ ok=o.s+g*o.n+o.E<=W; w=0 } else { ok=o.n>=1&&Math.abs(o.ls)<=lim; w=Math.abs(o.ls) } if(!ok) continue;
+          const c={lines:best[i].lines+1,worst:Math.max(best[i].worst,w),prev:i}, b=best[j+1]; if(!b||c.lines<b.lines||(c.lines===b.lines&&c.worst<b.worst)) best[j+1]=c } }
       if(!best[N]) return null; const br=[]; let j=N; while(j>0){ const i=best[j].prev; br.unshift([i,j-1]); j=i } return {lines:best[N].lines,worst:best[N].worst,br} }
-    let pick=null; for(const [lm,gm] of (id==='lTag'?[[0.05,2.6],[0.065,3.4]]:[[0.05,2.2]])){ lim=lm*fs; for(let g=sp*0.9; g<=sp*gm; g+=0.1){ const s=solve(g); if(!s) continue; const sc=s.lines+2*Math.max(0,g/sp-1.3)+1.2*s.worst/(0.05*fs)+0.3*Math.abs(g/sp-1); if(!pick||sc<pick.sc-1e-9) pick={g,s,sc} } if(pick) break }
-    if(!pick) return; const g=pick.g, br=pick.s.br;
-    el.classList.add('tk-even'); const al=ta0==='center'?'center':'left'; el.style.setProperty('text-align',al,'important'); el.style.setProperty('text-align-last',al,'important'); el.style.setProperty('word-spacing',(g-sp).toFixed(2)+'px','important'); nowrap(el,true);
-    const lsv=br.map(([i,j],k)=>k<br.length-1?line(i,j,g).ls:0); const avg=lsv.length>1?lsv.slice(0,-1).reduce((a,b)=>a+b,0)/(lsv.length-1):0; lsv[lsv.length-1]=Math.max(-lim,Math.min(lim,avg));
+    let pick=null; for(let g=sp*0.9; g<=sp*1.7; g+=0.08){ const s=solve(g); if(!s) continue; const sc=s.lines*10+s.worst/lim+Math.abs(g/sp-1)*2; if(!pick||sc<pick.sc) pick={g,s,sc} }
+    if(!pick){ plain(el); return }
+    const g=pick.g, br=pick.s.br; el.classList.add('tk-even');
+    const al=phone?'center':'left'; el.style.setProperty('text-align',al,'important'); el.style.setProperty('text-align-last',al,'important'); el.style.setProperty('word-spacing',(g-sp).toFixed(2)+'px','important'); nowrap(el,true);
+    const lsv=br.map(([i,j],k)=>k<br.length-1?line(i,j,g).ls:0);
     br.forEach(([i,j],k)=>{ for(let m=i;m<=j;m++) ws[m].style.setProperty('letter-spacing',lsv[k].toFixed(3)+'px','important'); if(k<br.length-1) brAfter(ws[j],el) });
-    // correction: every full line ends exactly on the right edge
-    for(let pass=0; pass<3; pass++){ const now=rows(el,ws); if(now.length!==br.length){ reset(id); return }
-      now.slice(0,-1).forEach((l,k)=>{ const right=l[l.length-1].r.right-x0, c=PC[br[k][1]+1]-PC[br[k][0]]; lsv[k]=Math.max(-lim*1.5,Math.min(lim*1.5,lsv[k]+(W+0.3-right)/c)); l.forEach(o=>o.w.style.setProperty('letter-spacing',lsv[k].toFixed(3)+'px','important')) }) }
+    const x0=el.getBoundingClientRect().left;
+    for(let pass=0;pass<3;pass++){ const now=rows(ws,fs); if(now.length!==br.length){ reset(el); plain(el); return }
+      now.slice(0,-1).forEach((l,k)=>{ const right=l[l.length-1].r.right-x0, c=PC[br[k][1]+1]-PC[br[k][0]]; lsv[k]=Math.max(-lim*1.4,Math.min(lim*1.4,lsv[k]+(W+0.3-right)/c)); l.forEach(o=>o.w.style.setProperty('letter-spacing',lsv[k].toFixed(3)+'px','important')) }) }
   }
-  window.tagEven=()=>{ even('lTag'); even('lPhr') }; window.tagEvenReset=()=>{ reset('lTag'); reset('lPhr') };
-  let t; const later=()=>{ clearTimeout(t); t=setTimeout(()=>{ try{ window.tagEven() }catch(e){} },60) }; addEventListener('load',later); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later);
+  function all(){ const L=document.querySelector('.intro .launch'); if(L&&L.classList.contains('ref')) return; PARAS().forEach(el=>{ try{ reset(el); plain(el) }catch(e){ reset(el) } }) /* every space the same width: no stretching (left on a computer, centred on a phone) */ }
+  function resetAll(){ PARAS().forEach(reset) }
+  window.tagEven=all; window.tagEvenReset=resetAll;
+  let t; const later=()=>{ clearTimeout(t); t=setTimeout(()=>{ try{ all() }catch(e){} },60) }; addEventListener('load',later); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later);
 })();
 </script>
+<style>html body #lTag .tk-even,html body #lPhr.tk-even{white-space:nowrap}</style>
 <script>
 /* tighten: a paragraph whose last line holds only a couple of words gets very slightly tighter letters/spaces so it loses that line; same small steps everywhere */
 (function(){
@@ -3107,6 +3115,28 @@ html body .obsel select:last-child{flex-grow:1.1!important}
 
 /* narrow phones, Russian (longer words): the two upper mode buttons keep to one line */
 @media (max-width:374px){html[lang="ru"] body .omodes button{padding-left:7px!important;padding-right:7px!important;letter-spacing:.06em!important}}
+
+
+/* all the buttons under the painting (mode rows and the date row) appear the same way: same fade, blur and the same small rise
+   (the mode buttons are centred with an inline transform, so their rise uses "translate") */
+html body .intro .launch #iModes.rv{translate:0 14px;transition:opacity .8s ease,filter .9s ease,translate .9s cubic-bezier(.2,.7,.2,1)}
+html body .intro .launch #iModes.rv.in{translate:0 0}
+/* the date row sits inside the mode block: it rises with it (no second rise of its own), and fades exactly with it */
+html body .intro .launch #iModes #iBdate.rv{transform:none!important;opacity:1!important;filter:none!important;transition:none!important}
+
+/* first screen text in three paragraphs: 1) the object, 2) the memory + other meanings, 3) "Your time has started..." — same space between them */
+html body .intro .launch:not(.ref) #lTag .tl1,html.tk-split body .intro .launch:not(.ref) #lTag .tl1{display:block!important;margin-bottom:var(--tk-pg,1em)!important}
+html body .intro .launch:not(.ref) #lTag .tl2,html body .intro .launch:not(.ref) #lTag .ltag3,html.tk-split body .intro .launch:not(.ref) #lTag .tl2,html.tk-split body .intro .launch:not(.ref) #lTag .ltag3{display:inline!important}
+
+/* first screen text: three paragraphs (object / what it holds / other meanings), the same space between them */
+html body .intro .launch:not(.ref) #lTag .tl2,html body .intro .launch:not(.ref) #lTag .ltag3,html.tk-split body .intro .launch:not(.ref) #lTag .tl2,html.tk-split body .intro .launch:not(.ref) #lTag .ltag3{display:block!important}
+html body .intro .launch:not(.ref) #lTag .tl2,html.tk-split body .intro .launch:not(.ref) #lTag .tl2{margin-bottom:var(--tk-pg,1em)!important}
+html body .intro .launch #lTag .tl2::after,html.tk-split body .intro .launch #lTag .tl2::after{content:none!important}
+
+/* computer: the three paragraphs keep the column's left edge; their last lines start on the left (not centred), the short first line is not stretched */
+html.tk-split body .intro .launch:not(.ref) #lTag .tl1,html.tk-split body .intro .launch:not(.ref) #lTag .tl2,html.tk-split body .intro .launch:not(.ref) #lTag .ltag3{text-align-last:left!important}
+html.tk-split body .intro .launch:not(.ref) #lTag .tl1{text-align:left!important}
+html.tk-split body .intro .launch:not(.ref) #lTag .tl2,html.tk-split body .intro .launch:not(.ref) #lTag .ltag3{text-align:justify!important}
 </style>
 <script>
 /* phone only: "Hardcore backwards mode" is exactly as wide as the two buttons above it together (left edge of the first to right edge of the second) */
@@ -3123,5 +3153,11 @@ html body .obsel select:last-child{flex-grow:1.1!important}
   setInterval(()=>{ if(innerWidth<=860) fit() },1500);
   window.tkFitHard=fit;
 })();
+</script>
+<script>
+/* the space between the first two paragraphs equals the space between the second and "Your time has started..." */
+(function(){ function pg(){ const t=document.getElementById('lTag'), p=document.getElementById('lPhr'); if(!t||!p||!t.offsetParent) return; const t1=t.querySelector('.tl1'); if(!t1) return;
+  if(document.documentElement.classList.contains('tk-split')&&t.dataset.pgFixed) return; const cur=parseFloat(getComputedStyle(t1).marginBottom)||0; let gap=p.getBoundingClientRect().top-t.getBoundingClientRect().bottom; const fs=parseFloat(getComputedStyle(t).fontSize)||16; gap=fs*1.1; /* phone: the painting stands between, so a normal paragraph space */ const want=Math.round(gap); if(Math.abs(want-cur)>1) t.style.setProperty('--tk-pg',want+'px') }
+  let tm; const later=()=>{ clearTimeout(tm); tm=setTimeout(pg,100) }; addEventListener('load',later); addEventListener('resize',later); setInterval(pg,1200); })();
 </script>
 <style>html body .intro .launch:not(.ref) #lPhr .pl0{display:block!important;text-align:center!important;text-align-last:center!important}html.tk-split body .intro .launch:not(.ref) #lPhr .pl0{display:block!important;text-align:left!important;text-align-last:left!important}html body .intro .launch:not(.ref) #lPhr .pl1{display:inline!important}</style><style>.tk-cons{margin:0;font:400 11px/1.4 'Onest',sans-serif;color:#8b8b8b;text-align:center}.tk-cons a{color:inherit;text-decoration:underline}.tk-cons-float{position:absolute;left:0;right:0;top:calc(100% + 6px);opacity:0;pointer-events:none;transition:opacity .2s}.tk-cons-float.on{opacity:1;pointer-events:auto}.intro .tk-cons-float{color:rgba(255,255,255,.6)}</style><script>(function(){var T="Отправляя форму, ты соглашаешься на <a href=\"privacy.html\" target=\"_blank\">обработку персональных данных</a>";['rsvForm','pForm','tlForm','llReg'].forEach(function(id){var f=document.getElementById(id);if(!f)return;if(getComputedStyle(f).position==='static')f.style.position='relative';var p=document.createElement('p');p.className='tk-cons tk-cons-float';p.innerHTML=T;f.appendChild(p);f.addEventListener('focusin',function(){p.classList.add('on')})})})();</script></body></html>

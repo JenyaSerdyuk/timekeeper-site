@@ -978,7 +978,7 @@ html body .intro #rsvEmail{text-align:center!important}
       <div class="tyt" id="tyt"><p>Береги своё <em>время</em></p></div>
       <div class="scene" id="scene" aria-hidden="true"><img id="sceneImg" src="img/w/scene.webp" alt=""><div class="scene-shade"></div></div><div class="scene-win" id="sceneWin"><svg id="sceneDigits" preserveAspectRatio="xMidYMid meet"></svg><span class="yours" id="yours">Твоё время</span></div>
       <div class="launch">
-        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new"><span class="tl1">Твой личный философский арт-объект для саморефлексии, который переживёт тебя <span class="ul">на сотни лет</span></span> <span class="tl2">и сохранит память о тебе для будущих поколений твоего рода</span><span class="ltag3">А другие философские смыслы ты откроешь для себя ниже</span></span><span class="lt-ref" aria-hidden="true">Твой личный философский арт-объект для саморефлексии, который переживёт тебя <span class="ul">на сотни лет</span> и сохранит память о тебе для будущих поколений твоего рода. А другие философские смыслы ты откроешь для себя ниже</span></p></div>
+        <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new"><span class="tl1">Твой личный философский арт-объект для саморефлексии, который переживёт тебя <span class="ul">на сотни лет</span>.</span> <span class="tl2">Он сохранит память о тебе для будущих поколений твоего рода</span><span class="ltag3">А другие философские смыслы ты откроешь для себя ниже</span></span><span class="lt-ref" aria-hidden="true">Твой личный философский арт-объект для саморефлексии, который переживёт тебя <span class="ul">на сотни лет</span>. It will keep the memory of you alive for future generations of your family tree. And other philosophical meanings you will discover below</span></p></div>
         <div class="bottom">
         <div class="sub">
           <div><span class="mono">Момент запущен</span><b class="num" id="startedAt">—</b></div>
@@ -1024,7 +1024,7 @@ html body .intro #rsvEmail{text-align:center!important}
   <h2>Зачем существует Time Keeper</h2>
   <div class="cw-t">
     <p>Мы вложили свои деньги, время, душу, депрессию и нервы, чтобы выпустить этот продукт, потому что он красивый и он должен существовать. Даже если этот продукт повлияет на жизнь 100 человек, значит, наша работа была сделана не просто так.</p>
-    <p>Он сделан, потому что люди тратят время так, будто оно бесконечно, и было бы хорошо оставить что-то после себя своим потомкам на сотни лет. Мы верим, что есть люди, такие же, как мы, которые тоже хотели бы такой продукт.</p>
+    <p>Он сделан, потому что люди тратят время так, будто оно бесконечно. Было бы хорошо оставить что-то после себя своим потомкам на сотни лет. Мы верим, что есть люди, такие же, как мы, которые тоже хотели бы такой продукт.</p>
   </div>
 </section>
 
@@ -1247,8 +1247,8 @@ html body .intro #rsvEmail{text-align:center!important}
 <section class="cw" id="heirloom">
   <h2>Наследие, которое растёт в цене</h2>
   <div class="cw-t">
-    <p><span>Time Keeper создан, чтобы пережить своего первого владельца. Его момент зафиксирован в блокчейне, а счёт никогда не останавливается, поэтому с каждым годом объект значит всё больше.</span> <span>Он переходит к детям и внукам.</span></p>
-    <p>Как личный арт-объект он работает как картина, подписанная самим временем. Первая 1 000 — самая ценная из всех коллекций: она поможет нам расти и расширяться, а у её владельцев будет самая ценная коллекция, потому что в будущем у их арт-объектов будет больше всего секунд.</p>
+    <p><span>Time Keeper создан, чтобы пережить своего первого владельца. Его момент зафиксирован в блокчейне, а счёт никогда не останавливается. Поэтому с каждым годом объект значит всё больше.</span> <span>Он переходит к детям и внукам.</span></p>
+    <p>Как личный арт-объект он работает как картина, подписанная самим временем. Первая 1 000 — самая ценная из всех коллекций. Она поможет нам расти и расширяться. У её владельцев будет самая ценная коллекция, потому что в будущем у их арт-объектов будет больше всего секунд.</p>
   </div>
 </section>
 
@@ -2492,10 +2492,13 @@ html body .intro #rsvEmail{text-align:center!important}
 
   // painting scene: the white text arrives line by line, top first, then the text below, from a soft blur
   // order: the painting first, then the text and the email field, then the buttons under the painting (all together)
-  const RV=[[$('lTag'),0],[$('lPhr'),0.28],[$('rsvForm'),0.56],[$('iModes'),0.9],[$('iBdate'),0.9]].filter(r=>r[0]);
+  // phone (everything one under another): top to bottom - top text, buttons, lower text, field
+  const RV_PC=[[$('lTag'),0],[$('lPhr'),0.28],[$('rsvForm'),0.56],[$('iModes'),0.9],[$('iBdate'),0.9]].filter(r=>r[0]);
+  const RV_PH=[[$('lTag'),0],[$('iModes'),0.28],[$('iBdate'),0.28],[$('lPhr'),0.56],[$('rsvForm'),0.84]].filter(r=>r[0]);
+  let RV=RV_PC;
   RV.forEach(([el])=>el.classList.add('rv'));
   let rvOn=false;
-  function revealIntro(ty){ const want=rvOn?ty>0.3:ty>=0.6; if(want===rvOn) return; rvOn=want;
+  function revealIntro(ty){ const want=rvOn?ty>0.3:ty>=0.6; if(want===rvOn) return; rvOn=want; RV=innerWidth<=860?RV_PH:RV_PC;
     RV.forEach(([el,d])=>{ el.style.transitionDelay=want?d+'s':'0s'; el.classList.toggle('in',want) }); try{ sceneLayout() }catch(e){} }
   function frame(now){
     if(lenis) lenis.raf(now);
@@ -2919,7 +2922,7 @@ html.tk-split body .intro .launch:not(.ref) #lTag .ul,html.tk-split body .intro 
 </style>
 <style>
 /* the page below the first screen appears softly while scrolling down, once (it never hides again) */
-.sr{opacity:0;translate:0 26px;filter:blur(4px);transition:opacity .9s ease,translate .9s cubic-bezier(.2,.7,.2,1),filter .9s ease;transition-delay:var(--srd,0s)}
+.sr{opacity:0;translate:0 18px;filter:blur(3px);transition:opacity .5s ease,translate .5s cubic-bezier(.2,.7,.2,1),filter .5s ease;transition-delay:var(--srd,0s)}
 .sr.sr-in{opacity:1;translate:0 0;filter:none}
 @media (prefers-reduced-motion:reduce){.sr{opacity:1;translate:none;filter:none;transition:none}}
 </style>
@@ -2929,11 +2932,11 @@ html.tk-split body .intro .launch:not(.ref) #lTag .ul,html.tk-split body .intro 
   function init(){
     const items=[];
     document.querySelectorAll('section.cw, .motto').forEach(sec=>{
-      let k=0; const add=e=>{ if(!e||e.classList.contains('sr')) return; e.classList.add('sr'); e.style.setProperty('--srd',(Math.min(k,6)*0.09)+'s'); k++; items.push(e) };
+      let k=0; const add=e=>{ if(!e||e.classList.contains('sr')) return; e.classList.add('sr'); e.style.setProperty('--srd',(Math.min(k,6)*0.05)+'s'); k++; items.push(e) };
       [...sec.children].forEach(ch=>{ if(ch.matches('.u-grid,.cw-full.u-grid')){ [...ch.children].forEach(add) } else add(ch) });
     });
     if(!('IntersectionObserver' in window)){ items.forEach(e=>e.classList.add('sr-in')); return }
-    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('sr-in'); io.unobserve(e.target) } }),{rootMargin:'0px 0px -8% 0px',threshold:0.01});
+    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('sr-in'); io.unobserve(e.target) } }),{rootMargin:'0px 0px 12% 0px',threshold:0});
     items.forEach(e=>{ const r=e.getBoundingClientRect(); if(r.bottom<0) e.classList.add('sr-in'); else io.observe(e) });
   }
   if(document.readyState==='loading') addEventListener('DOMContentLoaded',init); else init();
@@ -3091,5 +3094,18 @@ html body .splitsec .tk-dim{position:absolute;inset:0;background:#000;opacity:0;
 #dtabs .tc-wrap .tc-blank{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 #dtabs .tc-wrap .tc-cv{position:absolute;display:block;mix-blend-mode:screen}
 @supports (mix-blend-mode:plus-lighter){ #dtabs .tc-wrap .tc-cv{mix-blend-mode:plus-lighter} }
+
+
 </style>
+<script>
+/* phone only: "Hardcore backwards mode" is exactly as wide as the two buttons above it together (left edge of the first to right edge of the second) */
+(function(){
+  function fit(){ document.querySelectorAll('.omodes').forEach(g=>{ const b=g.querySelectorAll('button'); if(b.length<3) return; const h=b[2]; h.style.removeProperty('width'); h.style.removeProperty('box-sizing');
+      if(innerWidth>860||!g.offsetParent) return; const a=b[0].getBoundingClientRect(), c=b[1].getBoundingClientRect(), r=h.getBoundingClientRect();
+      if(Math.abs(a.top-c.top)>3||Math.abs(r.top-a.top)<3) return; const w=c.right-a.left; if(w>0){ h.style.setProperty('box-sizing','border-box','important'); h.style.setProperty('width',w.toFixed(1)+'px','important') } }) }
+  let t; const later=()=>{ clearTimeout(t); t=setTimeout(fit,80) }; addEventListener('load',later); addEventListener('resize',later); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later);
+  setInterval(()=>{ if(innerWidth<=860) fit() },1500);
+  window.tkFitHard=fit;
+})();
+</script>
 <style>html body .intro .launch:not(.ref) #lPhr .pl0{display:block!important;text-align:center!important;text-align-last:center!important}html.tk-split body .intro .launch:not(.ref) #lPhr .pl0{display:block!important;text-align:left!important;text-align-last:left!important}html body .intro .launch:not(.ref) #lPhr .pl1{display:inline!important}</style><style>.tk-cons{margin:0;font:400 11px/1.4 'Onest',sans-serif;color:#8b8b8b;text-align:center}.tk-cons a{color:inherit;text-decoration:underline}.tk-cons-float{position:absolute;left:0;right:0;top:calc(100% + 6px);opacity:0;pointer-events:none;transition:opacity .2s}.tk-cons-float.on{opacity:1;pointer-events:auto}.intro .tk-cons-float{color:rgba(255,255,255,.6)}</style><script>(function(){var T="Отправляя форму, ты соглашаешься на <a href=\"privacy.html\" target=\"_blank\">обработку персональных данных</a>";['rsvForm','pForm','tlForm','llReg'].forEach(function(id){var f=document.getElementById(id);if(!f)return;if(getComputedStyle(f).position==='static')f.style.position='relative';var p=document.createElement('p');p.className='tk-cons tk-cons-float';p.innerHTML=T;f.appendChild(p);f.addEventListener('focusin',function(){p.classList.add('on')})})})();</script></body></html>

@@ -1713,7 +1713,7 @@ html body .intro #rsvEmail{text-align:center!important}
   // birth date: the same pickers on the first and the last screen, kept in sync
   (()=>{ const sets=[['obD','obM','obY'],['ibD','ibM','ibY']].map(a=>a.map(id=>$(id))).filter(a=>a.every(Boolean)), yr=new Date().getFullYear();
     sets.forEach(([D,M,Y])=>{ for(let d=1;d<=31;d++) D.add(new Option(d,d));
-      ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'].forEach((m,i)=>M.add(new Option(m,i)));
+      ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'].forEach((m,i)=>M.add(new Option(m,i)));
       for(let y=yr;y>=yr-110;y--) Y.add(new Option(y,y)) });
     const upd=src=>{ const [D,M,Y]=src; if(D.value!==''&&M.value!==''&&Y.value!==''){ const dt=new Date(+Y.value,+M.value,+D.value); if(dt.getMonth()!==+M.value){ D.value=String(new Date(+Y.value,+M.value+1,0).getDate()); return upd(src) } birth=dt.getTime()<Date.now()?dt.getTime():null } else birth=null;
       sets.forEach(o=>{ if(o!==src){ o[0].value=D.value; o[1].value=M.value; o[2].value=Y.value } }) };
@@ -3096,13 +3096,29 @@ html body .splitsec .tk-dim{position:absolute;inset:0;background:#000;opacity:0;
 @supports (mix-blend-mode:plus-lighter){ #dtabs .tc-wrap .tc-cv{mix-blend-mode:plus-lighter} }
 
 
+
+/* phone: the day / month / year row is as wide as the mode buttons above it, so the three fields are compact (short month, smaller padding) */
+@media (max-width:860px){
+html body .obsel{gap:6px!important;justify-content:space-between!important}
+html body .obsel select{flex:1 1 0!important;min-width:0!important;width:auto!important;font-size:12px!important;padding:0 20px 0 10px!important;height:26px!important;line-height:24px!important;background-position:calc(100% - 8px) 50%!important;background-size:8px 5px!important}
+html body .obsel select:first-child{flex-grow:.75!important}
+html body .obsel select:last-child{flex-grow:1.1!important}
+}
+
+/* narrow phones, Russian (longer words): the two upper mode buttons keep to one line */
+@media (max-width:374px){html[lang="ru"] body .omodes button{padding-left:7px!important;padding-right:7px!important;letter-spacing:.06em!important}}
 </style>
 <script>
 /* phone only: "Hardcore backwards mode" is exactly as wide as the two buttons above it together (left edge of the first to right edge of the second) */
 (function(){
-  function fit(){ document.querySelectorAll('.omodes').forEach(g=>{ const b=g.querySelectorAll('button'); if(b.length<3) return; const h=b[2]; h.style.removeProperty('width'); h.style.removeProperty('box-sizing');
-      if(innerWidth>860||!g.offsetParent) return; const a=b[0].getBoundingClientRect(), c=b[1].getBoundingClientRect(), r=h.getBoundingClientRect();
-      if(Math.abs(a.top-c.top)>3||Math.abs(r.top-a.top)<3) return; const w=c.right-a.left; if(w>0){ h.style.setProperty('box-sizing','border-box','important'); h.style.setProperty('width',w.toFixed(1)+'px','important') } }) }
+  function fit(){ document.querySelectorAll('.omodes').forEach(g=>{ const b=g.querySelectorAll('button'); if(b.length<3) return; const h=b[2]; h.style.removeProperty('width'); h.style.removeProperty('box-sizing'); { const d0=g.parentElement&&g.parentElement.querySelector('.obsel'); if(d0) ['width','max-width','margin-left','margin-right'].forEach(p=>d0.style.removeProperty(p)) }
+      if(innerWidth>860||!g.offsetParent) return;
+      // the first two buttons always stay on one line: on a narrow phone their side padding gets smaller until they fit
+      { const same=()=>Math.abs(b[0].getBoundingClientRect().top-b[1].getBoundingClientRect().top)<=3; if(!same()){ b.forEach(x=>{ x.style.removeProperty('padding-left'); x.style.removeProperty('padding-right') }); let p=parseFloat(getComputedStyle(b[0]).paddingLeft), n=0; while(!same()&&p>4&&n<20){ p-=0.5; n++; b.forEach(x=>{ x.style.setProperty('padding-left',p+'px','important'); x.style.setProperty('padding-right',p+'px','important') }) } } }
+      const a=b[0].getBoundingClientRect(), c=b[1].getBoundingClientRect(), r=h.getBoundingClientRect();
+      if(Math.abs(a.top-c.top)>3||Math.abs(r.top-a.top)<3) return; const w=c.right-a.left; if(w>0){ h.style.setProperty('box-sizing','border-box','important'); h.style.setProperty('width',w.toFixed(1)+'px','important');
+        // the day / month / year row under them: the same width, same left and right edges
+        const d=g.parentElement&&g.parentElement.querySelector('.obsel'); if(d){ d.style.setProperty('width',w.toFixed(1)+'px','important'); d.style.setProperty('max-width','none','important'); d.style.setProperty('margin-left','auto','important'); d.style.setProperty('margin-right','auto','important') } } }) }
   let t; const later=()=>{ clearTimeout(t); t=setTimeout(fit,80) }; addEventListener('load',later); addEventListener('resize',later); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later);
   setInterval(()=>{ if(innerWidth<=860) fit() },1500);
   window.tkFitHard=fit;

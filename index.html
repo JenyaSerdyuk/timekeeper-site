@@ -2318,7 +2318,7 @@ html body .intro #rsvEmail{text-align:center!important}
     let mineE=[];
     async function showMine(){
       $('llReg').hidden=true; $('llTiles').hidden=false;
-      document.querySelector('.ll-mine-head h3').textContent='Твоя линия жизни';
+      { const h=document.querySelector('.ll-mine-head h3'); if(h) h.textContent='Твоя линия жизни' } $('llRegMsg').textContent=''; /* the heading may not exist any more: never stop here */
       $('llStore').textContent='Загрузка…';
       const data=await loadMine(); const c=await getCloud();
       $('llStore').textContent=c?'Сохраняется в твой аккаунт':'Сохраняется только на этом устройстве';
@@ -3289,6 +3289,8 @@ html body .half .name{font-size:clamp(72px,17vw,270px)}
 html:lang(ru) body .half .name{font-size:clamp(66px,15.5vw,245px)}
 /* Russian: "Береги своё время" on the black screen is smaller, as wide as the English line */
 html:lang(ru) .tyt p{font-size:clamp(28px,4.75vw,76px)}
+/* your own life line: an empty month is one clean dashed frame (no grey square in the video corner) */
+html body .ll-tile.empty .ll-vid,html body .ll-tile.empty .ll-grid img{background:transparent!important}
 </style>
 <script>
 /* words with a hyphen (self-reflection, арт-объект, по-другому) are never split across two lines */

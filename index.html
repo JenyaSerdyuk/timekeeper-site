@@ -1398,7 +1398,7 @@ html body .intro #rsvEmail{text-align:center!important}
       // the word moves just enough that the gap between its two middle letters sits exactly in the middle of the screen,
       // so the curtains always part in the centre and never cut a letter
       const nm=[p[0].querySelector('.name'),p[1].querySelector('.name')]; nm.forEach(n=>n&&(n.style.translate='')); const g=seam(p[2],p[0]), mid=p[0].clientWidth/2, d=Math.round((mid-g)*10)/10;
-      const x=Math.round(g); seams[i]=x;
+      const dw=Math.round(d*0.6*10)/10; nm.forEach(n=>n&&(n.style.translate=dw+'px 0')); const x=Math.round(g+dw); seams[i]=x; /* the word shifts a little and the gap between its letters lands practically in the centre (both moves stay small) */
       p[0].style.clipPath='inset(0 '+(p[0].clientWidth-x-1)+'px 0 0)';
       p[1].style.clipPath='inset(0 0 0 '+x+'px)';
       // first scene: the "WHY TF NOT startup-studio" line moves sideways just enough that the parting line runs through the space between two words, not through a letter
@@ -3277,6 +3277,11 @@ html body #yours,html body #oYours{display:none!important}
 html body .intro #lTag .jw,html body .intro #lPhr .jw{white-space:nowrap}
 /* phone: the buy buttons are exactly as wide as the 4 product pictures above them */
 @media (max-width:860px){html body .cw-dev .dbuy .p-acts{width:100%!important;max-width:none!important;margin-inline:0!important}}
+/* Russian: the word on the curtains is a little smaller (5 letters), so the small shift that puts the gap between letters in the centre is hardly visible */
+html body .half .name{font-size:clamp(72px,17vw,270px)}
+html:lang(ru) body .half .name{font-size:clamp(66px,15.5vw,245px)}
+/* Russian: "Береги своё время" on the black screen is smaller, as wide as the English line */
+html:lang(ru) .tyt p{font-size:clamp(28px,4.75vw,76px)}
 </style>
 <script>
 /* words with a hyphen (self-reflection, арт-объект, по-другому) are never split across two lines */

@@ -1665,7 +1665,10 @@ html body .intro #rsvEmail{text-align:center!important}
         if(sc>0&&op&&od){ const A=Math.max(18,H*0.03)+op.offsetHeight, odr=od.getBoundingClientRect(), ty=(new DOMMatrix(getComputedStyle(od).transform)).m42||0, B=(odr.bottom-ty-sr.top)-pB, M=Math.max(20,H*0.035);
           if(pT-A<M||pB+B>H-M){ const s2=Math.min(sc,(H-2*M-A-B)/S.obj[3]); if(s2>0){ const tot=A+S.obj[3]*s2+B, t2=(H-tot)/2+A-S.obj[1]*s2; sceneLayout.geo={sc:s2,left:W/2-(S.obj[0]+S.obj[2]/2)*s2,top:t2,W,H}; oL0(); continue } } } break }
     }finally{ sceneLayout.geo=g } try{ window.tkFitHard&&window.tkFitHard() }catch(e){} } }
-  function oPhoneLine(){ setTimeout(()=>{ const op=$('oPhrase'); if(!op) return; if(innerWidth>860){ op.style.left=''; op.style.right=''; op.style.fontSize=''; return }
+  function oPhoneLine(){ setTimeout(()=>{ const op=$('oPhrase'); if(!op) return; if(innerWidth>860){ op.style.left=''; op.style.right=''; op.style.fontSize='';
+        /* computer: the line is never wider than the painting under it (Russian is longer) */
+        const S=SCENES.painting, m=new DOMMatrix(getComputedStyle($('oImg')).transform), pw=S.obj[2]*m.a; if(!(pw>0)) return; const tr=op.style.transform; op.style.transform='none'; const rg=document.createRange(); rg.selectNodeContents(op);
+        let f=parseFloat(getComputedStyle(op).fontSize)||40, n=0; while(rg.getBoundingClientRect().width>pw&&f>14&&n<80){ f-=0.5; n++; op.style.fontSize=f+'px' } op.style.transform=tr; return }
       const S=SCENES.painting, m=new DOMMatrix(getComputedStyle($('oImg')).transform), W=document.querySelector('.outro .stick').clientWidth;
       const l=m.e+S.obj[0]*m.a, r=W-(m.e+(S.obj[0]+S.obj[2])*m.a); if(!(l>=0&&r>=0)) return; op.style.left=Math.round(l)+'px'; op.style.right=Math.round(r)+'px'; op.style.paddingInline='0'; op.style.textWrap='balance';
       let f=parseFloat(getComputedStyle(op).fontSize)||24; op.style.whiteSpace='normal'; while(f>14&&op.scrollWidth>op.clientWidth+1){ f-=1; op.style.fontSize=f+'px' } },0) }
@@ -2555,7 +2558,7 @@ html body .intro #rsvEmail{text-align:center!important}
     nav.classList.toggle('on', intro.getBoundingClientRect().bottom<innerHeight*0.5 && outro.getBoundingClientRect().top>innerHeight*0.4);
 
     const q=reduce?prog(outro):gateOutro(now);
-    const oc=1-ease(clamp((q-0.62)/0.34)); const od=clamp((q-0.04)/0.42); if(!frame.osc){ frame.osc=1; $('oScene').style.opacity='1'; $('oScene').style.visibility='visible' }  const opq=clamp(od*2.2); $('oPhrase').style.opacity=opq; $('oPhrase').style.transform='translateY(-100%) scale('+(1.06-0.06*opq)+')';
+    const oc=1-ease(clamp((q-0.62)/0.34)); const od=clamp((q-0.04)/0.42); if(!frame.osc){ frame.osc=1; $('oScene').style.opacity='1'; $('oScene').style.visibility='visible' }  const opq=clamp(od*2.2); $('oPhrase').style.opacity=opq; $('oPhrase').style.transform='translateY(-100%) scale('+(0.96+0.04*opq)+')'; /* grows into place from slightly smaller, so it never shows wider than the painting */
     const ot=outro.getBoundingClientRect().top;
     // painting: your seconds (lived since birth once a date is entered); darkness: the 60 to 0 countdown as before
     if(od>=0.5 && !window._oStart) window._oStart=now;

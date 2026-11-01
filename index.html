@@ -1756,6 +1756,9 @@ html body .intro #rsvEmail{text-align:center!important}
     else { $('dImg').hidden=true; $('dCap').hidden=true; $('dSoon').hidden=false }
     [...$('dThumbs').children].forEach((t,k)=>t.setAttribute('aria-pressed',k===j));
   }
+  /* the line under the product name keeps the height of the longest one, so switching products moves nothing below it */
+  function pTextFit(){ const t=$('pText'); if(!t||!t.offsetParent) return; const cur=t.innerHTML; t.style.minHeight=''; let m=0; P.forEach(x=>{ if(!x.t) return; t.innerHTML=x.t.replace(/\.$/,''); m=Math.max(m,t.offsetHeight) }); t.innerHTML=cur; if(m) t.style.minHeight=m+'px' }
+  addEventListener('resize',()=>{ clearTimeout(pTextFit.t); pTextFit.t=setTimeout(pTextFit,120) }); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>pTextFit());
   function setDev(i){
     dev=i; const f=P[i];
     [...dtabs.children].forEach(b=>b.setAttribute('aria-selected',+b.dataset.i===i));
@@ -1763,7 +1766,7 @@ html body .intro #rsvEmail{text-align:center!important}
     [...$('dThumbs').children].forEach((t,k)=>t.onclick=()=>setDImg(k));
     $('dThumbs').hidden=f.imgs.length<2;
     setDImg(0);
-    $('pName').textContent=f.k; $('pPrice').innerHTML=PR(f.p); $('pText').innerHTML=f.t.replace(/\.$/,''); $('pText').hidden=!f.t; $('pDevN').hidden=true; $('pExtra').innerHTML=f.extra||''; $('pExtra').hidden=!f.extra;
+    $('pName').textContent=f.k; $('pPrice').innerHTML=PR(f.p); $('pText').innerHTML=f.t.replace(/\.$/,''); $('pText').hidden=!f.t; pTextFit(); $('pDevN').hidden=true; $('pExtra').innerHTML=f.extra||''; $('pExtra').hidden=!f.extra;
     $('pBtn').textContent='Reserve the '+f.k.toLowerCase(); $('pBuy').textContent=(f.dev?'Pre-order the ':'Buy the ')+f.k.toLowerCase(); $('pOk').hidden=true; drawEds(); drawNote(); if(window._syncAdd) window._syncAdd();
     const vt=$('vtabs'); vt.hidden=!f.vars;
     if(window.XV) XV.tab(f.k);
@@ -3267,5 +3270,20 @@ html body .intro .launch:not(.ref) #lTag .ul,html.tk-split body .intro .launch:n
 html body .intro .launch:not(.ref) #lTag,html body .intro .launch:not(.ref) #lTag *,html body .intro .launch:not(.ref) #lPhr,html body .intro .launch:not(.ref) #lPhr *{text-wrap:pretty!important}
 /* no "Your time" caption under the digits on the paintings (first and last screen) */
 html body #yours,html body #oYours{display:none!important}
+/* phone: the line under the product name is centred like on a computer (not stretched) */
+@media (max-width:860px){html body #pText{text-align:center!important;text-align-last:center!important}}
+/* words with a hyphen never break at the hyphen */
+.nbw{white-space:nowrap}
+html body .intro #lTag .jw,html body .intro #lPhr .jw{white-space:nowrap}
+/* phone: the buy buttons are exactly as wide as the 4 product pictures above them */
+@media (max-width:860px){html body .cw-dev .dbuy .p-acts{width:100%!important;max-width:none!important;margin-inline:0!important}}
 </style>
+<script>
+/* words with a hyphen (self-reflection, арт-объект, по-другому) are never split across two lines */
+(function(){ const RX=/[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)+/gu, SKIP='script,style,textarea,input,select,option,svg,.jw,.nbw,#lTag,#lPhr,.lt-ref';
+  function nbw(root){ if(!root) return; const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>(!n.parentElement||n.parentElement.closest(SKIP)||!/[\p{L}\p{N}]-[\p{L}\p{N}]/u.test(n.data))?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}); const ns=[]; let n; while(n=w.nextNode()) ns.push(n);
+    ns.forEach(n=>{ RX.lastIndex=0; const t=n.data, f=document.createDocumentFragment(); let last=0, m; while((m=RX.exec(t))){ if(m.index>last) f.appendChild(document.createTextNode(t.slice(last,m.index))); const sp=document.createElement('span'); sp.className='nbw'; sp.textContent=m[0]; f.appendChild(sp); last=m.index+m[0].length } if(last<t.length) f.appendChild(document.createTextNode(t.slice(last))); n.parentNode.replaceChild(f,n) }) }
+  window.tkNbw=nbw; const run=()=>nbw(document.body); if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
+  const pt=document.getElementById('pText'); if(pt&&window.MutationObserver) new MutationObserver(()=>{ if(/[\p{L}\p{N}]-[\p{L}\p{N}]/u.test(pt.textContent)&&!pt.querySelector('.nbw')) nbw(pt) }).observe(pt,{childList:true}); })();
+</script>
 <style>.tk-cons{margin:0;font:400 11px/1.4 'Hanken Grotesk',sans-serif;color:#8b8b8b;text-align:center}.tk-cons a{color:inherit;text-decoration:underline}.tk-cons-float{position:absolute;left:0;right:0;top:calc(100% + 6px);opacity:0;pointer-events:none;transition:opacity .2s}.tk-cons-float.on{opacity:1;pointer-events:auto}.intro .tk-cons-float{color:rgba(255,255,255,.6)}</style><script>(function(){var T="By submitting, you agree to our <a href=\"privacy.html\" target=\"_blank\">privacy policy</a>";['rsvForm','pForm','tlForm','llReg'].forEach(function(id){var f=document.getElementById(id);if(!f)return;if(getComputedStyle(f).position==='static')f.style.position='relative';var p=document.createElement('p');p.className='tk-cons tk-cons-float';p.innerHTML=T;f.appendChild(p);f.addEventListener('focusin',function(){p.classList.add('on')})})})();</script></body></html>

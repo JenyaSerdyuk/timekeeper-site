@@ -1407,7 +1407,7 @@ html body .intro #rsvEmail{text-align:center!important}
       // the word moves just enough that the gap between its two middle letters sits exactly in the middle of the screen,
       // so the curtains always part in the centre and never cut a letter
       const nm=[p[0].querySelector('.name'),p[1].querySelector('.name')]; nm.forEach(n=>n&&(n.style.translate='')); const g=seam(p[2],p[0]), mid=p[0].clientWidth/2, d=Math.round((mid-g)*10)/10;
-      const dw=Math.round(d*0.6*10)/10; nm.forEach(n=>n&&(n.style.translate=dw+'px 0')); const x=Math.round(g+dw); seams[i]=x; /* the word shifts a little and the gap between its letters lands practically in the centre (both moves stay small) */
+      const dw=0; /* the word stays exactly in the centre; the curtains part in the gap between its letters closest to the middle */ const x=Math.round(g+dw); seams[i]=x; /* the word shifts a little and the gap between its letters lands practically in the centre (both moves stay small) */
       p[0].style.clipPath='inset(0 '+(p[0].clientWidth-x-1)+'px 0 0)';
       p[1].style.clipPath='inset(0 0 0 '+x+'px)';
       // first scene: the "WHY TF NOT startup-studio" line moves sideways just enough that the parting line runs through the space between two words, not through a letter
@@ -1497,7 +1497,9 @@ html body .intro #rsvEmail{text-align:center!important}
       const keys=[...m.keys()].sort((x,y)=>x-y); keys.pop();
       keys.forEach(k=>{ const l=m.get(k); if(l.length<2) return; let sum=0,gaps=0,ch=0; l.forEach((o,i)=>{ sum+=o.r.width; ch+=o.t.textContent.replace(/­/g,'').length; if(i&&o.r.left-l[i-1].r.right>2) gaps++ }); if(!gaps) return;
         const def=W-(sum+gaps*sp), ok=gaps*0.22*fs; if(def<=ok) return; const ls=Math.min(0.08*fs,(def-ok)/ch); l.forEach(o=>o.t.style.letterSpacing=ls.toFixed(2)+'px') }) }) }
-  function sceneLayout(){ try{ window.tagEvenReset&&window.tagEvenReset() }catch(e){} if(!sceneLayout.hy){ sceneLayout.hy=1; try{ applyHy(); wrapWords() }catch(e){} } window.__scK=1; sceneLayout0(); try{ if(phoneFit()) sceneLayout0() }catch(e){} try{ fitScreen() }catch(e){} try{ phoneShrink() }catch(e){} try{ splitLayout() }catch(e){} if(window.__leReapply) try{ window.__leReapply() }catch(e){} try{ window.tagEven&&window.tagEven() }catch(e){} try{ posTyt() }catch(e){} try{ window.tkFitHard&&window.tkFitHard() }catch(e){} }
+  function sceneLayout(){ try{ window.tagEvenReset&&window.tagEvenReset() }catch(e){} if(!sceneLayout.hy){ sceneLayout.hy=1; try{ applyHy(); wrapWords() }catch(e){} } window.__scK=1; sceneLayout0(); try{ if(phoneFit()) sceneLayout0() }catch(e){} try{ fitScreen() }catch(e){} try{ phoneShrink() }catch(e){} try{ splitLayout() }catch(e){} if(window.__leReapply) try{ window.__leReapply() }catch(e){} try{ window.tagEven&&window.tagEven() }catch(e){} try{ posTyt() }catch(e){} try{ window.tkFitHard&&window.tkFitHard() }catch(e){}  try{ tytSnap() }catch(e){} }
+  // "Take your time" sits on whole pixels (its height and its place), so it never shifts by a pixel while the curtains open
+  function tytSnap(){ const tp=$('tyt')&&$('tyt').firstElementChild; if(!tp) return; tp.style.lineHeight=''; const fs=parseFloat(getComputedStyle(tp).fontSize)||0; if(fs) tp.style.lineHeight=Math.round(fs)+'px'; const t=parseFloat(tp.style.top); if(isFinite(t)) tp.style.top=Math.round(t)+'px' }
   /* computer, black loading screen: the seconds stay where they will be; "Take your time" stands to their right, its capital letters as tall as the digits */
   function posTyt(){ const ty=$('tyt'), tp=ty&&ty.firstElementChild; if(!tp) return; const K=['left','right','fontSize','textAlign','whiteSpace','lineHeight'];
     if(true){ /* "Take your time" stays above the digits, as before (the line to the right of them is switched off) */ if(tp.dataset.pc){ K.forEach(k=>tp.style[k]=''); delete tp.dataset.pc; sceneLayout0() } return }
@@ -1566,10 +1568,14 @@ html body .intro #rsvEmail{text-align:center!important}
   // short phones (variant A): if the first screen's group would run past the bottom, only the painting gets as much smaller as needed;
   // the texts, mode buttons and the email field keep their width. On normal phones nothing changes
   function phoneShrink(){ if(scKey!=='painting'||innerWidth>860) return; const st=document.querySelector('.intro .stick'), H=st.clientHeight, minT=36, minB=12;
-    const over=()=>{ const sr=st.getBoundingClientRect(), fm=$('rsvForm'); let b=0; fm.querySelectorAll('input,button').forEach(e=>{ const r=e.getBoundingClientRect(); if(r.height) b=Math.max(b,r.bottom) }); if(!b) return 0;
-      const t=$('lTag').getBoundingClientRect().top-sr.top; return Math.max(0,b-sr.top-(H-minB))+Math.max(0,minT-t) };
-    if(over()<1) return; let lo=0.15, hi=1; for(let i=0;i<9;i++){ const m=(lo+hi)/2; window.__scK=m; sceneLayout0(); if(over()<1) lo=m; else hi=m }
-    window.__scK=lo; sceneLayout0() }
+    // measured without the soft lift of the appearing texts, so the result is the same at every moment of the opening
+    const ty=e=>{ let y=0; for(let n=e;n&&n!==st;n=n.parentElement){ const tf=getComputedStyle(n).transform; if(tf&&tf!=='none') y+=(new DOMMatrix(tf)).m42||0 } return y };
+    const over=()=>{ const sr=st.getBoundingClientRect(), fm=$('rsvForm'); let b=0; fm.querySelectorAll('input,button').forEach(e=>{ const r=e.getBoundingClientRect(); if(r.height) b=Math.max(b,r.bottom-ty(e)) }); if(!b) return 0;
+      const tg=$('lTag'), t=tg.getBoundingClientRect().top-ty(tg)-sr.top; return Math.max(0,b-sr.top-(H-minB))+Math.max(0,minT-t) };
+    // the size is worked out once per screen size and then reused, so a repeated layout (fonts, a resize, the address bar) never moves anything
+    const key=innerWidth+'x'+H+(window.__tkSettled?'s':''); if(phoneShrink.key===key){ if(phoneShrink.k<1){ window.__scK=phoneShrink.k; sceneLayout0() } return }
+    if(over()<1){ phoneShrink.key=key; phoneShrink.k=1; return } let lo=0.15, hi=1; for(let i=0;i<9;i++){ const m=(lo+hi)/2; window.__scK=m; sceneLayout0(); if(over()<1) lo=m; else hi=m }
+    lo=Math.floor(lo*200)/200; phoneShrink.key=key; phoneShrink.k=lo; window.__scK=lo; sceneLayout0() }
   function sceneLayout0(){
     if(!sceneLayout.busy){ sceneLayout.busy=1; sceneLayout.ref=refBand(); applyRef(sceneLayout.ref); sceneLayout.busy=0 }
     const S=SCENES[scKey], st=document.querySelector('.intro .stick'); const W=st.clientWidth, H=st.clientHeight;
@@ -2154,9 +2160,9 @@ html body .intro #rsvEmail{text-align:center!important}
     function makeCard(e){
       const d=document.createElement('div'); d.className='ll-it'+(e.i===0?' first':'');
       const meta=e.mine?'':' · 3 صور · فيديو واحد';
-      d.innerHTML='<button type="button" class="ll-card" aria-label="'+MONTH(e.t)+'"><span class="ll-grid"><img alt=""><img alt=""><img alt=""><span class="ll-vid"><img alt=""><i></i><em class="mono"></em></span></span><span class="add">+ أضف</span><span class="cap"><b></b><span>'+MONTH(e.t)+meta+'</span></span></button><span class="stem"></span><span class="pt"></span>';
+      d.innerHTML='<button type="button" class="ll-card" aria-label="'+MONTH(e.t)+'"><span class="ll-sq"><b class="y">'+new Date(e.t).getUTCFullYear()+'</b><b class="m">'+MO[new Date(e.t).getUTCMonth()]+'</b></span><span class="ll-grid"><img alt=""><img alt=""><img alt=""><span class="ll-vid"><img alt=""><i></i><em class="mono"></em></span></span><span class="add">+ أضف</span><span class="cap"><b></b><span>'+MONTH(e.t)+meta+'</span></span></button><span class="stem"></span><span class="pt"></span>';
       d.querySelector('.cap b').textContent=e.title||'';
-      d.querySelector('button').onclick=()=>{ if(moved) return; if(e.mine) openEditor(e); else openBox(e,0) };
+      d.querySelector('button').onclick=()=>{ if(moved) return; /* a year opens its months; a month opens its photos and note */ if(!e.mine&&!isMonths()){ toYear(new Date(e.t).getUTCFullYear()); return } if(e.mine) openEditor(e); else openBox(e,0) };
       itemsEl.appendChild(d); return d;
     }
     function fill(k){ const el=cardEls[k]; if(el.dataset.f) return; const e=E[k]; const im=el.querySelectorAll('img');
@@ -2164,7 +2170,7 @@ html body .intro #rsvEmail{text-align:center!important}
         const has=e.srcs.some(Boolean)||e.vid; el.querySelector('.ll-card').classList.toggle('empty',!has);
         for(let j=0;j<3;j++) im[j].src=e.srcs[j]||BLANK; im[3].src=e.srcs.find(Boolean)||BLANK;
         el.querySelector('.ll-vid i').style.display=e.vid?'':'none'; el.querySelector('.ll-vid em').textContent=e.vid?'video':'';
-      } else { srcs(e); im[0].src=e.srcs[0]; im[1].src=e.srcs[1]; im[2].src=e.srcs[2]; im[3].src=e.vid; el.querySelector('.ll-vid em').textContent='0:'+e.dur.replace('s','').padStart(2,'0') }
+      } else { /* the card is a white square now: its photos are drawn quietly after the cards have appeared, so opening a month is instant */ setTimeout(()=>{ (window.requestIdleCallback||(f=>setTimeout(f,30)))(()=>srcs(e)) },1200+k*60); el.querySelector('.ll-vid em').textContent='0:'+e.dur.replace('s','').padStart(2,'0') }
       el.dataset.f=1 }
     function rebuild(){
       itemsEl.innerHTML=''; cardEls=E.map(makeCard); span=(T1-T0)/DAY;
@@ -2242,9 +2248,18 @@ html body .intro #rsvEmail{text-align:center!important}
     // months level: on a computer exactly one year fills the line (12 months); on a phone a few months
     const monthsP=()=>view.clientWidth>860?(view.clientWidth-2*40)/365.25:Math.min(maxP(),Math.max(130,view.clientWidth/8)/30.44);
     const isMonths=()=>ppd>(minP()+monthsP())/2;
-    const toYears=()=>{ x0=0; animZoom(minP(),0) };
+    // switching Years / Months: the cards fade out, the line changes in one step, the new cards fade in (no zooming, nothing jumps)
+    // switching Years / Months: the cards fade out together, the line changes while they are hidden (nothing slides or resizes on screen),
+    // then the new cards appear one by one from left to right
+    function swap(f){ cancelAnimationFrame(anim); (swap.ts||[]).forEach(clearTimeout); swap.ts=[]; view.classList.remove('ll-pre'); view.classList.add('ll-out');
+      swap.ts.push(setTimeout(()=>{ view.classList.add('ll-still','ll-pre'); view.classList.remove('ll-out'); f(); render(); void view.offsetWidth;
+        const its=[...itemsEl.querySelectorAll('.ll-it:not(.hid)')].sort((a,b)=>parseFloat(a.style.left)-parseFloat(b.style.left));
+        its.forEach(it=>it.classList.add('ll-wait')); view.classList.remove('ll-pre'); void view.offsetWidth; view.classList.remove('ll-still');
+        its.forEach((it,i)=>swap.ts.push(setTimeout(()=>it.classList.remove('ll-wait'),40+i*Math.min(70,420/Math.max(1,its.length))))) },240)) }
+    const toYears=()=>{ if(!isMonths()) return; swap(()=>{ x0=0; ppd=minP() }) };
     // going to months always opens one whole year: the year under the pointer (or in the middle of the line)
-    const toMonths=cx=>{ const t=T0+((x0+(cx==null?view.clientWidth/2:cx)-PAD)/ppd)*DAY; const y=new Date(Math.min(Math.max(t,T0),T1)).getUTCFullYear(); animTo(monthsP(),(Math.max(T0,Date.UTC(y,0,1))-T0)/DAY-PAD/monthsP()) };
+    const toMonths=cx=>{ const t=T0+((x0+(cx==null?view.clientWidth/2:cx)-PAD)/ppd)*DAY; const y=new Date(Math.min(Math.max(t,T0),T1)).getUTCFullYear(); const p=monthsP(), tl=(Math.max(T0,Date.UTC(y,0,1))-T0)/DAY-PAD/p; if(isMonths()&&Math.abs(ppd-p)<1e-6) return; swap(()=>{ ppd=p; x0=tl*p+PAD }) };
+    const toYear=y=>{ const p=monthsP(), tl=(Math.max(T0,Date.UTC(y,0,1))-T0)/DAY-PAD/p; swap(()=>{ ppd=p; x0=tl*p+PAD }) };
     zoomEl.addEventListener('input',()=>{ +zoomEl.value?toMonths():toYears() });
     $('llIn').onclick=()=>toMonths();
     $('llOut').onclick=()=>toYears();
@@ -2425,7 +2440,7 @@ html body .intro #rsvEmail{text-align:center!important}
     const mx=rate*dt; let st=(real-g.v)*(1-Math.exp(-dt*6)); if(st>mx) st=mx; if(st<-mx) st=-mx; g.v+=st; if(Math.abs(real-g.v)<0.0008) g.v=real;
     const lead=0.1; if(pinned(g)||Math.abs(real-g.v)>lead){ if(real-g.v>lead) jumpTo(secY(g,g.v+lead)); else if(g.v-real>lead) jumpTo(secY(g,g.v-lead)) }
     return g.v }
-  // black screen with the counter: if the visitor does nothing for 2 s, the painting comes in by itself
+  // black screen with the counter: if the visitor does nothing for 1 s, the painting comes in by itself
   let lastIn=performance.now(), autoGo=null;
   let lastDir=1, tY=null;
   ['wheel','touchmove','keydown','pointerdown'].forEach(ev=>addEventListener(ev,e=>{ lastIn=performance.now(); if(autoGo){ autoGo=null; window._navJump=false }
@@ -2442,7 +2457,7 @@ html body .intro #rsvEmail{text-align:center!important}
       else { const y=secY(GI,Math.max(0,v-0.1)); if(y<scrollY-1) jumpTo(y) }
       return }
     if(v==null||v<0.44){ autoIntro.bk=null; return } if(autoIntro.bk==null) autoIntro.bk=now;
-    if(v>0.8||now-Math.max(lastIn,autoIntro.bk)<2000) return;
+    if(v>0.8||now-Math.max(lastIn,autoIntro.bk)<1000) return; /* black screen: after 1 s without touching anything, the painting comes in by itself */
     const y0=scrollY, y1=secY(GI,1); if(y1<=y0+4) return;
     window._navJump=true; autoGo={t0:now,dur:1800,y0,y1} }
   // first screen: one scroll gesture plays one whole scene, smoothly and to the end:
@@ -2456,13 +2471,18 @@ html body .intro #rsvEmail{text-align:center!important}
   // the next block arrives with its top right under the fixed header, so its title is fully visible
   const iNext=()=>{ const nx=GI.el.nextElementSibling, nv=$('nav'); const y=nx?nx.getBoundingClientRect().top+scrollY:GI.el.offsetTop+GI.el.offsetHeight; return Math.round(y-(nv?nv.offsetHeight:0)) };
   let iDone=false;
-  function iGo(dir){ if(IS.a) return; const v=prog(GI.el);
+  // the opening waits (a moment at most) until the fonts are in and the screen has its final layout, so nothing moves while it plays
+  if(!window.__tkSettled){ const set=()=>{ if(window.__tkSettled) return; window.__tkSettled=true; try{ sceneLayout() }catch(e){} if(iGo.p!=null){ const d=iGo.p; iGo.p=null; requestAnimationFrame(()=>iGo(d)) } };
+    const ld=new Promise(r=>{ if(document.readyState==='complete') r(); else addEventListener('load',()=>r()) }); Promise.all([document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve(),ld]).then(()=>setTimeout(set,250)); setTimeout(set,3000) }
+  function iGo(dir){ if(IS.a) return; if(!window.__tkSettled){ iGo.p=dir; return } const v=prog(GI.el);
     // after the painting has appeared once: one gesture up closes TIME straight over the painting, one gesture down opens it again
     if(iDone){ if(dir>0){ IS.back=false; if(v<0.995) iTo(secY(GI,1),2200) } else if(v>0.005){ IS.back=true; iTo(secY(GI,0),1500) } return }
     if(dir>0){ if(v<0.44) iTo(secY(GI,0.46),1500); else if(v<0.995) iTo(secY(GI,1),1700) }
     else { if(v>0.5) iTo(secY(GI,0.46),1500); else if(v>0.005) iTo(secY(GI,0),1500) } }
   function stepIntro(now){
-    if(IS.a){ if(IS.a.y0==null) IS.a.y0=scrollY; const k=Math.min(1,(now-IS.a.t0)/IS.a.dur); jumpTo(IS.a.y0+(IS.a.y1-IS.a.y0)*sm(k)); if(k>=1){ IS.a=null; IS.arr=now; IS.ga=true; setTimeout(()=>{ if(!IS.a) window._navJump=false },60) } }
+    if(IS.a){ if(IS.a.y0==null) IS.a.y0=scrollY; const k=Math.min(1,(now-IS.a.t0)/IS.a.dur); jumpTo(IS.a.y0+(IS.a.y1-IS.a.y0)*sm(k)); if(k>=1){ IS.blk=Math.abs(IS.a.y1-secY(GI,0.46))<2; IS.a=null; IS.arr=now; IS.ga=true; setTimeout(()=>{ if(!IS.a) window._navJump=false },60) } }
+    // black screen with the counter: 1 s after it settles, if nothing was touched, the painting and its texts come in by themselves
+    if(!IS.a&&IS.blk&&!iDone){ if(Math.abs(scrollY-secY(GI,0.46))>4) IS.blk=false; else if(now-Math.max(IS.arr,lastIn)>=215){ IS.blk=false; iGo(1) } /* the painting starts to show 1 s after the black screen settles */ }
     // coming back up from the page below: however fast the flick, the page stops exactly on the painting (it never flies on to black or TIME)
     // and before that it stops on the white block right under the painting, fully white (never half painting, half text)
     { const yN=iNext(); if(!IS.a&&!window._navJump&&IS.py!=null&&IS.py>=yN-1&&scrollY<yN-1&&scrollY>secY(GI,1)+2){ killFling(); jumpTo(yN); IS.ga=true; IS.td=true; IS.arr=now; IS.py=yN; if(lenis) lenis.stop() } }
@@ -2578,18 +2598,14 @@ html body .intro #rsvEmail{text-align:center!important}
     const oc=1-ease(clamp((q-0.62)/0.34)); const od=clamp((q-0.04)/0.42); if(!frame.osc){ frame.osc=1; $('oScene').style.opacity='1'; $('oScene').style.visibility='visible' }  const opq=clamp(od*2.2); $('oPhrase').style.opacity=opq; $('oPhrase').style.transform='translateY(-100%) scale('+(0.96+0.04*opq)+')'; /* grows into place from slightly smaller, so it never shows wider than the painting */
     const ot=outro.getBoundingClientRect().top;
     // painting: your seconds (lived since birth once a date is entered); darkness: the 60 to 0 countdown as before
-    if(od>=0.5 && !window._oStart) window._oStart=now;
-    if(od<0.5 && window._oStart){ window._oStart=null; window._oBack={t0:now,from:window._oShown||0} }
+    // one movement: while the buttons and dates fade out and the line above the painting appears, the seconds run down to 60;
+    // all three finish at the same moment, and right then the 60 to 0 countdown begins (scrolling back plays it in reverse)
     { const lived=birth?Math.max(0,(nowMs-birth)/1000):0, sb=oMode==='now'?(tkStart?Math.max(0,(nowMs-tkStart)/1000):0):oMode==='life'?lived:Math.max(0,2524608000-(birth?lived:(tkStart?Math.max(0,(nowMs-tkStart)/1000):0)));
-      if(window._oStart){ const e=(now-window._oStart)/1000, R=0.54, f=Math.max(60,window._oFrom||60);
-        // the seconds on the painting rewind fast and stop on 60, then the 60 to 0 countdown begins
-        if(e<R){ const k=e/R, ez=k*k*(3-2*k); window._oShown=Math.round(60+(f-60)*(1-ez)) }
-        else window._oShown=Math.max(0,60-Math.floor(e-R));
-        setODigits(window._oShown) }
-      else { const tgt=sb%1e10; window._oFrom=tgt; let v=tgt;
-        // scrolling back: the seconds run up from the countdown to the real number instead of jumping
-        if(window._oBack){ const k=Math.min(1,(now-window._oBack.t0)/540), ez=k*k*(3-2*k); v=Math.round(window._oBack.from+(tgt-window._oBack.from)*ez); if(k>=1) window._oBack=null }
-        window._oShown=v; setODigits(v) }
+      const tgt=sb%1e10, K=1/2.2;
+      if(od<=0){ window._oStart=null; window._oShown=tgt }
+      else if(od<K){ window._oStart=null; const k=od/K, ez=k*k*(3-2*k); window._oShown=Math.round(60+(Math.max(60,tgt)-60)*(1-ez)) }
+      else { if(!window._oStart) window._oStart=now; window._oShown=Math.max(0,60-Math.floor((now-window._oStart)/1000)) }
+      setODigits(window._oShown)
       const bo=String(clamp(1-od*2.2)); if(bo!==frame.bo){ frame.bo=bo; $('oBd').style.opacity=bo; $('oYours').style.opacity=bo; $('oBd').style.pointerEvents=+bo>0.3?'auto':'none' } }
     // the strip outside the scene (when the phone's browser bar hides) always matches what is on screen: painting, dark scene, white TIME
     { const sf=0, ob=oc<0.5?'#fff':(sf<0.5?'linear-gradient(90deg,#0a0a07,#1a1a18 50%,#0a0a07)':'#0a0a0a'); if(frame.obg!==ob){ frame.obg=ob; outro.style.background=ob } }
@@ -2968,9 +2984,10 @@ html.tk-split body .intro .launch .jw{letter-spacing:normal!important}
 html.tk-split body .intro .launch:not(.ref) #lTag .ul,html.tk-split body .intro .launch:not(.ref) #lPhr u{white-space:nowrap}
 </style>
 <style>
-/* the page below the first screen appears softly while scrolling down, once (it never hides again) */
+/* the page below the first screen appears softly while scrolling down, once; near the top of the screen it fades away the same way, following the scroll */
 .sr{opacity:0;translate:0 18px;filter:blur(3px);transition:opacity .5s ease,translate .5s cubic-bezier(.2,.7,.2,1),filter .5s ease;transition-delay:var(--srd,0s)}
 .sr.sr-in{opacity:1;translate:0 0;filter:none}
+.sr.sr-in.sr-out{opacity:0;translate:0 -18px;filter:blur(3px);transition-delay:0s}
 @media (prefers-reduced-motion:reduce){.sr{opacity:1;translate:none;filter:none;transition:none}}
 </style>
 <script>
@@ -2979,12 +2996,23 @@ html.tk-split body .intro .launch:not(.ref) #lTag .ul,html.tk-split body .intro 
   function init(){
     const items=[];
     document.querySelectorAll('section.cw, .motto').forEach(sec=>{
-      let k=0; const add=e=>{ if(!e||e.classList.contains('sr')) return; e.classList.add('sr'); e.style.setProperty('--srd',(Math.min(k,6)*0.05)+'s'); k++; items.push(e) };
+      let k=0; const add=e=>{ if(!e||e.classList.contains('sr')) return; /* a wrapper without its own box (display:contents): its parts appear and fade instead */ if(getComputedStyle(e).display==='contents'){ [...e.children].forEach(add); return } e.classList.add('sr'); e.style.setProperty('--srd',(Math.min(k,6)*0.05)+'s'); k++; items.push(e) };
       [...sec.children].forEach(ch=>{ if(ch.matches('.u-grid,.cw-full.u-grid')){ [...ch.children].forEach(add) } else add(ch) });
     });
     if(!('IntersectionObserver' in window)){ items.forEach(e=>e.classList.add('sr-in')); return }
     const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('sr-in'); io.unobserve(e.target) } }),{rootMargin:'0px 0px 12% 0px',threshold:0});
     items.forEach(e=>{ const r=e.getBoundingClientRect(); if(r.bottom<0) e.classList.add('sr-in'); else io.observe(e) });
+    // top of the screen: nothing is faded while the page stands still, so the block being read is always sharp.
+    // Only while scrolling down, a block that starts going under the bar fades away whole (the way it appeared, reversed);
+    // scrolling up, or stopping, brings back every block that is still on the screen
+    let q=0, lastY=scrollY, idle=0; const barB=()=>{ const nv=document.getElementById('nav'); return (nv&&nv.classList.contains('on'))?nv.getBoundingClientRect().bottom:0 };
+    const fade=()=>{ q=0; const y=scrollY, dir=y>lastY?1:(y<lastY?-1:0); lastY=y; const top=barB(); if(!top){ items.forEach(e=>e.classList.remove('sr-out')); return }
+      // blocks side by side (two columns, a heading next to its text) go as one row across the whole width, never one side only
+      const rows=()=>{ const L=items.filter(e=>e.classList.contains('sr-in')).map(e=>({e,r:e.getBoundingClientRect()})).filter(o=>o.r.height&&o.r.bottom>-200&&o.r.top<innerHeight);
+        return L.map(o=>{ const g=L.filter(x=>x.r.top<o.r.bottom-2&&o.r.top<x.r.bottom-2); return {e:o.e,top:Math.min(...g.map(x=>x.r.top)),bot:Math.max(...g.map(x=>x.r.bottom))} }) };
+      rows().forEach(o=>{ if(dir>0&&o.top<top-4&&o.bot>-60) o.e.classList.add('sr-out'); else if(dir<0&&o.bot>top) o.e.classList.remove('sr-out') });
+      clearTimeout(idle); idle=setTimeout(()=>{ const t=barB(); rows().forEach(o=>{ if(o.e.classList.contains('sr-out')&&o.bot>t+24) o.e.classList.remove('sr-out') }) },350) };
+    addEventListener('scroll',()=>{ if(!q){ q=1; requestAnimationFrame(fade) } },{passive:true});
   }
   if(document.readyState==='loading') addEventListener('DOMContentLoaded',init); else init();
 })();
@@ -3358,6 +3386,46 @@ html body .ll-tile.empty .ll-vid,html body .ll-tile.empty .ll-grid img{backgroun
   function q(){ if(!busy){ busy=1; requestAnimationFrame(upd) } }
   addEventListener('scroll',q,{passive:true}); addEventListener('resize',q); setInterval(upd,400); upd();
 })();</script>
+<style>
+/* life line: each card is a white square with its year (Years) or its month (Months); the years and months under the line are gone */
+.ll-card .ll-grid{display:none!important}
+.ll-card .ll-sq{display:grid;place-items:center;aspect-ratio:1;background:#fff;border:1px solid rgba(10,10,10,.16)}
+.ll-card .ll-sq b{grid-area:1/1;font-family:var(--f-display);font-weight:400;font-size:clamp(18px,1.6vw,26px);letter-spacing:.02em;color:#0a0a0a}
+.ll-card .ll-sq .m{visibility:hidden}
+.cw-ll:has(#llIn[aria-pressed="true"]) .ll-card .ll-sq .y{visibility:hidden}
+.cw-ll:has(#llIn[aria-pressed="true"]) .ll-card .ll-sq .m{visibility:visible}
+#llTicks{display:none!important}
+.ll-box-in img#llBoxImg,.ll-box-media video{max-height:min(62vh,calc(100vh - 340px));max-height:min(62svh,calc(100svh - 340px))} /* the whole month window always fits on the screen */
+.ll-box-in{max-height:calc(100vh - 40px);overflow:auto}
+.cw-ll .ll-view .ll-axis{opacity:1!important} /* the line stays under the cards in Months too (the month bars that used to replace it are gone) */
+</style>
+<script>
+/* while a scene screen (opening or closing) is pinned, it is held with position:fixed instead of sticky. The scenes move the page
+   underneath every frame; a sticky screen is re-placed a frame late in some browsers (and in the device preview), which made
+   "Take your time" and the counter twitch. Fixed never moves with the page, so the screen stands perfectly still */
+(function(){ const S=[...document.querySelectorAll('.splitsec')].map(sec=>[sec,sec.querySelector('.stick')]).filter(x=>x[1]);
+  function pin(){ const H=innerHeight; S.forEach(([sec,st])=>{ const r=sec.getBoundingClientRect(), on=r.top<=0&&r.bottom>=H;
+      if(on!==(st.dataset.pin==='1')){ st.dataset.pin=on?'1':''; if(on){ st.style.position='fixed'; st.style.top='0'; st.style.left='0'; st.style.width='100%' } else { st.style.position=st.style.top=st.style.left=st.style.width='' } } }) }
+  function loop(){ pin(); requestAnimationFrame(loop) } addEventListener('scroll',pin,{passive:true}); addEventListener('resize',pin); requestAnimationFrame(loop) })();
+</script>
+<style>
+/* life line Years / Months switch */
+.ll-view.ll-out .ll-it{opacity:0!important;transition:opacity .22s ease!important}
+.ll-view.ll-still .ll-it,.ll-view.ll-still .ll-it .stem,.ll-view.ll-still .ll-card{transition:none!important}
+.ll-view.ll-pre .ll-it{opacity:0!important}
+.ll-it.ll-wait{opacity:0!important;transform:translateX(-50%) translateY(10px)!important;filter:blur(2px)!important}
+.ll-it:not(.hid){transition:opacity .45s ease,transform .5s cubic-bezier(.2,.7,.2,1),filter .45s ease}
+</style>
+<script>
+/* full-screen windows of the life line (a month's photos, the month editor) live directly in the page body, so the soft
+   appearing of the blocks around them can never trap them inside a block: they always cover the whole screen, centred */
+(function(){ function mv(){ document.querySelectorAll('section .ll-box, section .ll-ed').forEach(e=>document.body.appendChild(e)) }
+  if(document.readyState==='loading') addEventListener('DOMContentLoaded',mv); else mv() })();
+</script>
+<style>
+/* last screen: the line above the painting is drawn once and only scaled as a whole while it grows in, so its letters never wobble */
+#oPhrase{will-change:transform,opacity;backface-visibility:hidden;transform-origin:50% 100%}
+</style>
 <style>
 /* language: ar */
 html body .intro .launch:not(.ref) #lTag .tl1::after{content:'.'!important}

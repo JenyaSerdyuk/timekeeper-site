@@ -1,9 +1,9 @@
 <!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="canonical" href="https://time.whytfnot.studio/ja/"><link rel="alternate" hreflang="en" href="https://time.whytfnot.studio/"><link rel="alternate" hreflang="ru" href="https://xn--b1agvo1f.art/"><link rel="alternate" hreflang="zh" href="https://time.whytfnot.studio/zh/"><link rel="alternate" hreflang="es" href="https://time.whytfnot.studio/es/"><link rel="alternate" hreflang="ar" href="https://time.whytfnot.studio/ar/"><link rel="alternate" hreflang="hi" href="https://time.whytfnot.studio/hi/"><link rel="alternate" hreflang="fr" href="https://time.whytfnot.studio/fr/"><link rel="alternate" hreflang="it" href="https://time.whytfnot.studio/it/"><link rel="alternate" hreflang="ko" href="https://time.whytfnot.studio/ko/"><link rel="alternate" hreflang="ja" href="https://time.whytfnot.studio/ja/"><link rel="alternate" hreflang="pt" href="https://time.whytfnot.studio/pt/"><link rel="alternate" hreflang="de" href="https://time.whytfnot.studio/de/"><link rel="alternate" hreflang="x-default" href="https://time.whytfnot.studio/"><meta name="description" content="Time Keeper — あなたの瞬間をブロックチェーンに刻み、時間の1秒1秒を数え続けるアートオブジェ。"><meta property="og:title" content="Time · Time Keeper"><meta property="og:description" content="あなたより何百年も長く残る、あなただけのアートオブジェ。"><meta property="og:image" content="/img/w/scene.webp"><meta property="og:type" content="website"><link rel="icon" href="/tk-icon.ico?v=3" sizes="48x48"><link rel="icon" type="image/png" sizes="32x32" href="/tk-icon-32.png?v=3"><link rel="icon" type="image/png" sizes="192x192" href="/tk-icon-192.png?v=3"><link rel="apple-touch-icon" href="/tk-icon-180.png?v=3"><style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0;background:#fff;color:#000}img{max-width:100%}[hidden]{display:none!important}</style><script>window.TK_LEADS="https://functions.yandexcloud.net/d4edaakn8obmp1ic8uaj"</script></head><body><title>Time · Time Keeper — あなたの時間を守るもの</title><script>document.documentElement.lang='ja'</script>
-<script>/* languages: the main site opens in the visitor's browser language once; a choice made in the switcher is remembered */(function(){ try{ var SUP=['en','ru','es','pt','fr','de','it','zh','ja','ko','hi','ar'], h=location.hostname;
+<script>/* languages: the site always opens in English; a choice made in the switcher only switches the page */(function(){ try{ var SUP=['en','ru','es','pt','fr','de','it','zh','ja','ko','hi','ar'], h=location.hostname;
   var main=/(^|\.)time\.whytfnot\.studio$/.test(h), ru=/xn--b1agvo1f\.art$/.test(h)||h.indexOf('время')>=0; if(!main&&!ru) return;
   var url=function(c){ return (c==='ru'?'https://xn--b1agvo1f.art/':'https://time.whytfnot.studio/'+(c==='en'?'':c+'/'))+'?lang='+c };
   var q=new URLSearchParams(location.search).get('lang'); if(q&&SUP.indexOf(q)>=0){ try{ localStorage.setItem('tk_lang',q) }catch(e){} return }
-  if(!main||!/^\/(index\.html)?$/.test(location.pathname)) return;
+  /* the site always opens in English on the main version; the language changes only from the switcher */ return;
   var saved=null; try{ saved=localStorage.getItem('tk_lang') }catch(e){}
   var pick=saved; if(!pick){ var ls=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||'en']; for(var i=0;i<ls.length;i++){ var c=String(ls[i]).toLowerCase().split('-')[0]; if(SUP.indexOf(c)>=0){ pick=c; break } } }
   if(pick&&pick!=='en'){ var u=url(pick); location.replace(saved?u.split('?')[0]:u) } }catch(e){} })();</script>
@@ -1086,7 +1086,7 @@ html body .intro #rsvEmail{text-align:center!important}
 
 
 <section class="cw cw-dev" id="device">
-  <h2>あなたのTime Keeperを選ぶ<span class="h2-sub">有効期限のないプロダクト</span><span class="h2-sub h2-sub2">「First 1000」— 最初にして最も価値あるコレクション。最も鋭い人たちが気づきました</span></h2>
+  <h2>あなたのTime Keeperを選ぶ<span class="h2-sub">有効期限のないプロダクト</span></h2>
   <div class="cw-t">
     <div class="ptiles" role="tablist" id="dtabs"></div>
     <div class="vtabs" id="vtabs" hidden></div>
@@ -1110,6 +1110,7 @@ html body .intro #rsvEmail{text-align:center!important}
         <div class="ue" id="pExtra" hidden></div>
         <div class="eds" id="pEds" role="group" aria-label="エディション" hidden></div>
         <div class="p-acts"><button type="button" class="btn p-buy" id="pBuy">購入する</button><button type="button" class="btn p-add" id="pAdd">カートに入れる</button><div class="btn p-add p-step" id="pStep" hidden><button type="button" id="pMi" aria-label="1つ減らす"><span class="pm"></span></button><output id="pQ" aria-live="polite">1</output><button type="button" id="pPl" aria-label="1つ増やす"><span class="pm pl"></span></button></div></div>
+        <p class="p-f1000">「First 1000」— 最初にして最も価値あるコレクション。最も鋭い人たちが気づきました</p>
         <form class="res" id="pForm" novalidate hidden>
           <input type="email" id="pEmail" placeholder="your@email.com" autocomplete="email" aria-label="メールアドレス">
           <button class="btn" type="submit" id="pBtn">予約する</button>
@@ -3430,6 +3431,8 @@ html body .ll-tile.empty .ll-vid,html body .ll-tile.empty .ll-grid img{backgroun
 #oPhrase{will-change:transform,opacity;backface-visibility:hidden;transform-origin:50% 100%}
 </style>
 <style>
+/* products: the "First 1000" line sits under the buy buttons, black and readable */
+.cw-dev .dbuy .p-f1000{margin:0;color:#0a0a0a;font-size:clamp(15px,1.15vw,18px);line-height:1.5;text-align:center;text-align-last:center;max-width:520px;margin-inline:auto}
 /* products heading: the second line about the "First 1000" collection, in the same style right under the first */
 #device>h2 .h2-sub2{margin-top:4px}
 /* last screen button: one line on every screen and language */

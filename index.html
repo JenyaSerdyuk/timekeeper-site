@@ -11,8 +11,6 @@
 var F=['300 20px Jost','400 20px Jost','400 12px "JetBrains Mono"','400 16px "Hanken Grotesk"'],has=function(){var n=0;document.fonts.forEach(function(f){if(/Jost/.test(f.family))n++});return n>0};
 (function wait(){if(ok)return;if(!has()){setTimeout(wait,30);return}Promise.all(F.map(function(f){return document.fonts.load(f)})).then(function(){requestAnimationFrame(function(){requestAnimationFrame(done)})},done)})()})()</script>
 <meta name="claude:viewport-fit-sides" content="cover">
-
-
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
 /* Layout: name → split reveal with the moment launching → 4 products → explanation (two-column blocks) → 5 uses → story → reverse split outro */
@@ -1023,7 +1021,7 @@ html body .intro #rsvEmail{text-align:center!important}
 </style>
 <section class="cw" id="explain">
   <h2>What it is</h2>
-  <div class="cw-t"><p>Time Keeper is an object at the intersection of philosophy, hardware and art. From the moment you start it, it fixes that moment on the blockchain and counts forever. It is bound to you and your family line forever.<button type="button" class="q" data-q="The start moment is written to a public blockchain. Nobody can change or delete it, including us." aria-label="More about this" aria-expanded="false">?</button></p></div>
+  <div class="cw-t"><p>Time Keeper is an object at the intersection of philosophy, hardware and art. From the moment you start it, it fixes that moment on the blockchain and counts forever. It is bound to you and your family line for generations.<button type="button" class="q" data-q="The start moment is written to a public blockchain. Nobody can change or delete it, including us." aria-label="More about this" aria-expanded="false">?</button></p></div>
 </section>
 
 <section class="cw cw-idea" id="idea">
@@ -1037,7 +1035,7 @@ html body .intro #rsvEmail{text-align:center!important}
 <section class="cw" id="uses">
   <h2>Ways to use it</h2>
   <div class="cw-t">
-    <p><b>Your time keeps disappearing somewhere.</b> There is nothing more valuable than your time. With Time Keeper, <u>your time will never disappear</u>. Below are the ways to use it that we know, but you can come up with your own. The main thing is that <u>it inspires you</u>.</p>
+    <p><b>Your time keeps disappearing somewhere.</b> There is nothing more valuable. With Time Keeper, <u>this won’t happen</u>. Below are the ways to use it that we know, but you can come up with your own. The main thing is that <u>it inspires you</u>.</p>
     </div>
     <div class="cw-full u-grid uses-l">
       <article class="u">
@@ -1063,7 +1061,7 @@ html body .intro #rsvEmail{text-align:center!important}
       <article class="u">
         <span class="u-n">05</span>
         <h3>Mark an important <em>start</em></h3>
-        <p><b>Use it as a symbolic reminder of the most important event in your life.</b> A new stage of life, the birth of a child, a wedding, the start of a business. These are turning points that can be marked with a symbolic gift</p>
+        <p><b>Use it as a symbolic reminder of the most important event in your life.</b> A new stage of life, the birth of a child, a wedding, the start of a business. These are turning points that can be marked with a symbolic gift, for someone else or for yourself</p>
       </article>
       <article class="u">
         <span class="u-n">06</span>
@@ -1088,7 +1086,7 @@ html body .intro #rsvEmail{text-align:center!important}
 
 
 <section class="cw cw-dev" id="device">
-  <h2>Choose your Time Keeper<span class="h2-sub">A product with no expiration date</span></h2>
+  <h2>Choose your Time Keeper<span class="h2-sub">A product with no expiration date</span><span class="h2-sub h2-sub2">“First 1000” — the first and most valuable collection, noticed by the most perceptive</span></h2>
   <div class="cw-t">
     <div class="ptiles" role="tablist" id="dtabs"></div>
     <div class="vtabs" id="vtabs" hidden></div>
@@ -1324,7 +1322,7 @@ html body .intro #rsvEmail{text-align:center!important}
 
 <section class="splitsec outro" id="outro">
   <div class="stick">
-    <div class="under"><div class="oscene" id="oScene" aria-hidden="true"><img id="oImg" src="img/w/scene.webp" alt=""></div><div class="owin" id="oWin"><svg id="oDigits" viewBox="-12 -6.5 146 31" preserveAspectRatio="xMidYMid meet"></svg><span class="yours on-metal" id="oYours">Your time since start</span></div><div class="obd" id="oBd"><div class="omodes" role="group" aria-label="Counting mode"><button type="button" data-m="now" aria-pressed="true">From now</button><button type="button" data-m="life" aria-pressed="false">From 0 to now</button><button type="button" data-m="back" aria-pressed="false">Hardcore backwards mode</button></div><p class="ohint" id="oHint"></p><div class="obsel" id="oBdate" hidden><select id="obD" aria-label="Day"><option value="">Day</option></select><select id="obM" aria-label="Month"><option value="">Month</option></select><select id="obY" aria-label="Year"><option value="">Year</option></select></div></div><p class="ophrase" id="oPhrase">Time is the only irreplaceable resource</p><a class="oorder" id="oOrder" href="#device">Order now</a></div>
+    <div class="under"><div class="oscene" id="oScene" aria-hidden="true"><img id="oImg" src="img/w/scene.webp" alt=""></div><div class="owin" id="oWin"><svg id="oDigits" viewBox="-12 -6.5 146 31" preserveAspectRatio="xMidYMid meet"></svg><span class="yours on-metal" id="oYours">Your time since start</span></div><div class="obd" id="oBd"><div class="omodes" role="group" aria-label="Counting mode"><button type="button" data-m="now" aria-pressed="true">From now</button><button type="button" data-m="life" aria-pressed="false">From 0 to now</button><button type="button" data-m="back" aria-pressed="false">Hardcore backwards mode</button></div><p class="ohint" id="oHint"></p><div class="obsel" id="oBdate" hidden><select id="obD" aria-label="Day"><option value="">Day</option></select><select id="obM" aria-label="Month"><option value="">Month</option></select><select id="obY" aria-label="Year"><option value="">Year</option></select></div></div><p class="ophrase" id="oPhrase">Time is the only irreplaceable resource</p><a class="oorder" id="oOrder" href="#device">Order “First 1000”</a></div>
     <style>.outro-in{display:grid;gap:clamp(18px,3vw,34px);justify-items:center}.oclock{font-family:var(--f-display);font-weight:300;font-size:clamp(52px,10vw,160px);line-height:1;letter-spacing:-.03em;white-space:nowrap}</style>
     <div class="tk-dim" id="oDim"></div><div class="half l" id="oL"><span class="cap mono">WHY TF NOT startup-studio</span><a class="totop mono" href="#top">Back to top</a><span class="name" id="oNameL">Time</span><span class="foot mono">© 2026 Time</span></div>
     <div class="half r" id="oR"><span class="cap mono">WHY TF NOT startup-studio</span><span class="name">Time</span><span class="foot mono">© 2026 Time</span></div>
@@ -2476,12 +2474,12 @@ html body .intro #rsvEmail{text-align:center!important}
   function iGo(dir){ if(IS.a) return; if(!window.__tkSettled){ iGo.p=dir; return } const v=prog(GI.el);
     // after the painting has appeared once: one gesture up closes TIME straight over the painting, one gesture down opens it again
     if(iDone){ if(dir>0){ IS.back=false; if(v<0.995) iTo(secY(GI,1),2200) } else if(v>0.005){ IS.back=true; iTo(secY(GI,0),1500) } return }
-    if(dir>0){ if(v<0.44) iTo(secY(GI,0.46),1500); else if(v<0.995) iTo(secY(GI,1),1700) }
+    if(dir>0){ if(v<0.44) iTo(secY(GI,0.46),1500); else if(v<0.995) iTo(secY(GI,1),1190) }
     else { if(v>0.5) iTo(secY(GI,0.46),1500); else if(v>0.005) iTo(secY(GI,0),1500) } }
   function stepIntro(now){
     if(IS.a){ if(IS.a.y0==null) IS.a.y0=scrollY; const k=Math.min(1,(now-IS.a.t0)/IS.a.dur); jumpTo(IS.a.y0+(IS.a.y1-IS.a.y0)*sm(k)); if(k>=1){ IS.blk=Math.abs(IS.a.y1-secY(GI,0.46))<2; IS.a=null; IS.arr=now; IS.ga=true; setTimeout(()=>{ if(!IS.a) window._navJump=false },60) } }
     // black screen with the counter: 1 s after it settles, if nothing was touched, the painting and its texts come in by themselves
-    if(!IS.a&&IS.blk&&!iDone){ if(Math.abs(scrollY-secY(GI,0.46))>4) IS.blk=false; else if(now-Math.max(IS.arr,lastIn)>=215){ IS.blk=false; iGo(1) } /* the painting starts to show 1 s after the black screen settles */ }
+    if(!IS.a&&IS.blk&&!iDone){ if(Math.abs(scrollY-secY(GI,0.46))>4) IS.blk=false; else if(now-Math.max(IS.arr,lastIn)>=150){ IS.blk=false; iGo(1) } /* the painting starts to show 1 s after the black screen settles */ }
     // coming back up from the page below: however fast the flick, the page stops exactly on the painting (it never flies on to black or TIME)
     // and before that it stops on the white block right under the painting, fully white (never half painting, half text)
     { const yN=iNext(); if(!IS.a&&!window._navJump&&IS.py!=null&&IS.py>=yN-1&&scrollY<yN-1&&scrollY>secY(GI,1)+2){ killFling(); jumpTo(yN); IS.ga=true; IS.td=true; IS.arr=now; IS.py=yN; if(lenis) lenis.stop() } }
@@ -3361,7 +3359,7 @@ html body .ll-tile.empty .ll-vid,html body .ll-tile.empty .ll-grid img{backgroun
 .tk-lang-m a b{font:500 10px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.14em;color:#8b8b8b;text-transform:uppercase}
 .tk-lang-m a[aria-current="true"]{font-weight:600}
 </style>
-<script>(function(){ var L=[['en','English'],['ru','Русский'],['es','Español'],['pt','Português'],['fr','Français'],['de','Deutsch'],['it','Italiano'],['zh','中文'],['ja','日本語'],['ko','한국어'],['hi','हिन्दी'],['ar','العربية']], url=function(c){ return (c==='ru'?'https://xn--b1agvo1f.art/':'https://time.whytfnot.studio/'+(c==='en'?'':c+'/'))+'?lang='+c };
+<script>(function(){ var L=[['en','English'],['es','Español'],['pt','Português'],['fr','Français'],['ru','Русский'],['de','Deutsch'],['it','Italiano'],['zh','中文'],['ja','日本語'],['ko','한국어'],['hi','हिन्दी'],['ar','العربية']], url=function(c){ return (c==='ru'?'https://xn--b1agvo1f.art/':'https://time.whytfnot.studio/'+(c==='en'?'':c+'/'))+'?lang='+c };
   var cur=(document.documentElement.lang||'en').slice(0,2), F=document.getElementById('tkLang'); if(!F) return;
   // the prototype (not the live sites): the other languages are pages next to this one
   if(!/whytfnot\.studio$|xn--b1agvo1f\.art$|localhost$|127\.0\.0\.1$/.test(location.hostname)&&cur!=='ru'){ var u0=url; url=function(c){ return c==='ru'?u0(c):(cur==='en'?'':'../')+(c==='en'?'index.html':c+'/index.html') } }
@@ -3405,7 +3403,12 @@ html body .ll-tile.empty .ll-vid,html body .ll-tile.empty .ll-grid img{backgroun
 (function(){ const S=[...document.querySelectorAll('.splitsec')].map(sec=>[sec,sec.querySelector('.stick')]).filter(x=>x[1]);
   function pin(){ const H=innerHeight; S.forEach(([sec,st])=>{ const r=sec.getBoundingClientRect(), on=r.top<=0&&r.bottom>=H;
       if(on!==(st.dataset.pin==='1')){ st.dataset.pin=on?'1':''; if(on){ st.style.position='fixed'; st.style.top='0'; st.style.left='0'; st.style.width='100%' } else { st.style.position=st.style.top=st.style.left=st.style.width='' } } }) }
-  function loop(){ pin(); requestAnimationFrame(loop) } addEventListener('scroll',pin,{passive:true}); addEventListener('resize',pin); requestAnimationFrame(loop) })();
+  // leaving the opening scene for the white page: the last strip of the dark scene under the top bar fades out as it goes up,
+  // so the page arrives fully white, with no dark band lingering at the top
+  const I=S.find(x=>x[0].id==='top'); function tail(){ if(!I) return; const r=I[0].getBoundingClientRect(), st=I[1], H=innerHeight; let o='';
+    if(r.bottom<H&&r.bottom>-2){ const nv=document.getElementById('nav'), nb=nv&&nv.classList.contains('on')?nv.getBoundingClientRect().bottom:0; o=String(Math.max(0,Math.min(1,(r.bottom-nb)/Math.max(80,H*0.2)))) }
+    if(st.style.opacity!==o) st.style.opacity=o }
+  function loop(){ pin(); tail(); requestAnimationFrame(loop) } addEventListener('scroll',pin,{passive:true}); addEventListener('resize',pin); requestAnimationFrame(loop) })();
 </script>
 <style>
 /* life line Years / Months switch */
@@ -3425,4 +3428,12 @@ html body .ll-tile.empty .ll-vid,html body .ll-tile.empty .ll-grid img{backgroun
 /* last screen: the line above the painting is drawn once and only scaled as a whole while it grows in, so its letters never wobble */
 #oPhrase{will-change:transform,opacity;backface-visibility:hidden;transform-origin:50% 100%}
 </style>
+<style>
+/* products heading: the second line about the "First 1000" collection, in the same style right under the first */
+#device>h2 .h2-sub2{margin-top:4px}
+/* last screen button: one line on every screen and language */
+.oorder{white-space:nowrap;max-width:calc(100vw - 32px)}
+@media (max-width:860px){.oorder{padding:0 20px;font-size:11px;letter-spacing:.08em}}
+</style>
+
 <style>.tk-cons{margin:0;font:400 11px/1.4 'Hanken Grotesk',sans-serif;color:#8b8b8b;text-align:center}.tk-cons a{color:inherit;text-decoration:underline}.tk-cons-float{position:absolute;left:0;right:0;top:calc(100% + 6px);opacity:0;pointer-events:none;transition:opacity .2s}.tk-cons-float.on{opacity:1;pointer-events:auto}.intro .tk-cons-float{color:rgba(255,255,255,.6)}</style><script>(function(){var T="By submitting, you agree to our <a href=\"privacy.html\" target=\"_blank\">privacy policy</a>";['rsvForm','pForm','tlForm','llReg'].forEach(function(id){var f=document.getElementById(id);if(!f)return;if(getComputedStyle(f).position==='static')f.style.position='relative';var p=document.createElement('p');p.className='tk-cons tk-cons-float';p.innerHTML=T;f.appendChild(p);f.addEventListener('focusin',function(){p.classList.add('on')})})})();</script></body></html>

@@ -397,6 +397,7 @@ em{font-style:italic;font-weight:300}
 .tyt{position:absolute;inset:0;z-index:2;background:var(--black);color:var(--white);display:grid;place-items:center;padding-inline:20px}
 .tyt p{font-family:var(--f-display);font-weight:300;font-size:clamp(38px,6.5vw,104px);letter-spacing:-.02em;line-height:1}
 .tyt em{font-weight:300}
+/* take your time: Geist, upright */.tyt p,.tyt em{font-family:'Geist',var(--f-display)}.tyt em{font-style:normal}
 
 .devhead{flex-wrap:wrap}
 .vtabs{display:flex;gap:6px;width:100%;justify-content:flex-end}
@@ -980,7 +981,7 @@ html body .intro #rsvEmail{text-align:center!important}
 <section class="splitsec intro" id="top">
   <div class="stick">
     <div class="under">
-      <div class="tyt" id="tyt"><p>Take your <em>time</em></p></div>
+      <div class="tyt" id="tyt"><p>take your <em>time</em></p></div>
       <div class="scene" id="scene" aria-hidden="true"><img id="sceneImg" src="/img/w/scene.webp" alt=""><div class="scene-shade"></div></div><div class="scene-win" id="sceneWin"><svg id="sceneDigits" preserveAspectRatio="xMidYMid meet"></svg><span class="yours" id="yours">Your time</span></div>
       <div class="launch"><p class="mtag" id="mTag" hidden>A philosophical art object for self-reflection. It holds all the time of your life and will outlive you <span class="ul">by hundreds of years</span>. A family relic passed down from generation to generation.</p>
         <div class="top" id="lTop"><p class="ltag" id="lTag"><span class="lt-new"><span class="tl1">A philosophical art object for self-reflection</span> <span class="tl2">It holds all the time of your life and will outlive you <span class="ul">by hundreds of years</span>. A family relic passed down from generation to generation.</span><span class="ltag3"></span></span><span class="lt-ref" aria-hidden="true">A philosophical art object for self-reflection. It holds all the time of your life and will outlive you <span class="ul">by hundreds of years</span>. A family relic passed down from generation to generation.</span></p></div>
@@ -1035,6 +1036,8 @@ html body .intro #rsvEmail{text-align:center!important}
 <style>
 /* the minimal copy: the painting and the keychain side by side, each can go to the cart or be bought at once */
 #mini .shop{max-width:1040px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,3vw,40px);width:100%}
+/* the painting and keychain block is a screen of its own: when the page stops on it, nothing of the blocks above or below shows */
+#mini .shop{box-sizing:border-box;min-height:calc(100svh - 59px);align-content:center;padding:0}@media(max-width:860px){#mini .shop{padding:16px 0 20px}}
 .shop-it{display:grid;gap:12px;align-content:start;min-width:0}
 .shop-ph{position:relative;display:block;width:100%;padding:0;border:0;aspect-ratio:1;background:#0a0a0a;overflow:hidden;border-radius:4px;cursor:pointer}
 .shop-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
@@ -2699,7 +2702,7 @@ items.forEach(function(it){it.at.onload=function(){it.s=null; draw(it,Math.max(0
     if(IS.a||OS.a||inI||inO){ if(lenis&&!lenis.isStopped) lenis.stop(); if(e.cancelable) e.preventDefault() } },{passive:false,capture:true});
   function oStep(dir){ if(OS.a){ if(performance.now()-OS.a.t0>350) OS.q=dir; return } OS.q=0; const q=prog(GO.el); if(q<OH-0.006) return;
     if(dir>0){ if(q<0.3) oTo(secY(GO,0.6),2200) /* the last scene is the painting: nothing after it */ }
-    else { if(q>0.8){ OS.back=false; oTo(secY(GO,0.6),1000) } else if(q>0.3) oTo(secY(GO,OH),1000); /* minimal copy: going back up answers twice as fast */ else { OS.rel=performance.now(); OS.z=false; if(!IS.z) lockOff(); if(lenis) lenis.scrollTo(Math.max(0,scrollY-120)) } } }
+    else { if(q>0.8){ OS.back=false; oTo(secY(GO,0.6),1000) } else if(q>0.3) oTo(secY(GO,OH),1000); /* minimal copy: going back up answers twice as fast */ else { OS.rel=performance.now(); OS.z=false; if(!IS.z) lockOff(); if(window._pgBack) window._pgBack(); else if(lenis) lenis.scrollTo(Math.max(0,scrollY-120)) } } }
   // the white screen right before the last scene: the block above fills the whole screen, nothing of the dark scene shows
   const oW=()=>Math.max(0,GO.el.offsetTop-innerHeight);
   function oZone(){ if(OS.rel&&performance.now()-OS.rel<900) return false; const q=prog(GO.el); return q>=OH-0.004 && scrollY<=secY(GO,1)+2 }
@@ -2722,7 +2725,42 @@ items.forEach(function(it){it.at.onload=function(){it.s=null; draw(it,Math.max(0
     if(oHold.armed && real>OH+0.001 && real<0.3){ oHold.armed=false; jumpTo(secY(GO,OH)); GO.v=OH; OS.td=true; return }
     // never left between two scenes: settle on the nearest one
     if(real>OH+0.004 && Math.abs(real-0.6)>0.004 && real<0.985 && performance.now()-lastIn>300){ const t=real<0.3?OH:0.6; oTo(secY(GO,t),700) } }
-  function gateOutro(now){ if(!reduce) outroHold(now); return paced(GO,now,0.2) }
+  // minimal copy, between the first and the last screen: the text page, the painting and keychain block, the last screen.
+  // one movement at the end of a block glides the page fully to the next block (and back the same way); inside a block taller
+  // than the screen the page scrolls as usual, and a fast flick stops at the block's edge instead of flying past it
+  const PG={a:null,ga:false,lastW:0,lastAbs:0,py:null,ty0:null,dec:false,arr:0};
+  function pgB(){ const m=$('mini'), sh=m&&m.querySelector('.shop'), bt=m&&m.querySelector('.mini-buy2, a.btn, .btn'); if(!m||!sh) return null;
+    const H=innerHeight, nv=$('nav')?$('nav').offsetHeight:0, at=e=>e.getBoundingClientRect().top+scrollY;
+    const aT=iNext(), tb=sh.previousElementSibling&&sh.previousElementSibling.getBoundingClientRect().height?sh.previousElementSibling:(bt||m), aE=at(tb)+tb.getBoundingClientRect().height+32, aB0=Math.round(aE-H), aB=aB0-aT<60?aT:aB0;
+    { const mh=(H-nv)+'px'; if(sh.style.minHeight!==mh) sh.style.minHeight=mh }
+    const sT=at(sh), sH=sh.getBoundingClientRect().height; let bT=Math.round(sT-nv), bB=Math.max(bT,Math.round(sT+sH-H));
+    bT=Math.max(bT,aB+1); bB=Math.max(bB,bT); return {aT,aB,bT,bB,c:Math.round(secY(GO,OH))} }
+  function pgTo(y1,dur){ window._navJump=true; if(lenis) lenis.stop(); PG.a={t0:performance.now(),dur:dur||1300,y0:scrollY,y1} }
+  window._pgBack=()=>{ const b=pgB(); if(!b) return false; OS.z=false; pgTo(b.bB,1300); return true };
+  // which way one movement goes from here (null = the page simply scrolls)
+  function pgDest(dir){ const b=pgB(); if(!b) return null; const y=scrollY;
+    if(dir>0){ if(y>=b.aB-3&&y<b.bT-3) return b.bT; if(y>=b.bB-3&&y<b.c-3) return b.c }
+    else { if(y<=b.bT+3&&y>b.aB+3) return b.aB; if(y<=b.c+3&&y>b.bB+3&&prog(GO.el)<OH-0.004) return b.bB }
+    return null }
+  addEventListener('wheel',e=>{ if(e.ctrlKey||reduce) return; const n=performance.now(), a=Math.abs(e.deltaY), sg=Math.sign(e.deltaY), fresh=n-PG.lastW>180||(a>=3&&a>PG.lastAbs*1.25+1)||(sg&&PG.sg&&sg!==PG.sg); PG.lastW=n; PG.lastAbs=a; if(sg) PG.sg=sg;
+    if(PG.a||(PG.ga&&!fresh)){ if(e.cancelable) e.preventDefault(); if(lenis&&!lenis.isStopped) lenis.stop(); return } PG.ga=false;
+    if(IS.a||OS.a||!sg) return; const d=pgDest(sg); if(d==null) return; if(e.cancelable) e.preventDefault(); pgTo(d) },{passive:false,capture:true});
+  addEventListener('touchstart',e=>{ PG.ty0=e.touches[0]?e.touches[0].clientY:null; PG.dec=false; PG.hold=false },{passive:true});
+  addEventListener('touchmove',e=>{ if(PG.a||PG.hold){ if(e.cancelable) e.preventDefault(); return } if(PG.dec||PG.ty0==null||!e.touches[0]||IS.a||OS.a) return; const dd=PG.ty0-e.touches[0].clientY; if(!dd) return; PG.dec=true;
+    const d=pgDest(dd>0?1:-1); if(d==null) return; if(e.cancelable) e.preventDefault(); PG.hold=true; killFling(); pgTo(d) },{passive:false});
+  addEventListener('keydown',e=>{ if(PG.a||isField(e.target)) return; const k=e.key, dir=['ArrowDown','PageDown',' '].includes(k)?1:['ArrowUp','PageUp'].includes(k)?-1:0; if(!dir) return; const d=pgDest(dir); if(d==null) return; e.preventDefault(); pgTo(d) });
+  function pgFrame(now){
+    if(PG.a){ const k=Math.min(1,(now-PG.a.t0)/PG.a.dur); jumpTo(PG.a.y0+(PG.a.y1-PG.a.y0)*sm(k)); if(k>=1){ PG.a=null; PG.ga=true; PG.arr=now; PG.py=scrollY; setTimeout(()=>{ if(!PG.a&&!OS.a&&!IS.a){ window._navJump=false; if(lenis&&!(OS.z||IS.z)) lenis.start() } },60) } return }
+    if(window._navJump||IS.a||OS.a){ PG.py=scrollY; return } const b=pgB(); if(!b){ return } const y=scrollY, py=PG.py; PG.py=y;
+    if(py==null) return;
+    // a flick never flies past the edge of a block: it stops right there, the next movement glides on
+    const edge=(e,down)=>down?(py<=e+1&&y>e+1):(py>=e-1&&y<e-1);
+    if(y>py&&edge(b.aB,true)&&y<b.bT-1){ killFling(); jumpTo(b.aB); PG.py=b.aB; PG.arr=now; PG.ga=true; PG.lastW=performance.now(); return }
+    if(y<py&&edge(b.bT,false)&&y>b.aB+1){ killFling(); jumpTo(b.bT); PG.py=b.bT; PG.arr=now; PG.ga=true; PG.lastW=performance.now(); return }
+    if(y>py&&edge(b.bB,true)&&y<b.c-1){ killFling(); jumpTo(b.bB); PG.py=b.bB; PG.arr=now; PG.ga=true; PG.lastW=performance.now(); return }
+    // never left resting between two blocks: after a moment it glides to the nearer one
+    if(now-Math.max(lastIn,PG.arr)>350){ if(y>b.aB+3&&y<b.bT-3) pgTo((y-b.aB)<(b.bT-y)?b.aB:b.bT,900); else if(y>b.bB+3&&y<b.c-3&&prog(GO.el)<OH-0.004) pgTo((y-b.bB)<(b.c-y)?b.bB:b.c,900) } }
+  function gateOutro(now){ if(!reduce){ pgFrame(now); outroHold(now) } return paced(GO,now,0.2) }
   const intro=$('top'), outro=$('outro'), nav=$('nav'), b160=$('b160')||document.createElement('div');
   const t0=performance.now();
 

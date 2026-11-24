@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Shine Remote Camera — тест потока</title>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#000;color:#fff;font:16px/1.4 -apple-system,system-ui,Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+section{position:fixed;inset:0;display:flex;flex-direction:column}
+section[hidden]{display:none}
+.center{align-items:center;justify-content:center;gap:16px;padding:24px}
+h1{font-size:28px;font-weight:700;text-align:center}
+p.sub{opacity:.6;text-align:center;max-width:320px}
+button{font:inherit;font-weight:600;border:0;border-radius:14px;padding:16px 20px;min-height:52px;background:#fff;color:#000;cursor:pointer}
+button.ghost{background:rgba(255,255,255,.14);color:#fff}
+button.on{background:#b8f5d0;color:#000}
+.wide{width:100%;max-width:320px}
+input{font:700 40px/1 ui-monospace,monospace;letter-spacing:.3em;text-align:center;width:100%;max-width:320px;padding:14px;border-radius:14px;border:2px solid #444;background:#111;color:#fff}
+video{width:100%;height:100%;object-fit:contain;background:#000}
+.mirror{transform:scaleX(-1)}
+.top{position:absolute;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top) + 12px) 16px 12px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#000a,#0000)}
+.code{font:700 44px/1 ui-monospace,monospace;letter-spacing:.2em}
+.status{font-size:14px;opacity:.8}
+.bar{position:absolute;left:0;right:0;bottom:0;padding:12px 12px calc(env(safe-area-inset-bottom) + 12px);display:flex;gap:8px;flex-wrap:wrap;justify-content:center;background:linear-gradient(#0000,#000c)}
+.bar button{padding:12px 14px;min-height:44px;font-size:14px}
+#stats{position:absolute;left:12px;top:calc(env(safe-area-inset-top) + 12px);background:#000b;border-radius:12px;padding:10px 12px;font:13px/1.5 ui-monospace,monospace;white-space:pre}
+#stats b{font-size:20px;color:#b8f5d0}
+#timer{position:absolute;right:12px;top:calc(env(safe-area-inset-top) + 12px);background:#fff;color:#000;border-radius:12px;padding:8px 12px;font:700 34px/1 ui-monospace,monospace}
+</style>
+</head>
+<body>
+
+<section id="home" class="center">
+  <h1>Тест видеопотока</h1>
+  <p class="sub">Оба телефона в одной Wi‑Fi сети. На первом нажми «Камера», на втором «Смотреть»</p>
+  <button class="wide" id="bCam">Камера (телефон 1)</button>
+  <button class="wide ghost" id="bView">Смотреть (телефон 2)</button>
+</section>
+
+<section id="cam">
+  <video id="preview" autoplay playsinline muted></video>
+  <div class="top"><div><div class="status">Код для второго телефона</div><div class="code" id="code">····</div></div></div>
+  <div class="bar"><span class="status" id="camStatus">Включаю камеру…</span></div>
+</section>
+
+<section id="join" class="center">
+  <h1>Введи код</h1>
+  <p class="sub">4 цифры с экрана первого телефона</p>
+  <input id="codeIn" inputmode="numeric" maxlength="4" autocomplete="off">
+  <button class="wide" id="bConnect">Подключиться</button>
+  <p class="status" id="joinStatus"></p>
+</section>
+
+<section id="live">
+  <video id="remote" autoplay playsinline muted></video>
+  <div id="stats">…</div>
+  <div id="timer" hidden></div>
+  <div class="bar">
+    <button class="ghost" id="bFlip">Повернуть камеру</button>
+    <button class="ghost" id="bQ">1080p</button>
+    <button class="ghost" id="bMirror">Зеркало</button>
+    <button class="ghost" id="bTimer">Таймер</button>
+  </div>
+</section>
+
+<script>
+{
+const $ = s => document.querySelector(s);
+const PREFIX = 'shine-rc-test-';
+const OPTS = {config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun.cloudflare.com:3478'}]}};
+const Q = {
+  '720':    {w:1280, h:720,  fps:30, br:3e6, label:'720p'},
+  '1080':   {w:1920, h:1080, fps:30, br:6e6, label:'1080p'},
+  '1080-60':{w:1920, h:1080, fps:60, br:9e6, label:'1080p 60'}
+};
+const ORDER = ['720','1080','1080-60'];
+let peer, stream, call, conn, facing = 'environment', q = '1080';
+
+const show = id => document.querySelectorAll('section').forEach(s => s.hidden = s.id !== id);
+const camStatus = t => $('#camStatus').textContent = t;
+const joinStatus = t => $('#joinStatus').textContent = t;
+
+async function wake(){ try{ await navigator.wakeLock.request('screen') }catch(e){} }
+
+/* ---------- ТЕЛЕФОН 1: камера ---------- */
+function getCam(){
+  const c = Q[q];
+  return navigator.mediaDevices.getUserMedia({audio:false, video:{
+    facingMode: facing, width:{ideal:c.w}, height:{ideal:c.h}, frameRate:{ideal:c.fps}
+  }});
+}
+
+async function tune(){
+  if(!call) return;
+  for(const s of call.peerConnection.getSenders()){
+    if(!s.track || s.track.kind !== 'video') continue;
+    s.track.contentHint = 'motion';
+    const p = s.getParameters();
+    if(!p.encodings || !p.encodings.length) p.encodings = [{}];
+    p.encodings[0].maxBitrate = Q[q].br;
+    p.encodings[0].maxFramerate = Q[q].fps;
+    p.encodings[0].networkPriority = 'high';
+    p.encodings[0].priority = 'high';
+    p.degradationPreference = 'maintain-framerate';
+    try{ await s.setParameters(p) }catch(e){}
+  }
+}
+
+function setPreview(){
+  const v = $('#preview');
+  v.srcObject = stream;
+  v.classList.toggle('mirror', facing === 'user');
+}
+
+async function startCam(){
+  show('cam'); wake();
+  try{ stream = await getCam() }
+  catch(e){ camStatus('Нет доступа к камере: ' + e.name); return }
+  setPreview();
+  openPeer();
+}
+
+function openPeer(){
+  const code = String(Math.floor(1000 + Math.random()*9000));
+  peer = new Peer(PREFIX + code, OPTS);
+  peer.on('open', () => { $('#code').textContent = code; camStatus('Жду второй телефон') });
+  peer.on('error', e => {
+    if(e.type === 'unavailable-id'){ peer.destroy(); openPeer() }
+    else camStatus('Ошибка: ' + e.type);
+  });
+  peer.on('connection', c => {
+    conn = c;
+    c.on('open', () => {
+      call = peer.call(c.peer, stream);
+      const pc = call.peerConnection;
+      pc.addEventListener('connectionstatechange', () => {
+        if(pc.connectionState === 'connected'){ tune(); camStatus('Идёт трансляция') }
+        if(pc.connectionState === 'failed') camStatus('Соединение не удалось');
+      });
+      sendState();
+    });
+    c.on('data', onCmd);
+    c.on('close', () => camStatus('Второй телефон отключился'));
+  });
+}
+
+function sendState(){ if(conn && conn.open) conn.send({t:'state', facing, q}) }
+
+async function swap(){
+  stream.getTracks().forEach(t => t.stop());
+  stream = await getCam();
+  setPreview();
+  const s = call && call.peerConnection.getSenders().find(x => x.track === null || x.track.kind === 'video');
+  if(s) await s.replaceTrack(stream.getVideoTracks()[0]);
+  await tune();
+  sendState();
+}
+
+async function onCmd(d){
+  if(d.t === 'flip'){ facing = facing === 'user' ? 'environment' : 'user'; await swap() }
+  if(d.t === 'q' && Q[d.v]){ q = d.v; await swap() }
+}
+
+/* ---------- ТЕЛЕФОН 2: зритель ---------- */
+function connect(){
+  const code = $('#codeIn').value.trim();
+  if(!/^\d{4}$/.test(code)){ joinStatus('Нужно 4 цифры'); return }
+  joinStatus('Подключаюсь…'); wake();
+  if(peer) peer.destroy();
+  peer = new Peer(OPTS);
+  peer.on('open', () => {
+    conn = peer.connect(PREFIX + code, {reliable:true});
+    conn.on('open', () => joinStatus('Жду видео…'));
+    conn.on('data', d => {
+      if(d.t === 'state'){ q = d.q; facing = d.facing; $('#bQ').textContent = Q[q].label }
+    });
+  });
+  peer.on('call', c => {
+    call = c;
+    c.answer();
+    c.on('stream', s => {
+      const v = $('#remote');
+      v.srcObject = s;
+      v.play().catch(()=>{});
+      lowLatency();
+      show('live');
+      startStats();
+    });
+  });
+  peer.on('error', e => joinStatus(e.type === 'peer-unavailable' ? 'Код не найден' : 'Ошибка: ' + e.type));
+}
+
+function lowLatency(){
+  for(const r of call.peerConnection.getReceivers()){
+    try{ if('jitterBufferTarget' in r) r.jitterBufferTarget = 0 }catch(e){}
+    try{ r.playoutDelayHint = 0 }catch(e){}
+  }
+}
+
+let statsTimer, prev;
+function startStats(){
+  clearInterval(statsTimer);
+  statsTimer = setInterval(async () => {
+    if(!call) return;
+    const rep = await call.peerConnection.getStats();
+    let inb, pair;
+    rep.forEach(s => {
+      if(s.type === 'inbound-rtp' && s.kind === 'video') inb = s;
+      if(s.type === 'candidate-pair' && s.state === 'succeeded' && (s.nominated || s.selected)) pair = s;
+    });
+    if(!inb) return;
+    const now = inb.timestamp;
+    let mbps = 0, jb = 0;
+    if(prev){
+      const dt = (now - prev.timestamp) / 1000;
+      mbps = (inb.bytesReceived - prev.bytesReceived) * 8 / dt / 1e6;
+      const de = inb.jitterBufferEmittedCount - prev.jitterBufferEmittedCount;
+      if(de > 0) jb = (inb.jitterBufferDelay - prev.jitterBufferDelay) / de * 1000;
+    }
+    prev = inb;
+    const rtt = pair && pair.currentRoundTripTime ? pair.currentRoundTripTime * 1000 : 0;
+    let net = '—';
+    if(pair){
+      const lc = rep.get(pair.localCandidateId);
+      const type = lc && lc.candidateType;
+      net = type === 'host' ? 'Wi‑Fi напрямую' : type === 'relay' ? 'через сервер' : 'через интернет';
+    }
+    const est = Math.round(rtt/2 + jb + 35);
+    $('#stats').innerHTML =
+      'задержка ≈ <b>' + est + ' мс</b>\n' +
+      (inb.frameWidth || '?') + '×' + (inb.frameHeight || '?') + '  ' + Math.round(inb.framesPerSecond || 0) + ' к/с\n' +
+      mbps.toFixed(1) + ' Мбит/с  потеряно ' + (inb.packetsLost || 0) + '\n' +
+      'сеть: ' + net;
+  }, 1000);
+}
+
+let raf;
+function tick(){
+  const t = performance.timeOrigin + performance.now();
+  $('#timer').textContent = ((t % 100000) / 1000).toFixed(3);
+  raf = requestAnimationFrame(tick);
+}
+
+/* ---------- кнопки ---------- */
+$('#bCam').onclick = startCam;
+$('#bView').onclick = () => { show('join'); $('#codeIn').focus() };
+$('#bConnect').onclick = connect;
+$('#codeIn').addEventListener('input', e => { if(e.target.value.length === 4) connect() });
+$('#bFlip').onclick = () => conn && conn.send({t:'flip'});
+$('#bQ').onclick = () => {
+  const next = ORDER[(ORDER.indexOf(q) + 1) % ORDER.length];
+  q = next; $('#bQ').textContent = Q[q].label;
+  conn && conn.send({t:'q', v:next});
+};
+$('#bMirror').onclick = e => { $('#remote').classList.toggle('mirror'); e.target.classList.toggle('on') };
+$('#bTimer').onclick = e => {
+  const t = $('#timer');
+  t.hidden = !t.hidden; e.target.classList.toggle('on', !t.hidden);
+  cancelAnimationFrame(raf); if(!t.hidden) tick();
+};
+document.addEventListener('visibilitychange', () => { if(!document.hidden) wake() });
+
+show('home');
+}
+</script>
+</body>
+</html>
